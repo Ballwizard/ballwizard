@@ -1,16 +1,24 @@
+import 'dart:ui' show Color;
+
 /// Defines the most rudimentary UI component color variants. The bare minimum of
 /// customization that a certain UI component the offer is contained in this enum.
 enum FundamentalVariant {
   light,
   dark;
 
-  int color() {
+  /// Method that gets the color hex by the variant
+  int colorHex() {
     switch (this) {
       case FundamentalVariant.light:
         return ColorPicker.light;
       case FundamentalVariant.dark:
         return ColorPicker.dark;
     }
+  }
+
+  /// Method that converts a `FundamentalVariant` into a `Color` instance
+  Color color() {
+    return Color(colorHex());
   }
 }
 
@@ -26,7 +34,8 @@ enum BasicVariant {
   light,
   muted;
 
-  int color() {
+  /// Method that gets the color hex by the variant
+  int colorHex() {
     switch (this) {
       case BasicVariant.primary:
         return ColorPicker.primary;
@@ -47,6 +56,11 @@ enum BasicVariant {
       case BasicVariant.muted:
         return ColorPicker.muted;
     }
+  }
+
+  /// Method that converts a `BasicVariant` into a `Color` instance
+  Color color() {
+    return Color(colorHex());
   }
 }
 
@@ -71,7 +85,8 @@ enum Variant {
   lightMuted,
   mutedMuted;
 
-  int color() {
+  /// Method that gets the color hex by the variant
+  int colorHex() {
     switch (this) {
       case Variant.primary:
         return ColorPicker.primary;
@@ -111,6 +126,11 @@ enum Variant {
         return ColorPicker.mutedMuted;
     }
   }
+
+  /// Method that converts a `Variant` into a `Color` instance
+  Color color() {
+    return Color(colorHex());
+  }
 }
 
 /// Defines the available font sizes for the UI components.
@@ -143,7 +163,7 @@ abstract class ColorPicker {
   static const int dangerMuted = 0xff950000;
   static const int infoMuted = 0xff1d3241;
   static const int darkMuted = 0xff111111;
-  static const int lightMuted = 0xffeeeeee;
+  static const int lightMuted = 0xffdddddd;
   static const int mutedMuted = 0xff5b5b5b;
 
   /// Enables color instantiation using strings and enum types.
@@ -202,15 +222,41 @@ abstract class ColorPicker {
     Variant.mutedMuted: 0xff5b5b5b
   };
 
-
   /// Adds opacity to a color in the hex form that can be used by the `Color` class in Flutter.
   static int addOpacity(final int color, final int opacity) {
-    if (opacity > 1 || opacity < 0) throw Exception("Opacity must be between 0 and 1");
+    if (opacity > 1 || opacity < 0)
+      throw Exception("Opacity must be between 0 and 1");
 
-    int opacityHex = opacity.round() * 0xFF000000; // formula to create the hex format of the color
+    int opacityHex = opacity.round() *
+        0xFF000000; // formula to create the hex format of the color
 
     return color + opacityHex;
   }
+}
+
+/// Abstract class that adds onto the `ColorPicker` class by enabling
+/// automatic conversion to a `Color` instead of having to instantiate
+/// a `Color` instance manually
+abstract class ColorPalette {
+  static const Color primary = Color(ColorPicker.primary);
+  static const Color secondary = Color(ColorPicker.secondary);
+  static const Color success = Color(ColorPicker.success);
+  static const Color warning = Color(ColorPicker.warning);
+  static const Color danger = Color(ColorPicker.danger);
+  static const Color info = Color(ColorPicker.info);
+  static const Color dark = Color(ColorPicker.dark);
+  static const Color light = Color(ColorPicker.light);
+  static const Color muted = Color(ColorPicker.muted);
+
+  static const Color primaryMuted = Color(ColorPicker.primaryMuted);
+  static const Color secondaryMuted = Color(ColorPicker.secondaryMuted);
+  static const Color successMuted = Color(ColorPicker.successMuted);
+  static const Color warningMuted = Color(ColorPicker.warningMuted);
+  static const Color dangerMuted = Color(ColorPicker.dangerMuted);
+  static const Color infoMuted = Color(ColorPicker.infoMuted);
+  static const Color darkMuted = Color(ColorPicker.darkMuted);
+  static const Color lightMuted = Color(ColorPicker.lightMuted);
+  static const Color mutedMuted = Color(ColorPicker.mutedMuted);
 }
 
 //enum LoginReturnCode {
@@ -218,17 +264,7 @@ abstract class ColorPicker {
 //}
 
 /// Defines the toast variants that can be used with the `Toast` UI component.
-enum ToastVariant {
-  success,
-  error,
-  warning,
-  info
-}
+enum ToastVariant { success, error, warning, info }
 
 /// Defines the structure of the toast that the `Toast` UI component can use.
-enum Toast {
-  type,
-  value
-}
-
-
+enum Toast { type, value }
