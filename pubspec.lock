@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  drop_shadow:
+    dependency: "direct main"
+    description:
+      name: drop_shadow
+      sha256: "1fa552baeb7c6a3c36a7ff77186a2302a7bf53c93914f46328a9c4eb68ec6b08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -186,3 +194,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=3.0.0-0 <4.0.0"
+  flutter: ">=1.17.0"

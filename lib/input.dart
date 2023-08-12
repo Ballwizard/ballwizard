@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Form extends StatefulWidget {
-  final Color color;
+  final Color variant;
+  final Color labelVariant;
+  final String placeholder;
+  //style?: StyleProp<ViewStyle>;
+  //inputStyle?: StyleProp<ViewStyle>;
+  final String label;
+  //labelStyle?: StyleProp<ViewStyle>;
+  //onChange?: (value: string) => void;
+  //type?: "password" | "none" | "emailAddress" | "username" | "newPassword";
 
   //const MyCustomForm({Key? key}) : super(key: key);
   const Form({
