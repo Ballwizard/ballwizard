@@ -1,4 +1,5 @@
-import 'package:ballwizard/types.dart' show FundamentalVariant;
+import 'package:ballwizard/types.dart'
+    show FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/widgets.dart';
 
@@ -53,14 +54,67 @@ class Shadow extends StatelessWidget {
 
 abstract class Font {
   static TextStyle regular(double fontSize) {
-    return TextStyle(fontFamily: "Montserrat", fontWeight: FontWeight.w600, fontSize: fontSize);
+    return TextStyle(
+        fontFamily: "Montserrat",
+        fontWeight: FontWeight.w600,
+        fontSize: fontSize);
   }
 
   static TextStyle light(double fontSize) {
-    return TextStyle(fontFamily: "Montserrat", fontWeight: FontWeight.w400, fontSize: fontSize);
+    return TextStyle(
+        fontFamily: "Montserrat",
+        fontWeight: FontWeight.w400,
+        fontSize: fontSize);
   }
 
   static TextStyle bold(double fontSize) {
-    return TextStyle(fontFamily: "Montserrat", fontWeight: FontWeight.w700, fontSize: fontSize);
+    return TextStyle(
+        fontFamily: "Montserrat",
+        fontWeight: FontWeight.w700,
+        fontSize: fontSize);
+  }
+}
+
+class GradientBackground extends StatelessWidget {
+  final dynamic child;
+  final FundamentalVariant variant;
+
+  const GradientBackground({
+    super.key,
+    this.child,
+    this.variant = FundamentalVariant.light,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (variant == FundamentalVariant.light) {
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [ColorPalette.primary, ColorPalette.secondary],
+          ),
+        ),
+        child: child,
+      );
+    }
+
+    return Container(
+      color: ColorPalette.dark,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(ColorPicker.addOpacity(ColorPicker.primary, 0.6)),
+              Color(ColorPicker.addOpacity(ColorPicker.secondary, 0.6))
+            ],
+          ),
+        ),
+        child: child,
+      ),
+    );
   }
 }

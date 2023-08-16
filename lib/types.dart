@@ -16,7 +16,7 @@ enum FundamentalVariant {
     }
   }
 
-  /// Method that converts a `FundamentalVariant` into a `Color` instance
+  /// Method that converts a `FundamentalVariant` into a `Color` instance.
   Color color() {
     return Color(colorHex());
   }
@@ -34,7 +34,7 @@ enum BasicVariant {
   light,
   muted;
 
-  /// Method that gets the color hex by the variant
+  /// Method that gets the color hex by the variant.
   int colorHex() {
     switch (this) {
       case BasicVariant.primary:
@@ -58,7 +58,7 @@ enum BasicVariant {
     }
   }
 
-  /// Method that converts a `BasicVariant` into a `Color` instance
+  /// Method that converts a `BasicVariant` into a `Color` instance.
   Color color() {
     return Color(colorHex());
   }
@@ -85,7 +85,7 @@ enum Variant {
   lightMuted,
   mutedMuted;
 
-  /// Method that gets the color hex by the variant
+  /// Method that gets the color hex by the variant.
   int colorHex() {
     switch (this) {
       case Variant.primary:
@@ -127,21 +127,14 @@ enum Variant {
     }
   }
 
-  /// Method that converts a `Variant` into a `Color` instance
+  /// Method that converts a `Variant` into a `Color` instance.
   Color color() {
     return Color(colorHex());
   }
 }
 
 /// Defines the available font sizes for the UI components.
-enum FontSize {
-  xs,
-  small,
-  sm,
-  medium,
-  large,
-  heading
-}
+enum FontSize { xs, small, sm, medium, large, heading }
 
 /// Abstract class that is used for getting the colors
 /// defined in the Ballwizard color palette.
@@ -177,7 +170,6 @@ abstract class ColorPicker {
     "dark": 0xff000000,
     "light": 0xffffffff,
     "muted": 0xff6b6b6b,
-
     "primaryMuted": 0xff06607f,
     "secondaryMuted": 0xff067f62,
     "successMuted": 0xff6dbe72,
@@ -187,15 +179,12 @@ abstract class ColorPicker {
     "darkMuted": 0xff111111,
     "lightMuted": 0xffeeeeee,
     "mutedMuted": 0xff5b5b5b,
-
     FundamentalVariant.light: 0xffffffff,
     BasicVariant.light: 0xffffffff,
     Variant.light: 0xffffffff,
-
     FundamentalVariant.dark: 0xff000000,
     BasicVariant.dark: 0xffffffff,
     Variant.dark: 0xffffffff,
-
     BasicVariant.primary: 0xff16708f,
     Variant.primary: 0xff16708f,
     BasicVariant.secondary: 0xff168f72,
@@ -210,7 +199,6 @@ abstract class ColorPicker {
     Variant.info: 0xff2d4251,
     BasicVariant.muted: 0xff6b6b6b,
     Variant.muted: 0xff6b6b6b,
-
     Variant.primaryMuted: 0xff06607f,
     Variant.secondaryMuted: 0xff067f62,
     Variant.successMuted: 0xff6dbe72,
@@ -223,20 +211,23 @@ abstract class ColorPicker {
   };
 
   /// Adds opacity to a color in the hex form that can be used by the `Color` class in Flutter.
-  static int addOpacity(final int color, final int opacity) {
+  static int addOpacity(final int color, final double opacity) {
     if (opacity > 1 || opacity < 0)
       throw Exception("Opacity must be between 0 and 1");
 
-    int opacityHex = opacity.round() *
-        0xFF000000; // formula to create the hex format of the color
+    String opacityHex = (double.parse(opacity.toStringAsFixed(2)) * 0xFF)
+        .round()
+        .toRadixString(16); // formula to create the hex format of the color
 
-    return color + opacityHex;
+    String colorHex = color.toRadixString(16).substring(2);
+
+    return int.parse("0x" + opacityHex + colorHex);
   }
 }
 
 /// Abstract class that adds onto the `ColorPicker` class by enabling
 /// automatic conversion to a `Color` instead of having to instantiate
-/// a `Color` instance manually
+/// a `Color` instance manually.
 abstract class ColorPalette {
   static const Color primary = Color(ColorPicker.primary);
   static const Color secondary = Color(ColorPicker.secondary);
