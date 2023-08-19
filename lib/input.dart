@@ -8,20 +8,15 @@ class Form extends StatefulWidget {
   final FundamentalVariant labelVariant;
   final String placeholder;
   final String label;
+  late final dynamic onChange;
 
-  //inputStyle?: StyleProp<ViewStyle>;
-
-  //labelStyle?: StyleProp<ViewStyle>;
-  //onChange?: (value: string) => void;
-  //type?: "password" | "none" | "emailAddress" | "username" | "newPassword";
-
-  //const MyCustomForm({Key? key}) : super(key: key);
-  const Form({
+  Form({
     super.key,
     this.variant = FundamentalVariant.light,
     this.labelVariant = FundamentalVariant.light,
     this.placeholder = "",
     this.label = "",
+    this.onChange,
   });
 
   @override
@@ -29,18 +24,21 @@ class Form extends StatefulWidget {
 }
 
 class FormState extends State<Form> {
-  /*
-  double _size = 1.0;
-
-  void grow() {
-    setState(() { _size += 0.1; });
-  }
-  */
   @override
   Widget build(BuildContext context) {
     final bool useLightFont = widget.variant == FundamentalVariant.dark;
     final bool useLightLabelFont =
         widget.labelVariant == FundamentalVariant.dark;
+    /*
+    dynamic onChange;
+    if (widget.onChange) {
+      onChange = widget.onChange;
+    } else {
+      onChange = (dynamic text) {};
+    }
+    */
+    dynamic onChange = widget.onChange ?? (dynamic text) {};
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -71,6 +69,7 @@ class FormState extends State<Form> {
           child: Globals.Shadow(
             blurRadius: 4,
             child: TextField(
+              onChanged: onChange,
               style: TextStyle(
                       color:
                           useLightFont ? ColorPalette.light : ColorPalette.dark)

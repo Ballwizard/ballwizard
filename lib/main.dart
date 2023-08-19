@@ -68,13 +68,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Padding(
+            Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Form1.Form(
+                    onChange: (String text) {
+                      print(text);
+                    },
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.light)),
-            const Padding(
+            Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Form1.Form(
                     placeholder: "test",
@@ -83,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Button(
-                  onClick: () {},
+                  onClick: () {
+                    print("hello");
+                  },
                   title: "test",
                 )),
             Padding(

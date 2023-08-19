@@ -40,7 +40,7 @@ class ButtonState extends State<Button> {
             child: Material(
                 color: widget.variant.color(),
                 child: InkWell(
-                    onTap: () {},
+                    onTap: widget.onClick,
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(widget.title,
