@@ -7,7 +7,8 @@ PreferredSizeWidget AppBarCustom(
     FundamentalVariant titleVariant = FundamentalVariant.dark,
     String title = "",
     bool isTransparent = false,
-    AppBarVariant type = AppBarVariant.arrow}) {
+    AppBarVariant type = AppBarVariant.arrow,
+    required GlobalKey<ScaffoldState> key}) {
   switch (type) {
     case AppBarVariant.arrow:
       return AppBar(
@@ -37,7 +38,6 @@ PreferredSizeWidget AppBarCustom(
       );
     case AppBarVariant.arrowLogoPicture:
       return AppBar(
-        automaticallyImplyLeading: false,
         title:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Row(
@@ -52,11 +52,14 @@ PreferredSizeWidget AppBarCustom(
             fit: BoxFit.contain,
             height: 48,
           ),
-          const SizedBox(
-            height: 48,
-            width: 48,
-            child: ColoredBox(color: ColorPalette.dark),
-          )
+          IconButton(
+              onPressed: () {
+                print(key);
+                print(key.currentState);
+                print(key.currentState?.openDrawer);
+                key.currentState?.openDrawer();
+              },
+              icon: const Icon(Icons.arrow_back)),
         ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),

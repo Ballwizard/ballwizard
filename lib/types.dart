@@ -1,4 +1,4 @@
-import 'dart:ui' show Color;
+import 'package:flutter/cupertino.dart';
 
 /// Defines the most rudimentary UI component color variants. The bare minimum of
 /// customization that a certain UI component the offer is contained in this enum.

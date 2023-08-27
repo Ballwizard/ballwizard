@@ -10,19 +10,35 @@ import 'package:flutter/material.dart';
 class Start extends StatelessWidget {
   const Start({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return const StartPage();
+  }
+}
+
+class StartPage extends StatefulWidget {
+  const StartPage({Key? key}) : super(key: key);
+
+  @override
+  State<StartPage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<StartPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBarCustom(type: AppBarVariant.arrowLogoPicture),
+      key: _key,
+      appBar: AppBarCustom(type: AppBarVariant.arrowLogoPicture, key: _key),
       body: GradientBackground(
         variant: FundamentalVariant.light,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Form1.Form(
                     onChange: (String text) {
                       print(text);
@@ -31,7 +47,7 @@ class Start extends StatelessWidget {
                     label: "Field name",
                     variant: FundamentalVariant.light)),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Form1.Form(
                     placeholder: "test",
                     label: "Field name",
