@@ -1,32 +1,22 @@
 import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Form;
-import 'package:ballwizard/screens/start.dart' show Start;
+import 'package:ballwizard/main.dart' show MyHomePage;
 import 'package:ballwizard/types.dart' show FundamentalVariant;
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp2 extends StatelessWidget {
+  const MyApp2({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Pag123e'),
-    );
+    return const MyHomePage2(title: 'Flutter Demo Home Pag123e');
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage2 extends StatefulWidget {
+  const MyHomePage2({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -40,10 +30,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage2> createState() => _MyHomePageState2();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState2 extends State<MyHomePage2> {
   /*
   int _counter = 0;
 
@@ -91,11 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     print("hello");
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const Start(),
+                        builder: (context) => const MyHomePage(title: "hello"),
                       ),
                     );
                   },
-                  title: "Start",
+                  title: "test",
                 )),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),

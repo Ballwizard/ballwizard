@@ -259,3 +259,11 @@ enum ToastVariant { success, error, warning, info }
 
 /// Defines the structure of the toast that the `Toast` UI component can use.
 enum Toast { type, value }
+
+/// Defines the states that the `CustomAppBar` component can be in.
+/// * [arrow] is used when only the arrow should be visible in the app bar.
+/// * [logoPicture] is used when the logo and the user's profile picture should be visible
+/// * [arrowLogo] is used when the arrow should be visible with the logo in the center.
+/// * [arrowLogoPicture] is used when the arrow, logo and profile picture should all be visible in the app bar.
+/// * [search] displays an app bar with a search bar and the user's profile picture.
+enum AppBarVariant { arrow, logoPicture, arrowLogo, arrowLogoPicture, search }
