@@ -1,5 +1,6 @@
 import 'package:ballwizard/appbar.dart' show AppBarCustom;
 import 'package:ballwizard/button.dart' show Button;
+import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Form;
 import 'package:ballwizard/main.dart' show MyHomePage;
@@ -31,7 +32,9 @@ class _MyHomePageState extends State<StartPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
-      appBar: AppBarCustom(type: AppBarVariant.arrowLogoPicture, key: _key),
+      appBar: AppBarCustom(
+          type: AppBarVariant.arrowLogo, key: _key, context: context),
+      endDrawer: DrawerCustom(context: context),
       body: GradientBackground(
         variant: FundamentalVariant.light,
         child: Column(

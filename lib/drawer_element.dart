@@ -7,7 +7,13 @@ Widget DrawerElement(
     required BuildContext context,
     isSelected = false}) {
   return ListTile(
-    title: Row(children: [Text(title), icon]),
+    title: Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+      child: Row(
+        children: [Text(title), icon],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
+    ),
     selected: isSelected,
     onTap: () {
       Navigator.pop(context);

@@ -16,9 +16,24 @@ enum FundamentalVariant {
     }
   }
 
+  /// Method that gets the color hex by the inverse color variant
+  int inverseColorHex() {
+    switch (this) {
+      case FundamentalVariant.light:
+        return ColorPicker.dark;
+      case FundamentalVariant.dark:
+        return ColorPicker.light;
+    }
+  }
+
   /// Method that converts a `FundamentalVariant` into a `Color` instance.
   Color color() {
     return Color(colorHex());
+  }
+
+  /// Method that inverses a `FundamentalVariant` and converts it into a `Color` instance
+  Color inverseColor() {
+    return Color(inverseColorHex());
   }
 }
 

@@ -8,13 +8,13 @@ PreferredSizeWidget AppBarCustom(
     String title = "",
     bool isTransparent = false,
     AppBarVariant type = AppBarVariant.arrow,
-    required GlobalKey<ScaffoldState> key}) {
+    required GlobalKey<ScaffoldState> key,
+    required BuildContext context}) {
   switch (type) {
     case AppBarVariant.arrow:
       return AppBar(
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
-        elevation: 0,
       );
     case AppBarVariant.logoPicture:
       return AppBar(
@@ -34,40 +34,67 @@ PreferredSizeWidget AppBarCustom(
         ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
-        elevation: 0,
+      );
+    case AppBarVariant.arrowLogo:
+      return AppBar(
+        automaticallyImplyLeading: false,
+        actions: <Widget>[Container()],
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              BackButton(variant, context),
+              Image.asset(
+                'assets/logofb.png',
+                fit: BoxFit.contain,
+                height: 48,
+              ),
+              const SizedBox(
+                width: 48,
+              )
+            ]),
+        backgroundColor: isTransparent ? Colors.transparent : variant.color(),
+        foregroundColor: titleVariant.color(),
       );
     case AppBarVariant.arrowLogoPicture:
       return AppBar(
-        title:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Row(
-            // this is the only way that I found to manage to center the logo, I know it's not the best, welp :(
+        automaticallyImplyLeading: false,
+        actions: <Widget>[Container()],
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.arrow_back, color: ColorPalette.dark),
-              SizedBox(width: 16)
-            ],
-          ),
-          Image.asset(
-            'assets/logofb.png',
-            fit: BoxFit.contain,
-            height: 48,
-          ),
-          IconButton(
-              onPressed: () {
-                print(key);
-                print(key.currentState);
-                print(key.currentState?.openDrawer);
-                key.currentState?.openDrawer();
-              },
-              icon: const Icon(Icons.arrow_back)),
-        ]),
+              BackButton(variant, context),
+              Image.asset(
+                'assets/logofb.png',
+                fit: BoxFit.contain,
+                height: 48,
+              ),
+              AccountButton(variant, key)
+            ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
-        elevation: 0,
       );
     default:
       return AppBar();
   }
+}
+
+Widget BackButton(FundamentalVariant variant, BuildContext context) {
+  return IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      icon: Icon(Icons.arrow_back, color: variant.inverseColor()));
+}
+
+Widget AccountButton(FundamentalVariant variant, GlobalKey<ScaffoldState> key) {
+  return IconButton(
+      onPressed: () {
+        key.currentState?.openEndDrawer();
+      },
+      icon:
+          Icon(Icons.account_circle, size: 34, color: variant.inverseColor()));
 }
 
 /*

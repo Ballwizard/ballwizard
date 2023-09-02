@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerCustom(context: context),
+      endDrawer: DrawerCustom(context: context),
       key: _key,
       appBar: AppBar(
         title: Text(widget.title),
