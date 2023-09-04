@@ -15,8 +15,8 @@ abstract class Fonts {
   static final TextStyle smallLight = Font.light(14);
   static final TextStyle smLight = Font.light(16);
   static final TextStyle mediumLight = Font.light(20);
-  static final TextStyle largeLight = Font.light(26);
-  static final TextStyle headingLight = Font.light(32);
+  static final TextStyle largeLight = Font.light(32);
+  static final TextStyle headingLight = Font.light(48);
 }
 
 class Shadow extends StatelessWidget {

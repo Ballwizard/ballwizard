@@ -17,6 +17,11 @@ Widget DrawerElement(
     selected: isSelected,
     onTap: () {
       Navigator.pop(context);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => component,
+        ),
+      );
     },
   );
 }
