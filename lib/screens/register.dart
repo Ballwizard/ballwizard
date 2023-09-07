@@ -8,27 +8,23 @@ import 'package:ballwizard/types.dart'
     show FundamentalVariant, ColorPalette, AppBarVariant;
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
-  bool renderNavbar;
-
-  Login({Key? key, this.renderNavbar = true}) : super(key: key);
+class Register extends StatelessWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return LoginPage(renderNavbar: renderNavbar);
+    return const RegisterPage();
   }
 }
 
-class LoginPage extends StatefulWidget {
-  bool renderNavbar;
-
-  LoginPage({Key? key, this.renderNavbar = true}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => LoginPageState();
+  State<RegisterPage> createState() => RegisterPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
+class RegisterPageState extends State<RegisterPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
@@ -36,10 +32,8 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
-      appBar: widget.renderNavbar
-          ? AppBarCustom(
-              type: AppBarVariant.arrowLogo, key: _key, context: context)
-          : null,
+      appBar: AppBarCustom(
+          type: AppBarVariant.arrowLogo, key: _key, context: context),
       endDrawer: DrawerCustom(context: context),
       body: GradientBackground(
         variant: FundamentalVariant.light,
@@ -52,7 +46,7 @@ class LoginPageState extends State<LoginPage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Login",
+                  "Register",
                   style:
                       Fonts.heading.merge(TextStyle(color: ColorPalette.light)),
                 ),
@@ -62,6 +56,10 @@ class LoginPageState extends State<LoginPage> {
                   Form1.Form(
                       placeholder: "Enter username",
                       label: "Username",
+                      variant: FundamentalVariant.light),
+                  Form1.Form(
+                      placeholder: "Enter email",
+                      label: "Email",
                       variant: FundamentalVariant.light),
                   Form1.Form(
                       placeholder: "Enter password",
@@ -77,7 +75,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       );
                     },
-                    title: "test",
+                    title: "Register",
                   ),
                 ],
               ),

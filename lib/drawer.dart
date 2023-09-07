@@ -1,5 +1,7 @@
 import 'package:ballwizard/drawer_element.dart';
+import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/login.dart';
+import 'package:ballwizard/screens/register.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart'
     show ColorPalette, DrawerElement, FundamentalVariant;
@@ -35,7 +37,17 @@ Widget DrawerCustom(
       DrawerElement(
           title: "Login",
           icon: const Icon(Icons.logout),
-          component: const Login(),
+          component: Login(),
+          context: context),
+      DrawerElement(
+          title: "Register",
+          icon: const Icon(Icons.people_alt),
+          component: const Register(),
+          context: context),
+      DrawerElement(
+          title: "Home",
+          icon: const Icon(Icons.house),
+          component: const Home(),
           context: context),
     ]),
   );

@@ -2,7 +2,6 @@ import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Form;
-import 'package:ballwizard/screens/start.dart' show Start;
 import 'package:ballwizard/types.dart' show FundamentalVariant;
 import 'package:flutter/material.dart';
 
@@ -80,11 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Button(
                   onClick: () {
                     print("hello");
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const Start(),
-                      ),
-                    );
                   },
                   title: "Start",
                 )),
