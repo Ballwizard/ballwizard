@@ -2,7 +2,7 @@ import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Form;
-import 'package:ballwizard/types.dart' show FundamentalVariant;
+import 'package:ballwizard/types.dart' show ColorPicker, FundamentalVariant;
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,9 +17,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
       home: const MyHomePage(title: 'Flutter Demo Home Pag123e'),
     );
   }

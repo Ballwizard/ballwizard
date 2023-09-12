@@ -39,10 +39,61 @@ class FormState extends State<Form> {
     */
     dynamic onChange = widget.onChange ?? (dynamic text) {};
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      //crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
+        Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: FractionallySizedBox(
+            widthFactor: 1.04,
+            child: Globals.Shadow(
+              blurRadius: 4,
+              child: SizedBox(
+                height: 45,
+                child: TextField(
+                  onChanged: onChange,
+                  style: TextStyle(
+                          color: useLightFont
+                              ? ColorPalette.light
+                              : ColorPalette.dark)
+                      .merge(Globals.Fonts.small),
+                  decoration: InputDecoration(
+                    fillColor:
+                        useLightFont ? ColorPalette.dark : ColorPalette.light,
+                    filled: true,
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(width: 0, color: ColorPalette.dark)),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderSide:
+                          BorderSide(color: ColorPalette.dark, width: 0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderSide: BorderSide(
+                          color: useLightFont
+                              ? ColorPalette.light
+                              : ColorPalette.dark,
+                          width: 0),
+                    ),
+                    hintText: widget.placeholder,
+                    hintStyle: TextStyle(
+                        color: useLightFont
+                            ? ColorPalette.light
+                            : ColorPalette.dark),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(
@@ -61,44 +112,6 @@ class FormState extends State<Form> {
                               blurRadius: 4)
                         ]).merge(Globals.Fonts.small)),
               ],
-            ),
-          ),
-        ),
-        FractionallySizedBox(
-          widthFactor: 1.04,
-          child: Globals.Shadow(
-            blurRadius: 4,
-            child: TextField(
-              onChanged: onChange,
-              style: TextStyle(
-                      color:
-                          useLightFont ? ColorPalette.light : ColorPalette.dark)
-                  .merge(Globals.Fonts.small),
-              decoration: InputDecoration(
-                fillColor:
-                    useLightFont ? ColorPalette.dark : ColorPalette.light,
-                filled: true,
-                border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(width: 0, color: ColorPalette.dark)),
-                enabledBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide(color: ColorPalette.dark, width: 0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide(
-                      color:
-                          useLightFont ? ColorPalette.light : ColorPalette.dark,
-                      width: 0),
-                ),
-                hintText: widget.placeholder,
-                hintStyle: TextStyle(
-                    color:
-                        useLightFont ? ColorPalette.light : ColorPalette.dark),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-              ),
             ),
           ),
         ),

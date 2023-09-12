@@ -44,17 +44,21 @@ class LoginPageState extends State<LoginPage> {
       body: GradientBackground(
         variant: FundamentalVariant.light,
         child: Padding(
-          padding: const EdgeInsets.all(36),
+          padding: EdgeInsets.fromLTRB(
+              36, 36 + 54 + MediaQuery.of(context).viewPadding.top, 36, 36),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Login",
-                  style:
-                      Fonts.heading.merge(TextStyle(color: ColorPalette.light)),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 64),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Login",
+                    style: Fonts.heading
+                        .merge(TextStyle(color: ColorPalette.light)),
+                  ),
                 ),
               ),
               Column(
@@ -79,14 +83,14 @@ class LoginPageState extends State<LoginPage> {
                     },
                     title: "test",
                   ),
-                ],
-              ),
-              Text("Or continue with"),
-              Row(
-                children: [
-                  Text("test1"),
-                  Text("test2"),
-                  Text("test3"),
+                  Text("Or continue with"),
+                  Row(
+                    children: [
+                      Text("test1"),
+                      Text("test2"),
+                      Text("test3"),
+                    ],
+                  ),
                 ],
               ),
             ],

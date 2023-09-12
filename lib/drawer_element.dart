@@ -1,3 +1,4 @@
+import 'package:ballwizard/globals.dart';
 import 'package:flutter/material.dart';
 
 Widget DrawerElement(
@@ -10,7 +11,7 @@ Widget DrawerElement(
     title: Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
       child: Row(
-        children: [Text(title), icon],
+        children: [Text(title, style: Fonts.small), icon],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
     ),

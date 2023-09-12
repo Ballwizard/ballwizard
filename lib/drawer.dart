@@ -27,12 +27,12 @@ Widget DrawerCustom(
             size: 34,
             color: ColorPalette.dark,
           ),
-          component: const Start(),
+          component: Start(),
           context: context),
       DrawerElement(
           title: "Log out",
           icon: const Icon(Icons.logout),
-          component: const Start(),
+          component: Start(),
           context: context),
       DrawerElement(
           title: "Login",

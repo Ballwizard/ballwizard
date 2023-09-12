@@ -1,7 +1,9 @@
 import 'package:ballwizard/types.dart'
     show FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:drop_shadow/drop_shadow.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class Fonts {
   static final TextStyle xs = Font.regular(10);
@@ -54,24 +56,24 @@ class Shadow extends StatelessWidget {
 
 abstract class Font {
   static TextStyle regular(double fontSize) {
-    return TextStyle(
-        fontFamily: "Montserrat",
-        fontWeight: FontWeight.w600,
-        fontSize: fontSize);
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: FontWeight.w600,
+    );
   }
 
   static TextStyle light(double fontSize) {
-    return TextStyle(
-        fontFamily: "Montserrat",
-        fontWeight: FontWeight.w400,
-        fontSize: fontSize);
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: FontWeight.w400,
+    );
   }
 
   static TextStyle bold(double fontSize) {
-    return TextStyle(
-        fontFamily: "Montserrat",
-        fontWeight: FontWeight.w700,
-        fontSize: fontSize);
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: FontWeight.w700,
+    );
   }
 }
 

@@ -1,4 +1,6 @@
 import 'package:ballwizard/appbar.dart';
+import 'package:ballwizard/drawer.dart';
+import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/main2.dart';
 import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/start.dart';
@@ -24,9 +26,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final pages = <StatelessWidget>[
-    Start(),
+    Start(renderNavbar: false),
     Login(renderNavbar: false),
     MyApp2()
   ];
@@ -42,28 +44,35 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       appBar: AppBarCustom(
           key: _key, context: context, type: AppBarVariant.logoPicture),
       body: Center(
         child: pages.elementAt(index),
       ),
+      endDrawer: DrawerCustom(context: context),
       bottomNavigationBar: BottomNavigationBar(
+        unselectedLabelStyle: Fonts.small,
+        selectedLabelStyle: Fonts.small,
+        iconSize: 28,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
+            icon: Icon(Icons.map_outlined),
+            activeIcon: Icon(Icons.map_sharp),
+            label: 'Discover',
           ),
         ],
         currentIndex: index,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: ColorPalette.primary,
         onTap: changeIndex,
       ),
     );

@@ -1,6 +1,4 @@
-import 'package:ballwizard/appbar.dart' show AppBarCustom;
 import 'package:ballwizard/button.dart' show Button;
-import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Form;
 import 'package:ballwizard/main.dart' show MyHomePage;
@@ -8,39 +6,27 @@ import 'package:ballwizard/types.dart'
     show FundamentalVariant, ColorPalette, AppBarVariant;
 import 'package:flutter/material.dart';
 
-class Start extends StatelessWidget {
-  bool renderNavbar;
-
-  Start({Key? key, this.renderNavbar = true}) : super(key: key);
+class MainList extends StatelessWidget {
+  const MainList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StartPage();
+    return const MainListPage();
   }
 }
 
-class StartPage extends StatefulWidget {
-  bool renderNavbar;
-
-  StartPage({Key? key, this.renderNavbar = true}) : super(key: key);
+class MainListPage extends StatefulWidget {
+  const MainListPage({Key? key}) : super(key: key);
 
   @override
-  State<StartPage> createState() => _MyHomePageState();
+  State<MainListPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<StartPage> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-
+class _MyHomePageState extends State<MainListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      key: _key,
-      appBar: widget.renderNavbar
-          ? AppBarCustom(
-              type: AppBarVariant.arrowLogoPicture, key: _key, context: context)
-          : null,
-      endDrawer: DrawerCustom(context: context),
+      appBar: null,
       body: GradientBackground(
         variant: FundamentalVariant.light,
         child: Column(

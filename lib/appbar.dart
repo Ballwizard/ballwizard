@@ -19,6 +19,7 @@ PreferredSizeWidget AppBarCustom(
     case AppBarVariant.logoPicture:
       return AppBar(
         automaticallyImplyLeading: false,
+        actions: <Widget>[Container()],
         title:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Image.asset(
@@ -26,11 +27,7 @@ PreferredSizeWidget AppBarCustom(
             fit: BoxFit.contain,
             height: 48,
           ),
-          const SizedBox(
-            height: 48,
-            width: 48,
-            child: ColoredBox(color: ColorPalette.dark),
-          )
+          AccountButton(variant, key),
         ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
@@ -91,7 +88,12 @@ Widget BackButton(FundamentalVariant variant, BuildContext context) {
 Widget AccountButton(FundamentalVariant variant, GlobalKey<ScaffoldState> key) {
   return IconButton(
       onPressed: () {
+        print(variant);
+        print(key);
+        print(key.currentState);
+        print(key.currentState?.isEndDrawerOpen);
         key.currentState?.openEndDrawer();
+        print(key.currentState?.isEndDrawerOpen);
       },
       icon:
           Icon(Icons.account_circle, size: 34, color: variant.inverseColor()));
