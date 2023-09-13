@@ -1,8 +1,8 @@
 import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/main2.dart';
 import 'package:ballwizard/screens/login.dart';
+import 'package:ballwizard/screens/main_list.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   final pages = <StatelessWidget>[
     Start(renderNavbar: false),
     Login(renderNavbar: false),
-    MyApp2()
+    const MainList()
   ];
 
   int index = 0;

@@ -43,7 +43,7 @@ class FormState extends State<Form> {
       //crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 12),
+          padding: const EdgeInsets.only(top: 8),
           child: FractionallySizedBox(
             widthFactor: 1.04,
             child: Globals.Shadow(
@@ -95,7 +95,7 @@ class FormState extends State<Form> {
           top: 0,
           left: 0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.symmetric(vertical: 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

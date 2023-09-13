@@ -19,13 +19,6 @@ class Button extends StatefulWidget {
 }
 
 class ButtonState extends State<Button> {
-  /*
-  double _size = 1.0;
-
-  void grow() {
-    setState(() { _size += 0.1; });
-  }
-  */
   @override
   Widget build(BuildContext context) {
     final bool useLightFont = widget.variant == FundamentalVariant.dark;
