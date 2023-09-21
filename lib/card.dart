@@ -59,6 +59,7 @@ class CardElement extends StatelessWidget {
     required this.title,
     required this.views,
     required this.dateOfCreation,
+    //required this.markdown,
     this.variant = FundamentalVariant.light,
     this.thumbnail,
     this.large = false,

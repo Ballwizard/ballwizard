@@ -1,5 +1,6 @@
 import 'package:ballwizard/drawer_element.dart';
 import 'package:ballwizard/screens/home.dart';
+import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/register.dart';
 import 'package:ballwizard/screens/start.dart';
@@ -32,7 +33,13 @@ Widget DrawerCustom(
       DrawerElement(
           title: "Log out",
           icon: const Icon(Icons.logout),
-          component: Start(),
+          component: Lecturee(
+              title: "man",
+              body: """"# obamna 
+              ### big
+              - omaga""",
+              nextLecture: Start(),
+              prevLecture: Start()),
           context: context),
       DrawerElement(
           title: "Login",

@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final pages = <StatelessWidget>[
+  final pages = [
     Start(renderNavbar: false),
     Login(renderNavbar: false),
     const MainList()
