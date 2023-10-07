@@ -33,11 +33,9 @@ Widget DrawerCustom(
       DrawerElement(
           title: "Log out",
           icon: const Icon(Icons.logout),
-          component: Lecturee(
+          component: Lecture(
               title: "man",
-              body: """"# obamna 
-              ### big
-              - omaga""",
+              body: "# obamna\n### big\n- omaga",
               nextLecture: Start(),
               prevLecture: Start()),
           context: context),
