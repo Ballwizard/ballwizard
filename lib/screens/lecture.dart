@@ -1,4 +1,6 @@
+import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
@@ -42,10 +44,17 @@ class _Lecture extends StatefulWidget {
 }
 
 class LectureState extends State<_Lecture> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: null,
+        key: _key,
+        appBar: AppBarCustom(
+          key: _key,
+          context: context,
+          type: AppBarVariant.arrowLogo,
+        ),
         body: Markdown(
             data: widget.body,
             styleSheet: MarkdownStyleSheet(

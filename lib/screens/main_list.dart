@@ -23,53 +23,68 @@ class MainListState extends State<MainList> {
       future: Repository().getProducts(),
       builder: (context, snapshot) {
         dynamic lectures = (snapshot.data != null) ? snapshot.data! : [];
-        print(lectures[0].fields!.thumbnail["fields"]["file"]["url"]);
 
         return Scaffold(
             appBar: null,
             body: GradientBackground(
               variant: FundamentalVariant.light,
               child: FractionallySizedBox(
-                heightFactor: 1,
-                widthFactor: 1,
-                child: Padding(
-                  padding: EdgeInsets.only(top: hasScrolled ? 0 : 12),
-                  child: NotificationListener<ScrollUpdateNotification>(
-                    onNotification: (_) {
-                      if (_.metrics.pixels > 1) {
-                        setState(() {
-                          hasScrolled = true;
-                        });
-                      }
-                      if (hasScrolled && _.metrics.pixels <= 1) {
-                        setState(() {
-                          hasScrolled = false;
-                        });
-                      }
-                      return true;
-                    },
-                    child: ListView(
-                        children: lectures
-                            .map<Widget>(
-                              (lecture) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 16),
-                                child: CardElement(
-                                    markdown: lectures[0].fields!.content,
-                                    thumbnail: "https://" +
-                                        lecture.fields!
-                                            .thumbnail["fields"]["file"]["url"]
-                                            .substring(2),
-                                    title: lecture.fields!.title,
-                                    views: lecture.fields!.views,
-                                    dateOfCreation:
-                                        lecture.fields!.dateOfCreation),
+                  heightFactor: 1,
+                  widthFactor: 1,
+                  child: lectures.length != 0
+                      ? Padding(
+                          padding: EdgeInsets.only(top: hasScrolled ? 0 : 12),
+                          child: NotificationListener<ScrollUpdateNotification>(
+                            onNotification: (_) {
+                              if (_.metrics.pixels > 1) {
+                                setState(() {
+                                  hasScrolled = true;
+                                });
+                              }
+                              if (hasScrolled && _.metrics.pixels <= 1) {
+                                setState(() {
+                                  hasScrolled = false;
+                                });
+                              }
+                              return true;
+                            },
+                            child: ListView(
+                                children: lectures
+                                    .map<Widget>(
+                                      (lecture) => Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 6, horizontal: 16),
+                                        child: CardElement(
+                                            markdown:
+                                                lectures[0].fields!.content,
+                                            thumbnail: "https://" +
+                                                lecture
+                                                    .fields!
+                                                    .thumbnail["fields"]["file"]
+                                                        ["url"]
+                                                    .substring(2),
+                                            title: lecture.fields!.title,
+                                            views: lecture.fields!.views,
+                                            dateOfCreation:
+                                                lecture.fields!.dateOfCreation),
+                                      ),
+                                    )
+                                    .toList()),
+                          ),
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              child: CircularProgressIndicator(
+                                color: ColorPalette.light,
                               ),
-                            )
-                            .toList()),
-                  ),
-                ),
-              ),
+                              width: 64,
+                              height: 64,
+                            ),
+                          ],
+                        )),
             ));
       },
     );

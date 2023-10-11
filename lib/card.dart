@@ -70,18 +70,16 @@ class CardElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool useLightFont = variant == FundamentalVariant.dark;
-
     return GestureDetector(
       onTap: () {
-        Navigator.pop(context);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) => Lecture(
-                title: title,
-                body: markdown,
-                nextLecture: Start(),
-                prevLecture: Start()),
+              title: title,
+              body: markdown,
+              nextLecture: Start(),
+              prevLecture: Start(),
+            ),
           ),
         );
       },
