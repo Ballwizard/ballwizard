@@ -16,6 +16,7 @@ dependencies:
   flutter_markdown: ^0.6.17+3
   flutter_contentful: ^3.0.5
   json_annotation: ^4.3.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

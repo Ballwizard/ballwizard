@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 /// Defines the most rudimentary UI component color variants. The bare minimum of
 /// customization that a certain UI component the offer is contained in this enum.
@@ -270,10 +270,50 @@ abstract class ColorPalette {
 //}
 
 /// Defines the toast variants that can be used with the `Toast` UI component.
-enum ToastVariant { success, error, warning, info }
+enum ToastVariant {
+  success,
+  error,
+  warning,
+  info;
 
-/// Defines the structure of the toast that the `Toast` UI component can use.
-enum Toast { type, value }
+  /// Method that gets the color by the variant.
+  Color color() {
+    switch (this) {
+      case ToastVariant.success:
+        return ColorPalette.success;
+      case ToastVariant.error:
+        return ColorPalette.danger;
+      case ToastVariant.warning:
+        return ColorPalette.warning;
+      case ToastVariant.info:
+        return ColorPalette.info;
+      default:
+        return ColorPalette.light;
+    }
+  }
+
+  IconData icon() {
+    switch (this) {
+      case ToastVariant.success:
+        return Icons.check_rounded;
+      case ToastVariant.error:
+        return Icons.close_rounded;
+      case ToastVariant.warning:
+        return Icons.warning_amber_rounded;
+      case ToastVariant.info:
+        return Icons.info_outline_rounded;
+      default:
+        return Icons.question_mark;
+    }
+  }
+}
+
+class Toast {
+  ToastVariant variant;
+  String value;
+
+  Toast({required this.variant, required this.value});
+}
 
 /// Defines the states that the `CustomAppBar` component can be in.
 /// * [arrow] is used when only the arrow should be visible in the app bar.
