@@ -238,6 +238,11 @@ abstract class ColorPicker {
 
     return int.parse("0x" + opacityHex + colorHex);
   }
+
+  /// Creates a `Color` class with opacity using a int in the hex form and a provided opacity.
+  static Color colorOpacity(final int color, final double opacity) {
+    return Color(addOpacity(color, opacity));
+  }
 }
 
 /// Abstract class that adds onto the `ColorPicker` class by enabling

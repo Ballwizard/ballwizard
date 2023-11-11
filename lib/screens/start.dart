@@ -2,7 +2,7 @@ import 'package:ballwizard/appbar.dart' show AppBarCustom;
 import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/input.dart' as Form1 show Form;
+import 'package:ballwizard/input.dart' as Form1 show Input;
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<StartPage> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.light)),
@@ -115,13 +115,13 @@ class _MyHomePageState extends State<StartPage> {
                 )),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.dark)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.dark)),

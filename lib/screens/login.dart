@@ -2,10 +2,10 @@ import 'package:ballwizard/appbar.dart' show AppBarCustom;
 import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/input.dart' as Form1 show Form;
+import 'package:ballwizard/input.dart' as Form1 show Input;
 import 'package:ballwizard/main.dart' show MyHomePage;
 import 'package:ballwizard/types.dart'
-    show FundamentalVariant, ColorPalette, AppBarVariant;
+    show AppBarVariant, ColorPalette, FundamentalVariant, Variant;
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -63,16 +63,16 @@ class LoginPageState extends State<LoginPage> {
               ),
               Column(
                 children: [
-                  Form1.Form(
+                  Form1.Input(
                       placeholder: "Enter username",
                       label: "Username",
                       variant: FundamentalVariant.light),
-                  Form1.Form(
+                  Form1.Input(
                       placeholder: "Enter password",
                       label: "Password",
                       variant: FundamentalVariant.light),
                   Button(
-                    variant: FundamentalVariant.dark,
+                    variant: Variant.dark,
                     onClick: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

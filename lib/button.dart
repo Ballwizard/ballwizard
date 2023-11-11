@@ -1,15 +1,16 @@
+import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/types.dart'
-    show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
+    show BasicVariant, Variant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';
 
 class Button extends StatefulWidget {
-  final FundamentalVariant variant;
+  final Variant variant;
   final String title;
   final VoidCallback onClick;
 
   const Button({
     super.key,
-    this.variant = FundamentalVariant.light,
+    this.variant = Variant.light,
     this.title = "",
     required this.onClick,
   });
@@ -21,7 +22,8 @@ class Button extends StatefulWidget {
 class ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
-    final bool useLightFont = widget.variant == FundamentalVariant.dark;
+    final bool useLightFont =
+        widget.variant == Variant.dark || widget.variant == Variant.muted;
 
     return SizedBox(
         height: 44,
@@ -37,10 +39,10 @@ class ButtonState extends State<Button> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(widget.title,
-                          style: TextStyle(
+                          style: Fonts.small.merge(TextStyle(
                               color: useLightFont
                                   ? ColorPalette.light
-                                  : ColorPalette.dark)),
+                                  : ColorPalette.dark))),
                     ))),
           ),
         ));

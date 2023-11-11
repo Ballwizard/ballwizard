@@ -1,5 +1,6 @@
 import 'package:ballwizard/drawer_element.dart';
 import 'package:ballwizard/screens/home.dart';
+import 'package:ballwizard/screens/introduction_1.dart';
 import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/register.dart';
@@ -53,6 +54,11 @@ Widget DrawerCustom(
           title: "Home",
           icon: const Icon(Icons.house),
           component: const Home(),
+          context: context),
+      DrawerElement(
+          title: "Introduction",
+          icon: const Icon(Icons.arrow_right_alt_outlined),
+          component: const Introduction(),
           context: context),
     ]),
   );

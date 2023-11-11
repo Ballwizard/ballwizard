@@ -1,6 +1,6 @@
 import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/input.dart' as Form1 show Form;
+import 'package:ballwizard/input.dart' as Form1 show Input;
 import 'package:ballwizard/main.dart' show MyHomePage;
 import 'package:ballwizard/types.dart' show FundamentalVariant;
 import 'package:flutter/material.dart';
@@ -47,7 +47,7 @@ class _MyHomePageState2 extends State<MyHomePage2> {
           children: <Widget>[
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     onChange: (String text) {
                       print(text);
                     },
@@ -56,7 +56,7 @@ class _MyHomePageState2 extends State<MyHomePage2> {
                     variant: FundamentalVariant.light)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.light)),
@@ -84,13 +84,13 @@ class _MyHomePageState2 extends State<MyHomePage2> {
                 )),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.dark)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.dark))

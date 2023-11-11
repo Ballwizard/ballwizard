@@ -3,14 +3,14 @@ import 'package:ballwizard/types.dart'
     show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';
 
-class Form extends StatefulWidget {
+class Input extends StatefulWidget {
   final FundamentalVariant variant;
   final FundamentalVariant labelVariant;
   final String placeholder;
   final String label;
   late final dynamic onChange;
 
-  Form({
+  Input({
     super.key,
     this.variant = FundamentalVariant.light,
     this.labelVariant = FundamentalVariant.light,
@@ -20,10 +20,10 @@ class Form extends StatefulWidget {
   });
 
   @override
-  State<Form> createState() => FormState();
+  State<Input> createState() => InputState();
 }
 
-class FormState extends State<Form> {
+class InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     final bool useLightFont = widget.variant == FundamentalVariant.dark;
@@ -106,8 +106,8 @@ class FormState extends State<Form> {
                             : ColorPalette.light,
                         shadows: [
                           Shadow(
-                              color: Color(ColorPicker.addOpacity(
-                                  ColorPicker.dark, 0.25)),
+                              color: ColorPicker.colorOpacity(
+                                  ColorPicker.dark, 0.25),
                               offset: Offset(0, 2),
                               blurRadius: 4)
                         ]).merge(Globals.Fonts.small)),

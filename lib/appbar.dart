@@ -22,6 +22,7 @@ PreferredSizeWidget AppBarCustom(
               BackButton(variant, context),
             ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
+        elevation: 0,
         foregroundColor: titleVariant.color(),
       );
     case AppBarVariant.logoPicture:

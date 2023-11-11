@@ -1,8 +1,10 @@
 import 'package:ballwizard/button.dart' show Button;
+import 'package:ballwizard/chip.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/input.dart' as Form1 show Form;
-import 'package:ballwizard/types.dart' show ColorPicker, FundamentalVariant;
+import 'package:ballwizard/input.dart' as Form1 show Input;
+import 'package:ballwizard/types.dart'
+    show ColorPicker, FundamentalVariant, Variant;
 import 'package:flutter/material.dart';
 
 void main() {
@@ -45,6 +47,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+  int currIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +62,53 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Row(
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (currIndex == 0)
+                            currIndex = -1;
+                          else
+                            currIndex = 0;
+                        });
+                      },
+                      child: ChipElement(
+                          text: "Begginer",
+                          variant: Variant.success,
+                          isSelected: currIndex == 0),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (currIndex == 1)
+                            currIndex = -1;
+                          else
+                            currIndex = 1;
+                        });
+                      },
+                      child: ChipElement(
+                          text: "Begginer",
+                          variant: Variant.dark,
+                          isSelected: currIndex == 1),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     onChange: (String text) {
                       print(text);
                     },
@@ -70,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     variant: FundamentalVariant.light)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.light)),
@@ -93,13 +140,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 )),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.dark)),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Form1.Form(
+                child: Form1.Input(
                     placeholder: "test",
                     label: "Field name",
                     variant: FundamentalVariant.dark))
