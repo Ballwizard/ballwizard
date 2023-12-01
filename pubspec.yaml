@@ -17,6 +17,8 @@ dependencies:
   flutter_contentful: ^3.0.5
   json_annotation: ^4.3.0
   provider: ^6.0.5
+  intl: ^0.18.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -31,3 +33,6 @@ flutter:
     - assets/logo.png
     - assets/logofb.png
     - assets/Russian Criss-Cross.md
+    - assets/apple.png
+    - assets/facebook.png
+    - assets/google.png

@@ -30,7 +30,7 @@ abstract class Fonts {
   }
 }
 
-class Shadow extends StatelessWidget {
+class ShadowElement extends StatelessWidget {
   final dynamic child;
   final FundamentalVariant variant;
   final double blurRadius;
@@ -39,7 +39,7 @@ class Shadow extends StatelessWidget {
   final double opacity;
   final double spread;
 
-  const Shadow({
+  const ShadowElement({
     super.key,
     this.child,
     this.variant = FundamentalVariant.dark,

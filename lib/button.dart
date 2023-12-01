@@ -22,8 +22,12 @@ class Button extends StatefulWidget {
 class ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
-    final bool useLightFont =
-        widget.variant == Variant.dark || widget.variant == Variant.muted;
+    final bool useLightFont = widget.variant == Variant.dark ||
+        widget.variant == Variant.muted ||
+        widget.variant == Variant.primary ||
+        widget.variant == Variant.secondary ||
+        widget.variant == Variant.primaryMuted ||
+        widget.variant == Variant.secondaryMuted;
 
     return SizedBox(
         height: 44,

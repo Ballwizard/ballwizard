@@ -2,13 +2,17 @@ import 'package:ballwizard/globals.dart' as Globals;
 import 'package:ballwizard/types.dart'
     show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Input extends StatefulWidget {
   final FundamentalVariant variant;
   final FundamentalVariant labelVariant;
   final String placeholder;
   final String label;
+  final int limit;
+  final TextInputType type;
   late final dynamic onChange;
+  late final dynamic validator;
 
   Input({
     super.key,
@@ -16,7 +20,10 @@ class Input extends StatefulWidget {
     this.labelVariant = FundamentalVariant.light,
     this.placeholder = "",
     this.label = "",
+    this.limit = 128,
+    this.type = TextInputType.text,
     this.onChange,
+    this.validator,
   });
 
   @override
@@ -24,11 +31,14 @@ class Input extends StatefulWidget {
 }
 
 class InputState extends State<Input> {
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final bool useLightFont = widget.variant == FundamentalVariant.dark;
     final bool useLightLabelFont =
         widget.labelVariant == FundamentalVariant.dark;
+
     /*
     dynamic onChange;
     if (widget.onChange) {
@@ -37,6 +47,7 @@ class InputState extends State<Input> {
       onChange = (dynamic text) {};
     }
     */
+
     dynamic onChange = widget.onChange ?? (dynamic text) {};
 
     return Stack(
@@ -46,12 +57,17 @@ class InputState extends State<Input> {
           padding: const EdgeInsets.only(top: 8),
           child: FractionallySizedBox(
             widthFactor: 1.04,
-            child: Globals.Shadow(
+            child: Globals.ShadowElement(
               blurRadius: 4,
               child: SizedBox(
                 height: 45,
                 child: TextField(
+                  keyboardType: widget.type != null ? widget.type : null,
+                  controller: controller,
                   onChanged: onChange,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(widget.limit + 1)
+                  ],
                   style: TextStyle(
                           color: useLightFont
                               ? ColorPalette.light
@@ -85,6 +101,20 @@ class InputState extends State<Input> {
                             : ColorPalette.dark),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    errorBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(width: 2, color: ColorPalette.danger)),
+                    focusedErrorBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(width: 3, color: ColorPalette.danger)),
+                    errorText: widget.validator != null &&
+                            !widget.validator(controller.text)
+                        ? ""
+                        : null,
+                    errorStyle:
+                        TextStyle(fontSize: 0, fontStyle: null, height: 0),
                   ),
                 ),
               ),

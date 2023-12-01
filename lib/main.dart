@@ -6,8 +6,10 @@ import 'package:ballwizard/input.dart' as Form1 show Input;
 import 'package:ballwizard/types.dart'
     show ColorPicker, FundamentalVariant, Variant;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  SharedPreferences.setMockInitialValues({});
   runApp(const MyApp());
 }
 

@@ -2,9 +2,11 @@ import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/button.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart' as Globals;
+import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/types.dart'
     show AppBarVariant, ColorPalette, FundamentalVariant, Variant;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../chip.dart';
 
@@ -27,7 +29,22 @@ class Introduction2Page extends StatefulWidget {
 class Introduction2PageState extends State<Introduction2Page> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   int currIndex = -1;
-  List<bool> selected = new List<bool>.generate(6, (index) => false);
+  List<bool> selected = List<bool>.generate(6, (index) => false);
+
+  saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(
+        "skill_level",
+        currIndex == 1
+            ? "beginner"
+            : currIndex == 2
+                ? "Intermediate"
+                : "Professional");
+    prefs.setStringList(
+        "date_of_birth",
+        List<String>.generate(
+            6, (index) => selected[index] ? "true" : "false"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,11 +260,24 @@ class Introduction2PageState extends State<Introduction2Page> {
                   ],
                 ),
               ),
-              Globals.Shadow(
+              Globals.ShadowElement(
                 child: Button(
-                  onClick: () {},
+                  onClick: currIndex != -1 &&
+                          (selected.where((e) => e == true).toList()).isNotEmpty
+                      ? () {
+                          saveData();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const Home(),
+                            ),
+                          );
+                        }
+                      : () {},
                   title: "Continue",
-                  variant: Variant.muted,
+                  variant: currIndex != -1 &&
+                          (selected.where((e) => e == true).toList()).isNotEmpty
+                      ? Variant.primary
+                      : Variant.muted,
                 ),
               )
             ],
