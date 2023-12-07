@@ -13,7 +13,16 @@ PreferredSizeWidget AppBarCustom(
   switch (type) {
     case AppBarVariant.arrow:
       return AppBar(
+        automaticallyImplyLeading: false,
+        actions: <Widget>[Container()],
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              BackButton(variant, context),
+            ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
+        elevation: 0,
         foregroundColor: titleVariant.color(),
       );
     case AppBarVariant.logoPicture:
@@ -82,7 +91,7 @@ Widget BackButton(FundamentalVariant variant, BuildContext context) {
       onPressed: () {
         Navigator.pop(context);
       },
-      icon: Icon(Icons.arrow_back, color: variant.inverseColor()));
+      icon: Icon(Icons.arrow_back, color: variant.inverseColor(), size: 32));
 }
 
 Widget AccountButton(FundamentalVariant variant, GlobalKey<ScaffoldState> key) {

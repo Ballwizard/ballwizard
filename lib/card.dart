@@ -1,4 +1,6 @@
 import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/screens/lecture.dart';
+import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart'
     show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';
@@ -50,6 +52,7 @@ class CardElement extends StatelessWidget {
   final String title;
   final int views;
   final DateTime dateOfCreation;
+  final String markdown;
   final FundamentalVariant variant;
   final String? thumbnail;
   final bool large;
@@ -59,7 +62,7 @@ class CardElement extends StatelessWidget {
     required this.title,
     required this.views,
     required this.dateOfCreation,
-    //required this.markdown,
+    this.markdown = "",
     this.variant = FundamentalVariant.light,
     this.thumbnail,
     this.large = false,
@@ -67,60 +70,82 @@ class CardElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool useLightFont = variant == FundamentalVariant.dark;
-
-    return FractionallySizedBox(
-      widthFactor: 1,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.width * 0.66,
-        child: Column(
-          children: [
-            FractionallySizedBox(
-              widthFactor: 1,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.width * 0.66 * 2 / 3,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(15), bottom: Radius.zero),
-                      color: Colors.black),
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => Lecture(
+              title: title,
+              body: markdown,
+              nextLecture: Start(),
+              prevLecture: Start(),
+            ),
+          ),
+        );
+      },
+      child: FractionallySizedBox(
+        widthFactor: 1,
+        child: SizedBox(
+          height: MediaQuery.of(context).size.width * 0.66,
+          child: Column(
+            children: [
+              FractionallySizedBox(
+                widthFactor: 1,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.66 * 2 / 3,
+                  child: thumbnail != null
+                      ? ClipRRect(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(15)),
+                          child: FittedBox(
+                              child: Image.network(thumbnail!),
+                              fit: BoxFit.fitWidth),
+                        )
+                      : Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15)),
+                              color: Colors.black),
+                        ),
                 ),
               ),
-            ),
-            FractionallySizedBox(
-              widthFactor: 1,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.width * 0.66 * 1 / 3,
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(
-                            top: Radius.zero, bottom: Radius.circular(15)),
-                        color: Colors.white),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: Fonts.medium,
-                          ),
-                          Row(
-                            children: [
-                              Text(views.toString() + " views",
-                                  style: Fonts.smallLight),
-                              Text(" - ", style: Fonts.smallLight),
-                              Text(calculateBestDateFormat(DateTime.utc(2022)),
-                                  style: Fonts.smallLight),
-                            ],
-                          )
-                        ],
-                      ),
-                    )),
-              ),
-            )
-          ],
+              FractionallySizedBox(
+                widthFactor: 1,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.66 * 1 / 3,
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.zero, bottom: Radius.circular(15)),
+                          color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: Fonts.medium,
+                              maxLines: 2,
+                            ),
+                            Row(
+                              children: [
+                                Text(views.toString() + " views",
+                                    style: Fonts.smallLight),
+                                Text(" - ", style: Fonts.smallLight),
+                                Text(
+                                    calculateBestDateFormat(DateTime.utc(2022)),
+                                    style: Fonts.smallLight),
+                              ],
+                            )
+                          ],
+                        ),
+                      )),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

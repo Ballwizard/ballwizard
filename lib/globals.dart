@@ -1,7 +1,7 @@
 import 'package:ballwizard/types.dart'
     show FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:drop_shadow/drop_shadow.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as Material;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,9 +19,18 @@ abstract class Fonts {
   static final TextStyle mediumLight = Font.light(20);
   static final TextStyle largeLight = Font.light(32);
   static final TextStyle headingLight = Font.light(48);
+
+  static TextStyle addShadow(TextStyle font) {
+    return font.merge(TextStyle(shadows: [
+      Material.Shadow(
+          offset: Material.Offset(0, 4),
+          blurRadius: 4,
+          color: ColorPicker.colorOpacity(ColorPicker.dark, 0.33))
+    ]));
+  }
 }
 
-class Shadow extends StatelessWidget {
+class ShadowElement extends StatelessWidget {
   final dynamic child;
   final FundamentalVariant variant;
   final double blurRadius;
@@ -30,7 +39,7 @@ class Shadow extends StatelessWidget {
   final double opacity;
   final double spread;
 
-  const Shadow({
+  const ShadowElement({
     super.key,
     this.child,
     this.variant = FundamentalVariant.dark,
@@ -110,8 +119,8 @@ class GradientBackground extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(ColorPicker.addOpacity(ColorPicker.primary, 0.6)),
-              Color(ColorPicker.addOpacity(ColorPicker.secondary, 0.6))
+              ColorPicker.colorOpacity(ColorPicker.primary, 0.6),
+              ColorPicker.colorOpacity(ColorPicker.secondary, 0.6)
             ],
           ),
         ),
