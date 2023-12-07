@@ -5,11 +5,32 @@ import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
 import 'package:ballwizard/types.dart'
     show ColorPicker, FundamentalVariant, Variant;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  if (kDebugMode) {
+    try {
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
+    } catch (e) {
+      print(e);
+    }
+  }
   runApp(const MyApp());
 }
 
@@ -91,16 +112,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (currIndex == 1)
-                            currIndex = -1;
-                          else
-                            currIndex = 1;
-                        });
+                      onTap: () async {
+                        // Create a storage reference from our app
+                        final storageRef = FirebaseStorage.instance.ref();
+                        final mountainsRef = storageRef.child("mountains.jpg");
+                        try {
+                          await mountainsRef.putString(
+                              'data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==',
+                              format: PutStringFormat.dataUrl);
+                        } catch (e) {
+                          print(e);
+                        }
+
+                        print("prolly finished");
                       },
                       child: ChipElement(
-                          text: "Begginer",
+                          text: "Test",
                           variant: Variant.dark,
                           isSelected: currIndex == 1),
                     ),

@@ -205,7 +205,7 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     setState(() {
                                       month = val;
                                       canPass[2] = false;
-                                      print("we done kicked them out")
+                                      print("we done kicked them out");
                                     });
                                   }),
                             )

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "471266321533",
+    "project_id": "ballwizard-app",
+    "storage_bucket": "ballwizard-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471266321533:android:1fcf5220ff9bc6727a7d14",
+        "android_client_info": {
+          "package_name": "com.example.ballwizard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuN2mfLXDsl_ehHGnxk7cfTb_EnzxRsUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
