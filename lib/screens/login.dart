@@ -3,10 +3,20 @@ import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
-import 'package:ballwizard/main.dart' show MyHomePage;
 import 'package:ballwizard/types.dart'
-    show AppBarVariant, ColorPalette, FundamentalVariant, Variant;
+    show
+        AppBarVariant,
+        ColorPalette,
+        FundamentalVariant,
+        Toast,
+        ToastVariant,
+        Variant;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
+import '../state/toast.dart';
+import '../toast.dart';
 
 class Login extends StatelessWidget {
   bool renderNavbar;
@@ -30,7 +40,8 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  String username = "";
+  final ToastQueue queue = ToastQueue();
+  String email = "";
   String password = "";
 
   @override
@@ -42,6 +53,15 @@ class LoginPageState extends State<LoginPage> {
           ? AppBarCustom(
               type: AppBarVariant.arrowLogo, key: _key, context: context)
           : null,
+      bottomSheet: ListenableBuilder(
+        listenable: queue,
+        builder: (BuildContext context, Widget? child) {
+          if (queue.current != null) {
+            return ToastComponent(toast: queue.current!);
+          }
+          return SizedBox();
+        },
+      ),
       endDrawer: DrawerCustom(context: context),
       body: GradientBackground(
         variant: FundamentalVariant.light,
@@ -66,12 +86,12 @@ class LoginPageState extends State<LoginPage> {
               Column(
                 children: [
                   Form1.Input(
-                    placeholder: "Enter username",
-                    label: "Username",
+                    placeholder: "Enter email",
+                    label: "Email",
                     variant: FundamentalVariant.light,
                     onChange: (val) {
                       setState(() {
-                        username = val;
+                        email = val;
                       });
                     },
                   ),
@@ -89,7 +109,19 @@ class LoginPageState extends State<LoginPage> {
                     child: ShadowElement(
                       child: Button(
                         variant: Variant.primary,
-                        onClick: () {
+                        onClick: () async {
+                          UserCredential cred = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: email, password: password);
+
+                          if (cred.user == null) {
+                            queue.add(Toast(
+                                variant: ToastVariant.error,
+                                value:
+                                    "An error occurred! Please try again in a few minutes."));
+                            return;
+                          }
+
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
