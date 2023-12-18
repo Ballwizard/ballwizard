@@ -48,7 +48,7 @@ Widget DrawerCustom(
       DrawerElement(
           title: "Register",
           icon: const Icon(Icons.people_alt),
-          component: const Register(),
+          component: Register(),
           context: context),
       DrawerElement(
           title: "Home",
