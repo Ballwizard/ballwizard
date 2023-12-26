@@ -3,6 +3,7 @@ import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/introduction_1.dart';
 import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/login.dart';
+import 'package:ballwizard/screens/logout.dart';
 import 'package:ballwizard/screens/register.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/screens/user_info.dart';
@@ -10,6 +11,13 @@ import 'package:ballwizard/types.dart'
     show ColorPalette, DrawerElement, FundamentalVariant;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+///This up here is for signing out the user
+///Add setState if you want to see changes, but I think that it is best that we redirect user to login screen, and not allowing them to come back
+Future<void> _signOut() async {
+  await FirebaseAuth.instance.signOut();
+  print('Test signout'); //Check to see if it worl
+}
 
 Widget DrawerCustom(
     {required BuildContext context,
@@ -26,11 +34,11 @@ Widget DrawerCustom(
         title: FirebaseAuth.instance.currentUser?.displayName != null
             ? FirebaseAuth.instance.currentUser!.displayName!
             : "",
-        picture: Image.network(
-          FirebaseAuth.instance.currentUser!.photoURL!,
-          width: 34,
-          height: 34,
-        ),
+        // picture: Image.network(
+        //   FirebaseAuth.instance.currentUser!.photoURL!,
+        //   width: 34,
+        //   height: 34,
+        // ),// This is crashing the application if user is not logged in don't use it when building the application
         component: UserInformation(),
         context: context,
         color: ColorPalette.primary,
@@ -45,15 +53,24 @@ Widget DrawerCustom(
           ),
           component: Start(),
           context: context),
-      DrawerElement(
-          title: "Log out",
-          icon: const Icon(Icons.logout),
-          component: Lecture(
-              title: "man",
-              body: "# obamna\n### big\n- omaga",
-              nextLecture: Start(),
-              prevLecture: Start()),
-          context: context),
+      GestureDetector(
+        // For some stupid reason flutter can't handle two events, I used too much time trying everything this is the best I got that is stil working
+        onTap: () {
+          _signOut();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Login()),
+          );
+        },
+
+        child: AbsorbPointer(
+          child: DrawerElement(
+              title: "Log out",
+              icon: const Icon(Icons.logout),
+              component: Login(),
+              context: context),
+        ),
+      ),
       DrawerElement(
           title: "Login",
           icon: const Icon(Icons.logout),
@@ -105,3 +122,9 @@ SizedBox(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ))),
  */
+
+//  Lecture(
+//                 title: "man",
+//                 body: "# obamna\n### big\n- omaga",
+//                 nextLecture: Start(),
+//                 prevLecture: Start())

@@ -49,10 +49,11 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
-      appBar: widget.renderNavbar
-          ? AppBarCustom(
-              type: AppBarVariant.arrowLogo, key: _key, context: context)
-          : null,
+      //comment this when pusing the code to production becasue we don't need this
+      // appBar: widget.renderNavbar
+      //     ? AppBarCustom(
+      //         type: AppBarVariant.arrowLogo, key: _key, context: context)
+      //     : null,
       bottomSheet: ListenableBuilder(
         listenable: queue,
         builder: (BuildContext context, Widget? child) {

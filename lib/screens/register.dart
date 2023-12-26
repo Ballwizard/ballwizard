@@ -48,11 +48,36 @@ class RegisterPageState extends State<RegisterPage> {
   String password = "";
   String username = "";
 
+  Future<void> _twitterLogin() async {
+    TwitterLogin login = new TwitterLogin(
+        apiKey: "mTUoE4QkhBqOnsEZ1G2f0w6ua",
+        apiSecretKey: "hpFkRcfe7aqD86utxOBn7zYAl1TPhQknevrygnnHNhWTH0R2z3",
+        redirectURI: "https://ballwizard-app.firebaseapp.com/__/auth/handler");
+
+    // AuthResult auth = await login.login();
+    // OAuthCredential creds = TwitterAuthProvider.credential(
+    //     accessToken: auth.authToken!, secret: auth.authTokenSecret!);
+    // UserCredential user =
+    //     await FirebaseAuth.instance.signInWithCredential(creds);
+    //  print(user.user?.displayName);
+    await login.login().then((value) async {
+      final twitterAuthCredential = TwitterAuthProvider.credential(
+        accessToken: value.authToken!,
+        secret: value.authTokenSecret!,
+      );
+
+      final data = await FirebaseAuth.instance
+          .signInWithCredential(twitterAuthCredential);
+      print(data);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
+      //comment this when pusing the code to production becasue we don't need this
       appBar: widget.renderNavbar
           ? AppBarCustom(
               type: AppBarVariant.arrowLogo, key: _key, context: context)
@@ -214,24 +239,8 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () async {
-                          TwitterLogin login = new TwitterLogin(
-                              apiKey: "mTUoE4QkhBqOnsEZ1G2f0w6ua",
-                              apiSecretKey:
-                                  "hpFkRcfe7aqD86utxOBn7zYAl1TPhQknevrygnnHNhWTH0R2z3",
-                              redirectURI:
-                                  "https://ballwizard-app.firebaseapp.com/__/auth/handler");
-                          AuthResult auth = await login.login();
-
-                          OAuthCredential creds =
-                              TwitterAuthProvider.credential(
-                                  accessToken: auth.authToken!,
-                                  secret: auth.authTokenSecret!);
-
-                          UserCredential user = await FirebaseAuth.instance
-                              .signInWithCredential(creds);
-
-                          print(user.user?.displayName!);
+                        onTap: () {
+                          _twitterLogin();
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),

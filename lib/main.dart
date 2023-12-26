@@ -39,6 +39,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner:
+            false, //It looks nicer, remove if you want, production will remove it eitherway
         title: 'Flutter Demo',
         home: const MyHomePage(title: 'Flutter Demo Home Pag123e'),
         theme: ThemeData(
