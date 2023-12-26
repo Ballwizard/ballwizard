@@ -4,11 +4,13 @@ import 'package:ballwizard/globals.dart' as Globals;
 import 'package:ballwizard/screens/introduction_2.dart';
 import 'package:ballwizard/types.dart'
     show AppBarVariant, ColorPalette, FundamentalVariant, Variant;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../input.dart';
+import 'home.dart';
 
 class Introduction extends StatelessWidget {
   const Introduction({Key? key}) : super(key: key);
@@ -44,6 +46,12 @@ class IntroductionPageState extends State<IntroductionPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null)
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) => Home()),
+        );
+      });
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,

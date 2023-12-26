@@ -4,11 +4,22 @@ import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart' as Globals;
 import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/types.dart'
-    show AppBarVariant, ColorPalette, FundamentalVariant, Variant;
+    show
+        AppBarVariant,
+        ColorPalette,
+        FundamentalVariant,
+        RegistrationState,
+        Toast,
+        ToastVariant,
+        Variant;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../chip.dart';
+import '../state/toast.dart';
+import '../toast.dart';
 
 class Introduction2 extends StatelessWidget {
   const Introduction2({Key? key}) : super(key: key);
@@ -41,10 +52,33 @@ class Introduction2PageState extends State<Introduction2Page> {
                 ? "Intermediate"
                 : "Professional");
     prefs.setStringList(
-        "date_of_birth",
+        "skills_to_improve",
         List<String>.generate(
             6, (index) => selected[index] ? "true" : "false"));
   }
+
+  Future<Map<String, dynamic>?> getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? skill_level = prefs.getString("skill_level");
+    List<String>? skills_to_improve = prefs.getStringList("skills_to_improve");
+    String? display_name = prefs.getString("display_name");
+    List<String>? date_of_birth = prefs.getStringList("date_of_birth");
+    if (skill_level == null ||
+        skills_to_improve == null ||
+        display_name == null ||
+        date_of_birth == null) return null;
+
+    final Map<String, dynamic> map = {
+      "skill_level": skill_level,
+      "skills_to_improve": skills_to_improve,
+      "display_name": display_name,
+      "date_of_birth": date_of_birth
+    };
+
+    return map;
+  }
+
+  final ToastQueue queue = ToastQueue();
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +91,15 @@ class Introduction2PageState extends State<Introduction2Page> {
           type: AppBarVariant.arrow,
           variant: FundamentalVariant.dark,
           isTransparent: true),
+      bottomSheet: ListenableBuilder(
+        listenable: queue,
+        builder: (BuildContext context, Widget? child) {
+          if (queue.current != null) {
+            return ToastComponent(toast: queue.current!);
+          }
+          return SizedBox();
+        },
+      ),
       endDrawer: DrawerCustom(context: context),
       body: Globals.GradientBackground(
         variant: FundamentalVariant.light,
@@ -264,8 +307,36 @@ class Introduction2PageState extends State<Introduction2Page> {
                 child: Button(
                   onClick: currIndex != -1 &&
                           (selected.where((e) => e == true).toList()).isNotEmpty
-                      ? () {
-                          saveData();
+                      ? () async {
+                          await saveData();
+                          final data = await getData();
+                          if (data == null) {
+                            queue.add(Toast(
+                                variant: ToastVariant.error,
+                                value:
+                                    "An error occurred! Please try again in a couple of minutes."));
+                            return;
+                          }
+                          try {
+                            final CollectionReference ref = FirebaseFirestore
+                                .instance
+                                .collection("user_info");
+
+                            await ref
+                                .doc(FirebaseAuth.instance.currentUser!.uid!)
+                                .set(<String, dynamic>{
+                              "registration_state":
+                                  RegistrationState.complete.code(),
+                              ...data!
+                            });
+                          } catch (e) {
+                            queue.add(Toast(
+                                variant: ToastVariant.error,
+                                value:
+                                    "An error occurred! Please try again in a couple of minutes."));
+                            return;
+                          }
+
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const Home(),

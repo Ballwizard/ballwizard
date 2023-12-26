@@ -327,3 +327,30 @@ class Toast {
 /// * [arrowLogoPicture] is used when the arrow, logo and profile picture should all be visible in the app bar.
 /// * [search] displays an app bar with a search bar and the user's profile picture.
 enum AppBarVariant { arrow, logoPicture, arrowLogo, arrowLogoPicture, search }
+
+/// Defines the possible registration states of the user.
+/// Every single user in the Cloud Firestore database will have one of these registration states.
+/// They are sent out as soon as the user registers their account.
+/// * [complete] means that the user has done every step of the registration, including the actual registration,
+/// the user info part (date of registration, name), and the display name has been added as well as their actual name.
+/// * [completeWithoutIntroduction] means that the user has registered the account, but has not done the user info part
+/// nor, however their display name has been updated.
+/// * [incomplete] means that that the user has just registered the account and has not done any further step of
+/// the registration process.
+enum RegistrationState {
+  complete,
+  completeWithoutIntroduction,
+  incomplete;
+
+  /// Method that returns the code of the registration state in a `String`.
+  String code() {
+    switch (this) {
+      case RegistrationState.complete:
+        return "complete";
+      case RegistrationState.completeWithoutIntroduction:
+        return "completeWithoutIntroduction";
+      case RegistrationState.incomplete:
+        return "incomplete";
+    }
+  }
+}

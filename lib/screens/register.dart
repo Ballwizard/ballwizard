@@ -3,21 +3,24 @@ import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
+import 'package:ballwizard/screens/introduction_1.dart';
 import 'package:ballwizard/types.dart'
     show
         AppBarVariant,
         ColorPalette,
         FundamentalVariant,
+        RegistrationState,
         Toast,
         ToastVariant,
         Variant;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twitter_login/entity/auth_result.dart';
 import 'package:twitter_login/twitter_login.dart';
 
-import '../main.dart';
 import '../state/toast.dart';
 import '../toast.dart';
 
@@ -50,12 +53,24 @@ class RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool canPass = (password == "" ||
+        password.length < 8 ||
+        password.length > 32 ||
+        username == "" ||
+        username.length > 32 ||
+        username.length < 4 ||
+        email == "" ||
+        !EmailValidator.validate(email));
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
       appBar: widget.renderNavbar
           ? AppBarCustom(
-              type: AppBarVariant.arrowLogo, key: _key, context: context)
+              type: AppBarVariant.arrow,
+              key: _key,
+              context: context,
+              isTransparent: true,
+              variant: FundamentalVariant.dark)
           : null,
       bottomSheet: ListenableBuilder(
         listenable: queue,
@@ -98,6 +113,11 @@ class RegisterPageState extends State<RegisterPage> {
                         username = val;
                       });
                     },
+                    validator: (String val) {
+                      if (val == "") return true;
+                      if (val.length > 32 || val.length < 4) return false;
+                      return true;
+                    },
                   ),
                   Form1.Input(
                     placeholder: "Enter email",
@@ -108,43 +128,71 @@ class RegisterPageState extends State<RegisterPage> {
                         email = val;
                       });
                     },
+                    validator: (String val) {
+                      if (val == "") return true;
+                      if (!EmailValidator.validate(val)) return false;
+                      return true;
+                    },
                   ),
                   Form1.Input(
-                      placeholder: "Enter password",
-                      label: "Password",
-                      variant: FundamentalVariant.light,
-                      onChange: (val) {
-                        setState(() {
-                          password = val;
-                        });
-                      }),
+                    placeholder: "Enter password",
+                    label: "Password",
+                    variant: FundamentalVariant.light,
+                    onChange: (val) {
+                      setState(() {
+                        password = val;
+                      });
+                    },
+                    isPassword: true,
+                    validator: (String val) {
+                      if (val == "") return true;
+                      if (val.length < 8 || val.length > 32) return false;
+                      return true;
+                    },
+                  ),
                   FractionallySizedBox(
                     widthFactor: 1.03,
                     child: ShadowElement(
                       child: Button(
-                        variant: Variant.primary,
-                        onClick: () async {
-                          final UserCredential cred = (await FirebaseAuth
-                              .instance
-                              .createUserWithEmailAndPassword(
-                                  email: email, password: password));
-                          if (cred.user == null) {
-                            queue.add(Toast(
-                                variant: ToastVariant.error,
-                                value:
-                                    "An error occurred! Please try again in a few minutes."));
-                            return;
-                          }
+                        variant: (canPass) ? Variant.muted : Variant.primary,
+                        onClick: canPass
+                            ? () {}
+                            : () async {
+                                final UserCredential cred = (await FirebaseAuth
+                                    .instance
+                                    .createUserWithEmailAndPassword(
+                                        email: email, password: password));
+                                if (cred.user == null) {
+                                  queue.add(Toast(
+                                      variant: ToastVariant.error,
+                                      value:
+                                          "An error occurred! Please try again in a few minutes."));
+                                  return;
+                                }
 
-                          await cred.user?.updateDisplayName(username);
+                                final CollectionReference ref =
+                                    FirebaseFirestore.instance
+                                        .collection("user_info");
 
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const MyHomePage(title: "hello"),
-                            ),
-                          );
-                        },
+                                await ref.doc(cred.user?.uid).set({
+                                  "registration_state",
+                                  RegistrationState.incomplete.code()
+                                });
+
+                                await cred.user?.updateDisplayName(username);
+
+                                await ref.doc(cred.user?.uid).update({
+                                  "registration_state": RegistrationState
+                                      .completeWithoutIntroduction
+                                      .code()
+                                });
+
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const Introduction(),
+                                  ),
+                                );
+                              },
                         title: "Register",
                       ),
                     ),

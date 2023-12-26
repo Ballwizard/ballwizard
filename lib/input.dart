@@ -11,6 +11,7 @@ class Input extends StatefulWidget {
   final String label;
   final int limit;
   final TextInputType type;
+  final bool isPassword;
   late final dynamic onChange;
   late final dynamic validator;
 
@@ -22,6 +23,7 @@ class Input extends StatefulWidget {
     this.label = "",
     this.limit = 128,
     this.type = TextInputType.text,
+    this.isPassword = false,
     this.onChange,
     this.validator,
   });
@@ -62,7 +64,10 @@ class InputState extends State<Input> {
               child: SizedBox(
                 height: 45,
                 child: TextField(
-                  keyboardType: widget.type != null ? widget.type : null,
+                  obscureText: widget.isPassword,
+                  enableSuggestions: !widget.isPassword,
+                  autocorrect: false,
+                  keyboardType: widget.type,
                   controller: controller,
                   onChanged: onChange,
                   inputFormatters: [

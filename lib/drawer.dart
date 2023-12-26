@@ -1,9 +1,9 @@
 import 'package:ballwizard/drawer_element.dart';
 import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/introduction_1.dart';
-import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/register.dart';
+import 'package:ballwizard/screens/splash.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/screens/user_info.dart';
 import 'package:ballwizard/types.dart'
@@ -26,10 +26,17 @@ Widget DrawerCustom(
         title: FirebaseAuth.instance.currentUser?.displayName != null
             ? FirebaseAuth.instance.currentUser!.displayName!
             : "",
-        picture: Image.network(
-          FirebaseAuth.instance.currentUser!.photoURL!,
-          width: 34,
-          height: 34,
+        picture: FirebaseAuth.instance.currentUser?.photoURL != null
+            ? Image.network(
+                FirebaseAuth.instance.currentUser!.photoURL!,
+                width: 34,
+                height: 34,
+              )
+            : null,
+        icon: const Icon(
+          Icons.account_circle,
+          size: 34,
+          color: ColorPalette.light,
         ),
         component: UserInformation(),
         context: context,
@@ -48,11 +55,7 @@ Widget DrawerCustom(
       DrawerElement(
           title: "Log out",
           icon: const Icon(Icons.logout),
-          component: Lecture(
-              title: "man",
-              body: "# obamna\n### big\n- omaga",
-              nextLecture: Start(),
-              prevLecture: Start()),
+          component: SplashScreen(),
           context: context),
       DrawerElement(
           title: "Login",
@@ -77,31 +80,3 @@ Widget DrawerCustom(
     ]),
   );
 }
-
-/*
-SizedBox(
-          height: 56,
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
-              child: Row(
-                children: [
-                  Text(
-                    FirebaseAuth.instance.currentUser?.displayName != null
-                        ? FirebaseAuth.instance.currentUser!.displayName!
-                        : "",
-                    style: Fonts.small,
-                  ),
-                  FirebaseAuth.instance.currentUser?.photoURL != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
-                          child: Image.network(
-                            FirebaseAuth.instance.currentUser!.photoURL!,
-                            width: 34,
-                            height: 34,
-                          ),
-                        )
-                      : Icon(Icons.account_circle, size: 34)
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ))),
- */

@@ -90,15 +90,18 @@ class UserInformationPageState extends State<UserInformationPage> {
                         await ref.putFile(File(image!.path));
                         ref.getDownloadURL().then((value) => print(value));
                       },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(64)),
-                        child: Image.network(
-                          FirebaseAuth.instance.currentUser!.photoURL!,
-                          fit: BoxFit.fill,
-                          width: 128,
-                          height: 128,
-                        ),
-                      ),
+                      child: FirebaseAuth.instance.currentUser!.photoURL != null
+                          ? ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(64)),
+                              child: Image.network(
+                                FirebaseAuth.instance.currentUser!.photoURL!,
+                                fit: BoxFit.fill,
+                                width: 128,
+                                height: 128,
+                              ),
+                            )
+                          : Icon(Icons.account_circle, size: 128),
                     ),
                   ),
                   Padding(

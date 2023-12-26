@@ -3,8 +3,12 @@ import 'package:ballwizard/chip.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
+import 'package:ballwizard/screens/home.dart';
+import 'package:ballwizard/screens/splash.dart';
+import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart'
     show ColorPicker, FundamentalVariant, Variant;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +26,7 @@ Future<void> main() async {
 
   if (kDebugMode) {
     try {
-      //FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8081);
       //await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
       //await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
     } catch (e) {
@@ -39,7 +43,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'BallWizard',
+        initialRoute: '/splash',
+        routes: {
+          '/home': (context) => Home(),
+          '/splash': (context) => SplashScreen(),
+          '/intro': (context) => Start(),
+        },
         home: const MyHomePage(title: 'Flutter Demo Home Pag123e'),
         theme: ThemeData(
             primarySwatch: Colors.orange,
@@ -90,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         setState(() {
                           if (currIndex == 0)
                             currIndex = -1;

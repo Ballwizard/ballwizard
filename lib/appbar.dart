@@ -1,5 +1,6 @@
 import 'package:ballwizard/types.dart'
     show BasicVariant, FundamentalVariant, ColorPalette, AppBarVariant;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 PreferredSizeWidget AppBarCustom(
@@ -36,7 +37,21 @@ PreferredSizeWidget AppBarCustom(
             fit: BoxFit.contain,
             height: 48,
           ),
-          AccountButton(variant, key),
+          GestureDetector(
+            onTap: () {
+              key.currentState?.openEndDrawer();
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: FirebaseAuth.instance.currentUser?.photoURL != null
+                  ? Image.network(
+                      FirebaseAuth.instance.currentUser!.photoURL!,
+                      width: 34,
+                      height: 34,
+                    )
+                  : Icon(Icons.account_circle, size: 34),
+            ),
+          ),
         ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
@@ -97,12 +112,7 @@ Widget BackButton(FundamentalVariant variant, BuildContext context) {
 Widget AccountButton(FundamentalVariant variant, GlobalKey<ScaffoldState> key) {
   return IconButton(
       onPressed: () {
-        print(variant);
-        print(key);
-        print(key.currentState);
-        print(key.currentState?.isEndDrawerOpen);
         key.currentState?.openEndDrawer();
-        print(key.currentState?.isEndDrawerOpen);
       },
       icon:
           Icon(Icons.account_circle, size: 34, color: variant.inverseColor()));
