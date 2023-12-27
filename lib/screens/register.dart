@@ -17,12 +17,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twitter_login/entity/auth_result.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 import '../state/toast.dart';
 import '../toast.dart';
+import 'home.dart';
 
 class Register extends StatelessWidget {
   bool renderNavbar;
@@ -279,7 +281,12 @@ class RegisterPageState extends State<RegisterPage> {
                           UserCredential user = await FirebaseAuth.instance
                               .signInWithCredential(creds);
 
-                          print(user.user?.displayName!);
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Home()),
+                            );
+                          }
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
@@ -298,8 +305,30 @@ class RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          print("click3");
+                        onTap: () async {
+                          try {
+                            final LoginResult loginResult =
+                                await FacebookAuth.instance.login();
+
+                            final OAuthCredential facebookAuthCredential =
+                                FacebookAuthProvider.credential(
+                                    loginResult.accessToken!.token!);
+
+                            await FirebaseAuth.instance
+                                .signInWithCredential(facebookAuthCredential);
+                          } catch (e) {
+                            queue.add(Toast(
+                                variant: ToastVariant.error,
+                                value:
+                                    "An error occurred! Please try again in a few minutes."));
+                          }
+
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Home()),
+                            );
+                          }
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),

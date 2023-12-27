@@ -314,7 +314,7 @@ class Introduction2PageState extends State<Introduction2Page> {
                             queue.add(Toast(
                                 variant: ToastVariant.error,
                                 value:
-                                    "An error occurred! Please try again in a couple of minutes."));
+                                    "An error occurred! Please try again in a few minutes."));
                             return;
                           }
                           try {
@@ -333,7 +333,7 @@ class Introduction2PageState extends State<Introduction2Page> {
                             queue.add(Toast(
                                 variant: ToastVariant.error,
                                 value:
-                                    "An error occurred! Please try again in a couple of minutes."));
+                                    "An error occurred! Please try again in a few minutes."));
                             return;
                           }
 

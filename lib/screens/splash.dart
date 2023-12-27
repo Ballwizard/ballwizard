@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
       if (FirebaseAuth.instance.currentUser != null) {
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
-        //Navigator.of(context).pushReplacementNamed('/intro');
+        Navigator.of(context).pushReplacementNamed('/intro');
       }
     });
 

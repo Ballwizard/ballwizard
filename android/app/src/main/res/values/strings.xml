@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">1014874089571489</string>
+    <string name="fb_login_protocol_scheme">fb1014874089571489</string>
+    <string name="facebook_client_token">ce68173f22fb9f9cf6e954c4aa2fb487</string>
+    <string name="app_name">ballwizard</string>
+</resources>
