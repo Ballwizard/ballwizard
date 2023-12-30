@@ -11,6 +11,7 @@ class Input extends StatefulWidget {
   final String label;
   final int limit;
   final TextInputType type;
+  final TextEditingController? controller;
   late final dynamic onChange;
   late final dynamic validator;
 
@@ -24,6 +25,7 @@ class Input extends StatefulWidget {
     this.type = TextInputType.text,
     this.onChange,
     this.validator,
+    this.controller,
   });
 
   @override
