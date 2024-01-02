@@ -50,7 +50,9 @@ class _MyHomePageState extends State<StartPage> {
 
   String usernameString = '';
   void seeText() {
+    print(username.text);
     print(password.text);
+    print(repeatPassword.text);
   }
 
   @override

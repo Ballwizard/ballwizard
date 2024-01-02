@@ -33,7 +33,19 @@ class Input extends StatefulWidget {
 }
 
 class InputState extends State<Input> {
-  final controller = TextEditingController();
+  late TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller ?? TextEditingController();
+  } //This part is for controller don't change this
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  } //This part is for controller don't change this
 
   @override
   Widget build(BuildContext context) {
