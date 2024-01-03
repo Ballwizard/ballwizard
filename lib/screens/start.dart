@@ -3,11 +3,13 @@ import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
+import 'package:ballwizard/modal.dart';
 import 'package:ballwizard/types.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import '../state/toast.dart';
 import '../toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Start extends StatelessWidget {
   bool renderNavbar;
@@ -33,9 +35,12 @@ class _MyHomePageState extends State<StartPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ToastQueue queue = ToastQueue();
 
+  //Controllers
   TextEditingController username = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController repeatPassword = TextEditingController();
+  bool showGreen = false;
+
+  // TextEditingController password = TextEditingController();
+  // TextEditingController repeatPassword = TextEditingController();
 
   ///This is reusable for different Titles
   Widget titles(String title) {
@@ -48,11 +53,33 @@ class _MyHomePageState extends State<StartPage> {
     );
   }
 
-  String usernameString = '';
-  void seeText() {
+  //Firebase authentication
+  User? user = FirebaseAuth.instance.currentUser;
+
+  void check() {
+    print(user);
     print(username.text);
-    print(password.text);
-    print(repeatPassword.text);
+  }
+
+  Future<void> updateUsername() async {
+    try {
+      if (user != null && username.text.length >= 3) {
+        await user?.updateDisplayName(username.text);
+        print('Succesfull');
+      } else {
+        print(false);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      await user?.delete(); //this will delete user
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -81,7 +108,7 @@ class _MyHomePageState extends State<StartPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Ivan Horvat',
+                  '${user?.displayName}',
                   style: Fonts.heading,
                 ),
               ),
@@ -91,7 +118,7 @@ class _MyHomePageState extends State<StartPage> {
                   right: 50,
                 ),
                 child: Divider(
-                  color: Colors.black,
+                  color: ColorPalette.dark,
                   thickness: 1.5,
                 ),
               ),
@@ -103,58 +130,51 @@ class _MyHomePageState extends State<StartPage> {
             children: [
               titles('Change username'),
               const Padding(
-                padding: EdgeInsets.only(left: 20, right: 195),
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 195,
+                ),
                 child: Divider(
                   color: Colors.black,
                   thickness: 1,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
-                child: Form1.Input(
-                  controller: username,
-                  placeholder: "Enter your username...",
-                  label: "Enter your new username",
-                  labelVariant: FundamentalVariant.dark,
-                  variant: FundamentalVariant.light,
-                ),
-              ),
-              titles('Delete account'),
-              const Padding(
-                padding: EdgeInsets.only(left: 20, right: 230),
-                child: Divider(
-                  color: Colors.black,
-                  thickness: 1,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
-                child: Form1.Input(
-                  controller: password,
-                  placeholder: "Enter your password...",
-                  label: "Enter your password",
-                  labelVariant: FundamentalVariant.dark,
-                  variant: FundamentalVariant.light,
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
+              Transform.translate(
+                offset: const Offset(0, -10),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                  ),
                   child: Form1.Input(
-                    controller: repeatPassword,
-                    placeholder: "Repeat your password...",
-                    label: "Repeat your password",
+                    controller: username,
+                    placeholder: "Enter 5 or more charachters...",
+                    label: "", //Change size of the label when we do code review
                     labelVariant: FundamentalVariant.dark,
                     variant: FundamentalVariant.light,
-                  )),
+                    // onChanged: () {
+                    //   username.text.length > 4 ? print(username) : showGreen;
+                    // },
+                    onChange: (a) {
+                      print(a);
+                      setState(() {
+                        username.text.length > 4
+                            ? showGreen = true
+                            : showGreen = false;
+                      });
+                    },
+                  ),
+                ),
+              ),
               GestureDetector(
                 onTap: () {
                   print('Hello world');
                   //History using firebase should be implemented here
                 },
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20, left: 20),
                   child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           'Manage activity',
@@ -166,28 +186,68 @@ class _MyHomePageState extends State<StartPage> {
                         ),
                       ]),
                 ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 35, left: 24, right: 24),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 75,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF6B6B6B),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            )),
-                        onPressed: seeText,
-                        child: const Text(
-                          'Save changes',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                  ),
-                ),
               )
             ],
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                !showGreen
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, bottom: 20),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 75,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: ColorPalette.danger,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    )),
+                                // onPressed: deleteAccount,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Modal()));
+                                },
+                                child: const Text(
+                                  'Delete account',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                )),
+                          ),
+                        ),
+                      )
+                    : Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 24, right: 24, bottom: 20),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 75,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: ColorPalette.success,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    )),
+                                // onPressed: updateUsername,
+                                onPressed: check,
+                                child: const Text(
+                                  'Change username',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                )),
+                          ),
+                        ),
+                      )
+              ],
+            ),
           )
         ]),
       ),
@@ -313,7 +373,6 @@ class _MyHomePageState extends State<StartPage> {
 //                       ),
 //                       hintText: 'Enter your password...'),
 //                 ),
-
 
 // ////  Widget subsections(String text) {
 //     return Padding(

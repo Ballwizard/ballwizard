@@ -137,6 +137,7 @@ class InputState extends State<Input> {
         ),
         Positioned(
           top: 0,
+          //When we do code review then we need to change this
           left: 0,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 0),
