@@ -36,11 +36,10 @@ class _MyHomePageState extends State<StartPage> {
   final ToastQueue queue = ToastQueue();
 
   //Controllers
-  TextEditingController username = TextEditingController();
+  // TextEditingController username = TextEditingController();
+  String username = '';
   bool showGreen = false;
-
-  // TextEditingController password = TextEditingController();
-  // TextEditingController repeatPassword = TextEditingController();
+  bool showModal = false;
 
   ///This is reusable for different Titles
   Widget titles(String title) {
@@ -58,13 +57,13 @@ class _MyHomePageState extends State<StartPage> {
 
   void check() {
     print(user);
-    print(username.text);
+    print(username);
   }
 
   Future<void> updateUsername() async {
     try {
-      if (user != null && username.text.length >= 3) {
-        await user?.updateDisplayName(username.text);
+      if (user != null && username.length >= 3) {
+        await user?.updateDisplayName(username);
         print('Succesfull');
       } else {
         print(false);
@@ -82,176 +81,167 @@ class _MyHomePageState extends State<StartPage> {
     }
   }
 
+  Widget buttons(String text, func, bool isRed) {
+    return (Center(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 20),
+        child: SizedBox(
+          width: double.infinity,
+          height: 75,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: isRed ? ColorPalette.danger : ColorPalette.success,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  )),
+              // onPressed: deleteAccount,
+              onPressed: func,
+              child: Text(
+                text,
+                style: const TextStyle(color: Colors.white, fontSize: 20),
+              )),
+        ),
+      ),
+    ));
+  }
+
+  void toggleModal(bool value) {
+    setState(() {
+      showModal = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      key: _key,
-      appBar: widget.renderNavbar
-          ? AppBarCustom(
-              type: AppBarVariant.arrowLogo, key: _key, context: context)
-          : null,
-      body: Container(
-        margin: const EdgeInsets.only(top: 120),
-        height: double.infinity,
-        width: double.infinity,
-        child: Column(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.account_circle,
-                size: 100,
-                color: ColorPalette.dark,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '${user?.displayName}',
-                  style: Fonts.heading,
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(
-                  left: 50,
-                  right: 50,
-                ),
-                child: Divider(
-                  color: ColorPalette.dark,
-                  thickness: 1.5,
-                ),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              titles('Change username'),
-              const Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  right: 195,
-                ),
-                child: Divider(
-                  color: Colors.black,
-                  thickness: 1,
-                ),
-              ),
-              Transform.translate(
-                offset: const Offset(0, -10),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 25,
-                    right: 25,
-                  ),
-                  child: Form1.Input(
-                    controller: username,
-                    placeholder: "Enter 5 or more charachters...",
-                    label: "", //Change size of the label when we do code review
-                    labelVariant: FundamentalVariant.dark,
-                    variant: FundamentalVariant.light,
-                    // onChanged: () {
-                    //   username.text.length > 4 ? print(username) : showGreen;
-                    // },
-                    onChange: (a) {
-                      print(a);
-                      setState(() {
-                        username.text.length > 4
-                            ? showGreen = true
-                            : showGreen = false;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('Hello world');
-                  //History using firebase should be implemented here
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 20),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Manage activity',
-                          style: Fonts.medium,
-                        ),
-                        const Icon(
-                          Icons.open_in_new_rounded,
-                          size: 28,
-                        ),
-                      ]),
-                ),
-              )
-            ],
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                !showGreen
-                    ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, bottom: 20),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 75,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: ColorPalette.danger,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    )),
-                                // onPressed: deleteAccount,
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Modal()));
-                                },
-                                child: const Text(
-                                  'Delete account',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                )),
-                          ),
-                        ),
-                      )
-                    : Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 24, right: 24, bottom: 20),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 75,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: ColorPalette.success,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    )),
-                                // onPressed: updateUsername,
-                                onPressed: check,
-                                child: const Text(
-                                  'Change username',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                )),
-                          ),
-                        ),
-                      )
-              ],
-            ),
+    return showModal
+        ? Modal(
+            showModal: showModal,
+            toggleModal: toggleModal,
           )
-        ]),
-      ),
-    );
+        : Scaffold(
+            extendBodyBehindAppBar: true,
+            key: _key,
+            appBar: widget.renderNavbar
+                ? AppBarCustom(
+                    type: AppBarVariant.arrowLogo, key: _key, context: context)
+                : null,
+            body: Container(
+              margin: const EdgeInsets.only(top: 120),
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.account_circle,
+                      size: 100,
+                      color: ColorPalette.dark,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${user?.displayName}',
+                        style: Fonts.heading,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        left: 50,
+                        right: 50,
+                      ),
+                      child: Divider(
+                        color: ColorPalette.dark,
+                        thickness: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    titles('Change username'),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        right: 195,
+                      ),
+                      child: Divider(
+                        color: Colors.black,
+                        thickness: 1,
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -10),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 25,
+                          right: 25,
+                        ),
+                        child: Form1.Input(
+                          // controller: username,
+                          placeholder: "Enter 5 or more charachters...",
+                          label:
+                              "", //Change size of the label when we do code review
+                          labelVariant: FundamentalVariant.dark,
+                          variant: FundamentalVariant.light,
+                          // onChanged: () {
+                          //   username.text.length > 4 ? print(username) : showGreen;
+                          // },
+                          onChange: (val) {
+                            setState(() {
+                              username = val;
+                              username.length > 4
+                                  ? showGreen = true
+                                  : showGreen = false;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Hello world');
+                        //History using firebase should be implemented here
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20, left: 20),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Manage activity',
+                                style: Fonts.medium,
+                              ),
+                              const Icon(
+                                Icons.open_in_new_rounded,
+                                size: 28,
+                              ),
+                            ]),
+                      ),
+                    )
+                  ],
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      !showGreen
+                          ? buttons('Delete account', () {
+                              setState(() {
+                                toggleModal(true);
+                              });
+                            }, true)
+                          : buttons('Change username', updateUsername, false)
+                    ],
+                  ),
+                )
+              ]),
+            ),
+          );
   }
 }
 

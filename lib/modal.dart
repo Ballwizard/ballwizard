@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Modal extends StatefulWidget {
-  const Modal({super.key});
+  bool showModal;
+  Function(bool) toggleModal;
+  Modal({super.key, required this.showModal, required this.toggleModal});
 
   @override
   State<Modal> createState() => _MyWidgetState();
@@ -70,10 +72,7 @@ class _MyWidgetState extends State<Modal> {
                           children: [
                             ButtonWidget('Yes', deleteAccount, true),
                             ButtonWidget('No', () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => StartPage()));
+                              widget.toggleModal(!widget.showModal);
                             }, false)
                           ],
                         ),
