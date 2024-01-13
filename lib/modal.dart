@@ -1,4 +1,5 @@
 import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/screens/register.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,8 +23,8 @@ class _MyWidgetState extends State<Modal> {
         onPressed: func,
         child: Text(text),
         style: ElevatedButton.styleFrom(
-            primary: isRed ? ColorPalette.danger : ColorPalette.light,
-            foregroundColor: isRed ? ColorPalette.light : ColorPalette.dark),
+            primary: isRed ? ColorPalette.danger : ColorPalette.muted,
+            foregroundColor: ColorPalette.light),
       ),
     );
   }
@@ -32,6 +33,10 @@ class _MyWidgetState extends State<Modal> {
   Future<void> deleteAccount() async {
     try {
       await user?.delete(); //this will delete user
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Register()),
+      );
     } catch (e) {
       print(e);
     }
@@ -40,7 +45,7 @@ class _MyWidgetState extends State<Modal> {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: TextStyle(color: Colors.white),
+      style: TextStyle(color: ColorPalette.dark),
       child: Container(
         color: const Color(0x80808080),
         child: Column(
@@ -50,7 +55,7 @@ class _MyWidgetState extends State<Modal> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.transparent,
+                    color: ColorPalette.light,
                     border: Border.all(color: ColorPalette.danger, width: 3)),
                 width: 300,
                 height: 200,

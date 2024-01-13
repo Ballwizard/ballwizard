@@ -73,13 +73,13 @@ class _MyHomePageState extends State<StartPage> {
     }
   }
 
-  Future<void> deleteAccount() async {
-    try {
-      await user?.delete(); //this will delete user
-    } catch (e) {
-      print(e);
-    }
-  }
+  // // Future<void> deleteAccount() async {
+  //   try {
+  //     await user?.delete(); //this will delete user
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Widget buttons(String text, func, bool isRed) {
     return (Center(

@@ -1,6 +1,7 @@
 import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/screens/discover.dart';
 import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/main_list.dart';
 import 'package:ballwizard/screens/start.dart';
@@ -28,9 +29,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final pages = [
-    Start(renderNavbar: false),
+    const MainList(),
     Login(renderNavbar: false),
-    const MainList()
+    const Discover()
+    // Start(renderNavbar: false),
   ];
 
   int index = 0;
