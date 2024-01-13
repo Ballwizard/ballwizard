@@ -177,8 +177,7 @@ class RegisterPageState extends State<RegisterPage> {
                                         .collection("user_info");
 
                                 await ref.doc(cred.user?.uid).set({
-                                  "registration_state",
-                                  RegistrationState.incomplete.code()
+                                  "registration_state": RegistrationState.incomplete.code()
                                 });
 
                                 await cred.user?.updateDisplayName(username);

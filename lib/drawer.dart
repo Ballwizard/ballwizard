@@ -1,4 +1,5 @@
 import 'package:ballwizard/drawer_element.dart';
+import 'package:ballwizard/screens/feedback.dart';
 import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/introduction_1.dart';
 import 'package:ballwizard/screens/login.dart';
@@ -9,6 +10,7 @@ import 'package:ballwizard/screens/user_info.dart';
 import 'package:ballwizard/types.dart'
     show ColorPalette, DrawerElement, FundamentalVariant;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 Widget DrawerCustom(
@@ -77,6 +79,24 @@ Widget DrawerCustom(
           icon: const Icon(Icons.arrow_right_alt_outlined),
           component: const Introduction(),
           context: context),
+      DrawerElement(
+          title: "Send feedback",
+          icon: const Icon(Icons.info, color: ColorPalette.dark),
+          component: FeedbackScreen(),
+          context: context),
+      GestureDetector(
+        onTap: (){
+          FirebaseAuth.instance.signOut();
+        },
+        child: Text("actual log out"),
+      ),
+      GestureDetector(
+        onTap: (){
+          print(FirebaseAuth.instance.currentUser != null);
+        },
+        child: Text("check if logged in"),
+      )
     ]),
+
   );
 }

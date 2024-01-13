@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "471266321533-c0555virrrnl00pdj9bs8ucfd9t54s3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ballwizard",
+            "certificate_hash": "8055635e3313469ff6f179c77f21fa47e3ef4766"
+          }
+        },
+        {
           "client_id": "471266321533-kmvr7bo57ts2hi6rnt40qmcb9rh2ricc.apps.googleusercontent.com",
           "client_type": 3
         }

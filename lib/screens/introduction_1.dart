@@ -46,12 +46,6 @@ class IntroductionPageState extends State<IntroductionPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null)
-      Future.delayed(Duration.zero, () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) => Home()),
-        );
-      });
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
