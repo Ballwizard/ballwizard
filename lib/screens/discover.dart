@@ -1,5 +1,6 @@
 import 'package:ballwizard/blogStates.dart';
 import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/screens/createBlog.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +18,9 @@ class _DiscoverState extends State<Discover> {
         body: GradientBackground(
             variant: FundamentalVariant.light,
             child: DefaultTextStyle(
-              style: TextStyle(color: ColorPalette.dark),
+              style: const TextStyle(color: ColorPalette.dark),
               child: Container(
-                  margin: EdgeInsets.only(left: 15),
+                  margin: const EdgeInsets.only(left: 15),
                   width: double.infinity,
                   height: double.infinity,
                   child: SingleChildScrollView(
@@ -28,7 +29,7 @@ class _DiscoverState extends State<Discover> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.only(top: 10),
                             child: Headings('Our recommendation')),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -58,9 +59,12 @@ class _DiscoverState extends State<Discover> {
                   )),
             )),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: ColorPalette.dark,
-          // backgroundColor: ColorPalette.successMuted,
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreateBlog()));
+          },
+          // backgroundColor: ColorPalette.dark,
+          backgroundColor: ColorPalette.successMuted,
           child: const Icon(
             Icons.add,
             size: 32,

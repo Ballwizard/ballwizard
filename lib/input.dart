@@ -68,13 +68,13 @@ class InputState extends State<Input> {
       //crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 16),
           child: FractionallySizedBox(
             widthFactor: 1.04,
             child: Globals.ShadowElement(
               blurRadius: 4,
               child: SizedBox(
-                height: 45,
+                height: 50,
                 child: TextField(
                   keyboardType: widget.type != null ? widget.type : null,
                   controller: controller,
@@ -140,7 +140,7 @@ class InputState extends State<Input> {
           //When we do code review then we need to change this
           left: 0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -155,7 +155,7 @@ class InputState extends State<Input> {
                                   ColorPicker.dark, 0.25),
                               offset: Offset(0, 2),
                               blurRadius: 4)
-                        ]).merge(Globals.Fonts.small)),
+                        ]).merge(Globals.Fonts.medium)),
               ],
             ),
           ),

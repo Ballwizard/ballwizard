@@ -98,7 +98,7 @@ class _MyHomePageState extends State<StartPage> {
               onPressed: func,
               child: Text(
                 text,
-                style: const TextStyle(color: Colors.white, fontSize: 20),
+                style: Fonts.medium.copyWith(color: ColorPalette.light),
               )),
         ),
       ),

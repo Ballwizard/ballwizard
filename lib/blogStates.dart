@@ -63,3 +63,10 @@ Widget Content() {
     ]),
   );
 }
+
+OutlineInputBorder textFormBorder(colorBorder) {
+  return OutlineInputBorder(
+    borderSide: BorderSide(width: 1, color: colorBorder),
+    borderRadius: BorderRadius.circular(8),
+  );
+}
