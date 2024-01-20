@@ -1,14 +1,15 @@
 import 'package:ballwizard/appbar.dart';
-import 'package:ballwizard/blogStates.dart';
+import 'package:ballwizard/blog_states.dart';
 import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/screens/content_page.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
 
-class Start extends StatelessWidget {
+class Nav extends StatelessWidget {
   bool renderNavbar;
 
-  Start({Key? key, this.renderNavbar = true}) : super(key: key);
+  Nav({Key? key, this.renderNavbar = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +126,15 @@ class _CreateBlogState extends State<CreateBlog> {
                       if (allowPost) {
                         print(titleVal);
                         print(contentVal);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ContentPage(
+                                      titleVal: titleVal,
+                                      contentVal: contentVal,
+                                      creatorView: true,
+                                    )));
                       } else {
                         print(false);
                       }

@@ -54,7 +54,6 @@ class _MyHomePageState extends State<StartPage> {
 
   //Firebase authentication
   User? user = FirebaseAuth.instance.currentUser;
-
   void check() {
     print(user);
     print(username);
@@ -231,6 +230,7 @@ class _MyHomePageState extends State<StartPage> {
                     children: [
                       !showGreen
                           ? buttons('Delete account', () {
+                              // check();
                               setState(() {
                                 toggleModal(true);
                               });

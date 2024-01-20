@@ -77,7 +77,6 @@ class RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _key,
-      //comment this when pusing the code to production becasue we don't need this
       appBar: widget.renderNavbar
           ? AppBarCustom(
               type: AppBarVariant.arrowLogo, key: _key, context: context)
