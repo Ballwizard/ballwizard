@@ -101,7 +101,7 @@ class _ContentPageState extends State<ContentPage> {
           onPressed: widget.creatorView
               ? () {
                   addUserWithDoc(
-                      widget.titleVal, widget.contentVal, 'Advanced');
+                      widget.titleVal, widget.contentVal, 'Ad1vanced');
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

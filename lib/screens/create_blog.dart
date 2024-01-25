@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/blog_states.dart';
+import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/content_page.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
+import 'package:image_picker/image_picker.dart';
 
 class Nav extends StatelessWidget {
   bool renderNavbar;
@@ -27,9 +31,27 @@ class CreateBlog extends StatefulWidget {
 class _CreateBlogState extends State<CreateBlog> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
+  // File? globalImage;
+  // choosePic() async {
+  //   try {
+  //     final pickImg = ImagePicker();
+  //     final img = await pickImg.pickImage(source: ImageSource.gallery);
+  //     if (img != null) {
+  //       // setState(() {
+  //       globalImage = File(img.path);
+  //       // });
+  //     } else {
+  //       print('Image picking cancelled');
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
   String titleVal = '';
   String contentVal = '';
   bool allowPost = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +133,39 @@ class _CreateBlogState extends State<CreateBlog> {
                       focusedBorder: textFormBorder(ColorPalette.muted),
                     )),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 36, vertical: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    print('Hello world');
+                    choosePic();
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Choose an image',
+                        style: Fonts.medium.copyWith(shadows: [
+                          Shadow(
+                              color: ColorPicker.colorOpacity(
+                                  ColorPicker.dark, 0.25),
+                              offset: Offset(0, 2),
+                              blurRadius: 4)
+                        ]),
+                      ),
+                      const Icon(
+                        Icons.image,
+                        size: 35,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // globalImage != null
+              //     ? Image.file(globalImage)
+              //     : Text('Enter image')
+              // Image.network(downloadURLFinal)
             ],
           ),
           Expanded(
