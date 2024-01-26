@@ -138,6 +138,7 @@ class _CreateBlogState extends State<CreateBlog> {
                 child: GestureDetector(
                   onTap: () {
                     print('Hello world');
+                    //Only var need but I have no Idea why flutter doesn't allow me
                     choosePic();
                   },
                   child: Row(
@@ -165,7 +166,6 @@ class _CreateBlogState extends State<CreateBlog> {
               // globalImage != null
               //     ? Image.file(globalImage)
               //     : Text('Enter image')
-              // Image.network(downloadURLFinal)
             ],
           ),
           Expanded(

@@ -10,8 +10,13 @@ User? user = FirebaseAuth.instance.currentUser;
 
 final db = FirebaseFirestore.instance;
 
-Future<void> addUserWithDoc(String title, String text, String tag,
-    {String pic = ''}) async {
+String downloadURLFinal = '';
+
+Future<void> addUserWithDoc(
+  String title,
+  String text,
+  String tag,
+) async {
   try {
     await db.collection('blog_posts').add({
       'name': user?.displayName,
@@ -21,49 +26,64 @@ Future<void> addUserWithDoc(String title, String text, String tag,
       'isLikedByUser': false,
       'tag': tag,
       'numberOfLikes': 0,
-      'picture': pic
+      'picture': downloadURLFinal
     });
   } catch (e) {
     print(e);
   }
 }
 
-// choosePic() async {
-//   try {
-//     final pickImg = ImagePicker();
-//     final img = await pickImg.pickImage(source: ImageSource.gallery);
-//     if (img != null) {
-//       // setState(() {\
-
-//       globalImage = File(img.path);
-//       storageRef.child('gs://ballwizard-app.appspot.com/blogImages');
-//       // });
-//     } else {
-//       print('Image picking cancelled');
-//     }
-//   } catch (e) {
-//     print(e);
-//   }
-// }
-String downloadURLFinal = '';
-
 File? globalImage;
 final storageRef = FirebaseStorage.instance.ref();
 // final metadata = SettableMetadata(contentType: "image/jpeg");
-choosePic() async {
+void choosePic() async {
   try {
     final pickImg = ImagePicker();
     final img = await pickImg.pickImage(source: ImageSource.gallery);
     if (img != null) {
       globalImage = File(img.path);
       final sendImg = await storageRef
-          .child('blogImages/${DateTime.now()}.png') //I put DateTime.now()
+          .child(
+              'blogImages/${DateTime.now()}.png') //I put DateTime.now() change this with some library if we have time
           .putFile(globalImage!);
-      final snapshot = await sendImg;
-      final dowURL = await snapshot.ref.getDownloadURL();
+      final dowURL = await sendImg.ref.getDownloadURL();
       downloadURLFinal = dowURL;
+    }
+  } catch (e) {
+    print(e);
+  }
+}
+
+chooseProfilePic() async {
+  try {
+    //If we have time refactor for choose pic and profile pic the image selection
+    final pickImg = ImagePicker();
+    final img = await pickImg.pickImage(source: ImageSource.gallery);
+    if (img != null) {
+      globalImage = File(img.path);
+      final sendImg = await storageRef
+          .child(
+              '/profilePictures/${DateTime.now()}.png') //I put DateTime.now()  change this with some library if we have time
+          .putFile(globalImage!);
+      final dowURL = await sendImg.ref.getDownloadURL();
+      await user?.updatePhotoURL(dowURL);
+    }
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<void> updateUsername(String username) async {
+  try {
+    if (user != null && username.length >= 3) {
+      // final chnageUsernm =
+      await user?.updateDisplayName(username);
+      // setState(() {
+      //   chnageUsernm;
+      // });
+      print('Succesfull');
     } else {
-      print('Image picking cancelled');
+      print(false);
     }
   } catch (e) {
     print(e);

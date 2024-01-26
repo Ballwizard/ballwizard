@@ -1,6 +1,7 @@
 import 'package:ballwizard/appbar.dart' show AppBarCustom;
 import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
+import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
 import 'package:ballwizard/modal.dart';
@@ -53,23 +54,10 @@ class _MyHomePageState extends State<StartPage> {
   }
 
   //Firebase authentication
-  User? user = FirebaseAuth.instance.currentUser;
+  // User? user = FirebaseAuth.instance.currentUser;
   void check() {
     print(user);
     print(username);
-  }
-
-  Future<void> updateUsername() async {
-    try {
-      if (user != null && username.length >= 3) {
-        await user?.updateDisplayName(username);
-        print('Succesfull');
-      } else {
-        print(false);
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   // // Future<void> deleteAccount() async {
@@ -133,10 +121,32 @@ class _MyHomePageState extends State<StartPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.account_circle,
-                      size: 100,
-                      color: ColorPalette.dark,
+                    GestureDetector(
+                      onTap: chooseProfilePic,
+                      child: user?.photoURL != null
+                          ? Container(
+                              width: 125,
+                              height: 125,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2000),
+                                  border: Border.all(
+                                    color: Colors.black, // Set the border color
+                                    width: 2, // Set the border width
+                                  )),
+
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(2000),
+                                child: Image.network(
+                                  user!.photoURL ?? '',
+                                  fit: BoxFit.cover,
+                                ),
+                              ), //This checks just one more time because compiler throws an error
+                            )
+                          : const Icon(
+                              Icons.account_circle,
+                              size: 100,
+                              color: ColorPalette.dark,
+                            ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -235,7 +245,9 @@ class _MyHomePageState extends State<StartPage> {
                                 toggleModal(true);
                               });
                             }, true)
-                          : buttons('Change username', updateUsername, false)
+                          : buttons('Change username', () {
+                              updateUsername(username);
+                            }, false)
                     ],
                   ),
                 )

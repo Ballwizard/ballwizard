@@ -92,6 +92,7 @@ class _ContentPageState extends State<ContentPage> {
                     textAlign: TextAlign.center,
                     style: Fonts.small,
                   ),
+                  Image.network(downloadURLFinal)
                 ],
               ),
             ),
@@ -106,7 +107,7 @@ class _ContentPageState extends State<ContentPage> {
                   //     context,
                   //     MaterialPageRoute(
                   //         builder: (context) => const Discover()));
-                  //Make toast message that says that this is created succesful also push this on firebase
+                  // Make toast message that says that this is created succesful also push this on firebase
                 }
               : () {
                   checkIfLiked = !checkIfLiked;
