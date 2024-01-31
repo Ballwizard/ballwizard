@@ -1,8 +1,8 @@
 import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/main_list.dart';
+import 'package:ballwizard/screens/search.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final pages = [
-    Start(renderNavbar: false),
-    Login(renderNavbar: false),
-    const MainList()
-  ];
+  final pages = [Start(renderNavbar: false), Search(), const MainList()];
 
   int index = 0;
 
@@ -45,8 +41,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      appBar: AppBarCustom(
-          key: _key, context: context, type: AppBarVariant.logoPicture),
+      appBar: index == 1
+          ? null
+          : AppBarCustom(
+              key: _key, context: context, type: AppBarVariant.logoPicture),
       body: Center(
         child: pages.elementAt(index),
       ),

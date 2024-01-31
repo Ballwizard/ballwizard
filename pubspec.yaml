@@ -30,6 +30,10 @@ dependencies:
   image_picker: ^1.0.5
   email_validator: ^2.1.17
   flutter_facebook_auth: ^5.0.11
+  http: ^0.13.6
+  path: ^1.8.3
+  universal_html: ^2.2.4
+  permission_handler: ^11.2.0
 
 dev_dependencies:
   flutter_test:
@@ -47,3 +51,4 @@ flutter:
     - assets/apple.png
     - assets/facebook.png
     - assets/google.png
+    - assets/damn.json

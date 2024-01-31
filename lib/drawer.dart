@@ -1,8 +1,10 @@
 import 'package:ballwizard/drawer_element.dart';
+import 'package:ballwizard/screens/downloaded.dart';
 import 'package:ballwizard/screens/feedback.dart';
 import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/introduction_1.dart';
 import 'package:ballwizard/screens/login.dart';
+import 'package:ballwizard/screens/manage_activity.dart';
 import 'package:ballwizard/screens/register.dart';
 import 'package:ballwizard/screens/splash.dart';
 import 'package:ballwizard/screens/start.dart';
@@ -10,7 +12,6 @@ import 'package:ballwizard/screens/user_info.dart';
 import 'package:ballwizard/types.dart'
     show ColorPalette, DrawerElement, FundamentalVariant;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 Widget DrawerCustom(
@@ -85,18 +86,35 @@ Widget DrawerCustom(
           component: FeedbackScreen(),
           context: context),
       GestureDetector(
-        onTap: (){
+        onTap: () {
           FirebaseAuth.instance.signOut();
         },
         child: Text("actual log out"),
       ),
       GestureDetector(
-        onTap: (){
+        onTap: () {
           print(FirebaseAuth.instance.currentUser != null);
         },
         child: Text("check if logged in"),
-      )
+      ),
+      DrawerElement(
+          title: "Manage activity",
+          icon: const Icon(
+            Icons.account_circle,
+            size: 34,
+            color: ColorPalette.dark,
+          ),
+          component: ManageActivity(),
+          context: context),
+      DrawerElement(
+          title: "Downloaded lectures",
+          icon: const Icon(
+            Icons.download,
+            size: 34,
+            color: ColorPalette.dark,
+          ),
+          component: DownloadedLectures(),
+          context: context),
     ]),
-
   );
 }

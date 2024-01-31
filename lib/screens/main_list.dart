@@ -65,6 +65,7 @@ class MainListState extends State<MainList> {
                                                     .substring(2),
                                             title: lecture.fields!.title,
                                             views: lecture.fields!.views,
+                                            id: lecture.sys!.id,
                                             dateOfCreation:
                                                 lecture.fields!.dateOfCreation),
                                       ),

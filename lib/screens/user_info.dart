@@ -44,7 +44,8 @@ class UserInformationPageState extends State<UserInformationPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser == null) Navigator.pop(context);
+    //if (FirebaseAuth.instance.currentUser == null) Navigator.pop(context);
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         key: _key,

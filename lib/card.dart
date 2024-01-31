@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/start.dart';
@@ -54,18 +56,22 @@ class CardElement extends StatelessWidget {
   final DateTime dateOfCreation;
   final String markdown;
   final FundamentalVariant variant;
-  final String? thumbnail;
+  final String thumbnail;
   final bool large;
+  final File? thumbnail_file;
+  final String id;
 
   const CardElement({
     super.key,
     required this.title,
     required this.views,
     required this.dateOfCreation,
+    required this.id,
     this.markdown = "",
     this.variant = FundamentalVariant.light,
-    this.thumbnail,
+    this.thumbnail = "",
     this.large = false,
+    this.thumbnail_file,
   });
 
   @override
@@ -79,6 +85,8 @@ class CardElement extends StatelessWidget {
               body: markdown,
               nextLecture: Start(),
               prevLecture: Start(),
+              thumbnail: thumbnail,
+              id: id,
             ),
           ),
         );
@@ -98,8 +106,13 @@ class CardElement extends StatelessWidget {
                           borderRadius:
                               BorderRadius.vertical(top: Radius.circular(15)),
                           child: FittedBox(
-                              child: Image.network(thumbnail!),
-                              fit: BoxFit.fitWidth),
+                              fit: BoxFit.fitWidth,
+                              child: thumbnail == ""
+                                  ? Image(
+                                      image:
+                                          FileImage(thumbnail_file!, scale: 4),
+                                    )
+                                  : Image.network(thumbnail)),
                         )
                       : Container(
                           decoration: BoxDecoration(

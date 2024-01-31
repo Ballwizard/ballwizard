@@ -3,12 +3,17 @@ import 'package:ballwizard/types.dart'
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'input.dart';
+
 PreferredSizeWidget AppBarCustom(
     {FundamentalVariant variant = FundamentalVariant.light,
     FundamentalVariant titleVariant = FundamentalVariant.dark,
     String title = "",
     bool isTransparent = false,
     AppBarVariant type = AppBarVariant.arrow,
+    String placeholder = "",
+    onInputChange,
+    onEnter,
     required GlobalKey<ScaffoldState> key,
     required BuildContext context}) {
   switch (type) {
@@ -92,6 +97,29 @@ PreferredSizeWidget AppBarCustom(
                 height: 48,
               ),
               AccountButton(variant, key)
+            ]),
+        backgroundColor: isTransparent ? Colors.transparent : variant.color(),
+        foregroundColor: titleVariant.color(),
+      );
+    case AppBarVariant.search:
+      return AppBar(
+        automaticallyImplyLeading: false,
+        actions: <Widget>[Container()],
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                  child: SizedBox(
+                      height: 75,
+                      child: FractionallySizedBox(
+                        widthFactor: 1.03,
+                        child: Input(
+                          onChange: onInputChange ?? (String val) {},
+                          onEnter: onEnter ?? (String val) {},
+                          placeholder: placeholder,
+                        ),
+                      ))),
             ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),

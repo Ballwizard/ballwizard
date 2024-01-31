@@ -14,6 +14,7 @@ class Input extends StatefulWidget {
   final bool isPassword;
   late final dynamic onChange;
   late final dynamic validator;
+  late dynamic onEnter = () {};
 
   Input({
     super.key,
@@ -26,6 +27,7 @@ class Input extends StatefulWidget {
     this.isPassword = false,
     this.onChange,
     this.validator,
+    this.onEnter
   });
 
   @override
@@ -73,6 +75,7 @@ class InputState extends State<Input> {
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(widget.limit + 1)
                   ],
+                  onSubmitted: widget.onEnter,
                   style: TextStyle(
                           color: useLightFont
                               ? ColorPalette.light
