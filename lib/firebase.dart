@@ -6,13 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
-User? user = FirebaseAuth.instance.currentUser;
+User user = FirebaseAuth.instance.currentUser!;
 
 final db = FirebaseFirestore.instance;
 
 String downloadURLFinal = '';
 
 Future<void> addUserWithDoc(
+  String whoDid,
   String title,
   String text,
   String tag,
@@ -26,7 +27,8 @@ Future<void> addUserWithDoc(
       'isLikedByUser': false,
       'tag': tag,
       'numberOfLikes': 0,
-      'picture': downloadURLFinal
+      'picture': downloadURLFinal,
+      'whoDid': whoDid
     });
   } catch (e) {
     print(e);
@@ -36,7 +38,7 @@ Future<void> addUserWithDoc(
 File? globalImage;
 final storageRef = FirebaseStorage.instance.ref();
 // final metadata = SettableMetadata(contentType: "image/jpeg");
-void choosePic() async {
+Future<void> choosePic() async {
   try {
     final pickImg = ImagePicker();
     final img = await pickImg.pickImage(source: ImageSource.gallery);
@@ -54,7 +56,7 @@ void choosePic() async {
   }
 }
 
-chooseProfilePic() async {
+Future<void> chooseProfilePic() async {
   try {
     //If we have time refactor for choose pic and profile pic the image selection
     final pickImg = ImagePicker();
@@ -88,4 +90,14 @@ Future<void> updateUsername(String username) async {
   } catch (e) {
     print(e);
   }
+}
+
+Future<List> getDiscoverData(String tag) async {
+  final blogPostCollection =
+      await db.collection('blog_posts').where('tag', isEqualTo: tag).get();
+  List data = [];
+  for (var docSnap in blogPostCollection.docs) {
+    data.add(docSnap.data());
+  }
+  return data;
 }

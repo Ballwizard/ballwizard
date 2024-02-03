@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/blog_states.dart';
+import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/content_page.dart';
+import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;
@@ -51,7 +53,6 @@ class _CreateBlogState extends State<CreateBlog> {
   String titleVal = '';
   String contentVal = '';
   bool allowPost = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,8 +147,8 @@ class _CreateBlogState extends State<CreateBlog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Choose an image',
-                        style: Fonts.medium.copyWith(shadows: [
+                        'Choose an image (optional)',
+                        style: Fonts.sm.copyWith(shadows: [
                           Shadow(
                               color: ColorPicker.colorOpacity(
                                   ColorPicker.dark, 0.25),
@@ -182,13 +183,23 @@ class _CreateBlogState extends State<CreateBlog> {
                         print(titleVal);
                         print(contentVal);
 
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ContentPage(
+                        //               titleVal: titleVal,
+                        //               contentVal: contentVal,
+                        //               creatorView: true,
+                        //             )));
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ContentPage(
-                                      titleVal: titleVal,
-                                      contentVal: contentVal,
-                                      creatorView: true,
+                                builder: (context) => Lecture(
+                                      title: titleVal,
+                                      body: contentVal,
+                                      nextLecture: Start(),
+                                      prevLecture: Start(),
+                                      image: downloadURLFinal,
                                     )));
                       } else {
                         print(false);

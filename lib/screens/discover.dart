@@ -1,4 +1,5 @@
 import 'package:ballwizard/blog_states.dart';
+import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/create_blog.dart';
 import 'package:ballwizard/types.dart';
@@ -12,6 +13,27 @@ class Discover extends StatefulWidget {
 }
 
 class _DiscoverState extends State<Discover> {
+  List dataBegginer = [];
+  List dataIntermidiate = [];
+  List dataAdvanced = [];
+
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    List data1 = await getDiscoverData('begginer');
+    List data2 = await getDiscoverData('intermidiate');
+    List data3 = await getDiscoverData('advanced');
+    //I can't call await inside the Row widget it would be 10x ez
+    setState(() {
+      dataBegginer = data1;
+      dataIntermidiate = data2;
+      dataAdvanced = data3;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,38 +56,58 @@ class _DiscoverState extends State<Discover> {
                               child: Headings('Our recommendation')),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(children: [
-                              Content(context),
-                              Content(context),
-                              Content(context)
-                            ]),
+                            child: Row(
+                                children: dataBegginer.map((dataDoc) {
+                              return Content(
+                                  context,
+                                  dataDoc['whoDid'],
+                                  dataDoc['numberOfLikes'],
+                                  dataDoc['picture'],
+                                  dataDoc['title'],
+                                  dataDoc['content']);
+                            }).toList()),
                           ),
                           Headings('Beginner'),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(children: [
-                              Content(context),
-                              Content(context),
-                              Content(context)
-                            ]),
+                            child: Row(
+                                children: dataIntermidiate.map((dataDoc) {
+                              return Content(
+                                  context,
+                                  dataDoc['whoDid'],
+                                  dataDoc['numberOfLikes'],
+                                  dataDoc['picture'],
+                                  dataDoc['title'],
+                                  dataDoc['content']);
+                            }).toList()),
                           ),
                           Headings('Intermidiate'),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(children: [
-                              Content(context),
-                              Content(context),
-                              Content(context)
-                            ]),
+                            child: Row(
+                                children: dataBegginer.map((dataDoc) {
+                              return Content(
+                                  context,
+                                  dataDoc['whoDid'],
+                                  dataDoc['numberOfLikes'],
+                                  dataDoc['picture'],
+                                  dataDoc['title'],
+                                  dataDoc['content']);
+                            }).toList()),
                           ),
                           Headings('Advanced'),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            child: Row(children: [
-                              Content(context),
-                              Content(context),
-                              Content(context)
-                            ]),
+                            child: Row(
+                                children: dataAdvanced.map((dataDoc) {
+                              return Content(
+                                  context,
+                                  dataDoc['whoDid'],
+                                  dataDoc['numberOfLikes'],
+                                  dataDoc['picture'],
+                                  dataDoc['title'],
+                                  dataDoc['content']);
+                            }).toList()),
                           ),
                         ],
                       ),

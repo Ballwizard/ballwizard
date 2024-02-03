@@ -9,13 +9,15 @@ class Lecture extends StatelessWidget {
   final String body;
   final StatelessWidget nextLecture;
   final StatelessWidget prevLecture;
-  const Lecture(
-      {Key? key,
-      required this.title,
-      required this.body,
-      required this.nextLecture,
-      required this.prevLecture})
-      : super(key: key);
+  final String? image;
+  Lecture({
+    Key? key,
+    required this.title,
+    required this.body,
+    required this.nextLecture,
+    required this.prevLecture,
+    this.image,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => _Lecture(
@@ -23,6 +25,7 @@ class Lecture extends StatelessWidget {
         body: body,
         nextLecture: nextLecture,
         prevLecture: prevLecture,
+        image: image,
       );
 }
 
@@ -31,12 +34,14 @@ class _Lecture extends StatefulWidget {
   final String body;
   final StatelessWidget nextLecture;
   final StatelessWidget prevLecture;
+  final String? image;
   const _Lecture(
       {Key? key,
       required this.title,
       required this.body,
       required this.nextLecture,
-      required this.prevLecture})
+      required this.prevLecture,
+      this.image})
       : super(key: key);
 
   @override
@@ -45,7 +50,6 @@ class _Lecture extends StatefulWidget {
 
 class LectureState extends State<_Lecture> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +60,7 @@ class LectureState extends State<_Lecture> {
           type: AppBarVariant.arrowLogo,
         ),
         body: Markdown(
-            data: widget.body,
+            data: widget.body + '![${widget.title}](${widget.image})',
             styleSheet: MarkdownStyleSheet(
               h1: Fonts.heading,
               h3: Fonts.medium,

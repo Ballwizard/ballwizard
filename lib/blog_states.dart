@@ -1,5 +1,8 @@
+import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/content_page.dart';
+import 'package:ballwizard/screens/lecture.dart';
+import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 
@@ -18,23 +21,35 @@ Widget Headings(String _text,
   );
 }
 
-Widget Content(context) {
+Widget Content(BuildContext context, String creator, int views, String picture,
+    String title, String content) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ContentPage(
-                    creatorView: false,
+              builder: (context) => Lecture(
+                    title: title,
+                    body: content,
+                    nextLecture: Start(),
+                    prevLecture: Start(),
+                    image: picture,
                   )));
     },
     child: Padding(
       padding: EdgeInsets.only(right: 20, bottom: 20, top: 10),
       child: Row(children: [
         Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: ColorPalette.dark,
               borderRadius: BorderRadius.all(Radius.circular(8)),
+              image: picture != null
+                  ? DecorationImage(
+                      image: NetworkImage(
+                          picture), // Or AssetImage if it's an asset
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
             height: 225,
             width: 300,
@@ -52,7 +67,7 @@ Widget Content(context) {
                       Padding(
                         padding: EdgeInsets.only(top: 10, bottom: 5),
                         child: Text(
-                          'Russian Criss Cross',
+                          title,
                           style: Fonts.large.copyWith(
                               decoration: TextDecoration.underline,
                               decorationThickness: 0.6),
@@ -64,13 +79,24 @@ Widget Content(context) {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "By • Ante Antić",
+                                "By • $creator",
                                 style: Fonts.smLight,
                               ),
-                              const Icon(
-                                Icons.favorite,
-                                color: ColorPalette.mutedMuted,
-                              )
+                              Row(children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 5),
+                                  child: const Icon(
+                                    Icons.favorite,
+                                    color: ColorPalette.mutedMuted,
+                                  ),
+                                ),
+                                Text(
+                                  views < 999
+                                      ? views.toString()
+                                      : (views / 1000).toString() + 'k',
+                                  style: Fonts.smLight,
+                                ),
+                              ])
                             ]),
                       ),
                     ],

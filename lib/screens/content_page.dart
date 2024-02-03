@@ -2,6 +2,7 @@ import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/discover.dart';
+import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 import 'package:ballwizard/blog_states.dart';
@@ -101,12 +102,10 @@ class _ContentPageState extends State<ContentPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: widget.creatorView
               ? () {
-                  addUserWithDoc(
-                      widget.titleVal, widget.contentVal, 'Ad1vanced');
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const Discover()));
+                  addUserWithDoc(widget.titleVal, widget.contentVal, 'advanced',
+                      user.displayName!);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home()));
                   // Make toast message that says that this is created succesful also push this on firebase
                 }
               : () {
