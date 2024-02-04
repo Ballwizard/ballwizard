@@ -5,7 +5,7 @@ import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/login.dart';
 // import 'package:ballwizard/screens/logout.dart';
 import 'package:ballwizard/screens/register.dart';
-import 'package:ballwizard/screens/start.dart';
+import 'package:ballwizard/screens/manage_user.dart';
 import 'package:ballwizard/screens/user_info.dart';
 import 'package:ballwizard/types.dart'
     show ColorPalette, DrawerElement, FundamentalVariant;

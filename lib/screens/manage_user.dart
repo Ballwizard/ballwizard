@@ -37,7 +37,7 @@ class _MyHomePageState extends State<StartPage> {
   final ToastQueue queue = ToastQueue();
 
   //Controllers
-  // TextEditingController username = TextEditingController();
+
   String username = '';
   bool showGreen = false;
   bool showModal = false;
@@ -45,12 +45,16 @@ class _MyHomePageState extends State<StartPage> {
   ///This is reusable for different Titles
   Widget titles(String title) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 20),
-      child: Text(
-        title,
-        style: Fonts.medium,
-      ),
-    );
+        padding: const EdgeInsets.only(left: 20, top: 20),
+        child: Text(
+          title,
+          style: Fonts.medium,
+          //   .copyWith(
+          //       decoration: TextDecoration.underline,
+          //       decorationThickness: 4,
+          //       decorationColor: ColorPalette.dark.withOpacity(0.5)),
+          // ),
+        ));
   }
 
   //Firebase authentication
@@ -106,6 +110,7 @@ class _MyHomePageState extends State<StartPage> {
             toggleModal: toggleModal,
           )
         : Scaffold(
+            resizeToAvoidBottomInset: false,
             extendBodyBehindAppBar: true,
             key: _key,
             appBar: widget.renderNavbar
@@ -122,7 +127,12 @@ class _MyHomePageState extends State<StartPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: chooseProfilePic,
+                      onTap: () async {
+                        await chooseProfilePic();
+                        setState(() {
+                          displayPfpImg;
+                        });
+                      },
                       child: user?.photoURL != null
                           ? Container(
                               width: 125,
@@ -137,7 +147,7 @@ class _MyHomePageState extends State<StartPage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(2000),
                                 child: Image.network(
-                                  user!.photoURL ?? '',
+                                  displayPfpImg,
                                   fit: BoxFit.cover,
                                 ),
                               ), //This checks just one more time because compiler throws an error
@@ -151,7 +161,7 @@ class _MyHomePageState extends State<StartPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '${user?.displayName}',
+                        '${displayUsername}',
                         style: Fonts.heading,
                       ),
                     ),
@@ -180,6 +190,7 @@ class _MyHomePageState extends State<StartPage> {
                       child: Divider(
                         color: Colors.black,
                         thickness: 1,
+                        //Looks better but try to remove it
                       ),
                     ),
                     Transform.translate(
@@ -190,19 +201,15 @@ class _MyHomePageState extends State<StartPage> {
                           right: 25,
                         ),
                         child: Form1.Input(
-                          // controller: username,
-                          placeholder: "Enter 5 or more charachters...",
+                          placeholder: "Enter 3 or more charachters...",
                           label:
                               "", //Change size of the label when we do code review
                           labelVariant: FundamentalVariant.dark,
                           variant: FundamentalVariant.light,
-                          // onChanged: () {
-                          //   username.text.length > 4 ? print(username) : showGreen;
-                          // },
                           onChange: (val) {
                             setState(() {
                               username = val;
-                              username.length > 4
+                              username.length > 2
                                   ? showGreen = true
                                   : showGreen = false;
                             });
@@ -234,21 +241,31 @@ class _MyHomePageState extends State<StartPage> {
                   ],
                 ),
                 Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      !showGreen
-                          ? buttons('Delete account', () {
-                              // check();
-                              setState(() {
-                                toggleModal(true);
-                              });
-                            }, true)
-                          : buttons('Change username', () {
-                              updateUsername(username);
-                            }, false)
-                    ],
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          !showGreen
+                              ? buttons('Delete account', () {
+                                  // check();
+                                  setState(() {
+                                    toggleModal(true);
+                                  });
+                                }, true)
+                              : buttons('Change username', () async {
+                                  await updateUsername(username);
+                                  setState(() {
+                                    displayUsername;
+                                    showGreen = !showGreen;
+                                  });
+                                }, false)
+                        ],
+                      ),
+                    ),
                   ),
                 )
               ]),

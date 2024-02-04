@@ -1,6 +1,6 @@
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/lecture.dart';
-import 'package:ballwizard/screens/start.dart';
+import 'package:ballwizard/screens/manage_user.dart';
 import 'package:ballwizard/types.dart'
     show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';

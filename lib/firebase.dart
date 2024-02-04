@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +11,13 @@ User user = FirebaseAuth.instance.currentUser!;
 
 final db = FirebaseFirestore.instance;
 
-String downloadURLFinal = '';
+String downloadURLFinal = ''; //Remove this
+
+//Manage user
+String displayPfpImg = user!.photoURL ?? '';
+String displayUsername = user.displayName ?? '';
+
+///
 
 Future<void> addUserWithDoc(
   String whoDid,
@@ -69,9 +76,12 @@ Future<void> chooseProfilePic() async {
           .putFile(globalImage!);
       final dowURL = await sendImg.ref.getDownloadURL();
       await user?.updatePhotoURL(dowURL);
+      print(dowURL);
+
+      displayPfpImg = dowURL;
     }
   } catch (e) {
-    print(e);
+    print('Erorr');
   }
 }
 
@@ -80,6 +90,7 @@ Future<void> updateUsername(String username) async {
     if (user != null && username.length >= 3) {
       // final chnageUsernm =
       await user?.updateDisplayName(username);
+      displayUsername = username;
       // setState(() {
       //   chnageUsernm;
       // });

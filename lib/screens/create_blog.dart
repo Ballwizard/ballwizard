@@ -6,7 +6,7 @@ import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/content_page.dart';
-import 'package:ballwizard/screens/start.dart';
+import 'package:ballwizard/screens/manage_user.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 import 'package:ballwizard/input.dart' as Form1 show Input;

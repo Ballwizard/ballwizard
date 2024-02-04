@@ -1,6 +1,6 @@
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/register.dart';
-import 'package:ballwizard/screens/start.dart';
+import 'package:ballwizard/screens/manage_user.dart';
 import 'package:ballwizard/types.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
