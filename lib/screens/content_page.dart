@@ -102,8 +102,12 @@ class _ContentPageState extends State<ContentPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: widget.creatorView
               ? () {
-                  addUserWithDoc(widget.titleVal, widget.contentVal, 'advanced',
-                      user.displayName!);
+                  addLectureWithDoc(
+                    user.displayName!,
+                    widget.titleVal,
+                    widget.contentVal,
+                    'intermidiate',
+                  );
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Home()));
                   // Make toast message that says that this is created succesful also push this on firebase

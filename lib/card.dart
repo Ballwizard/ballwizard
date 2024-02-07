@@ -79,6 +79,8 @@ class CardElement extends StatelessWidget {
               body: markdown,
               nextLecture: Start(),
               prevLecture: Start(),
+              isUserLection: false,
+              mockIsCreator: false,
             ),
           ),
         );

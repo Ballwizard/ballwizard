@@ -1,6 +1,7 @@
 import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/content_page.dart';
+import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/screens/manage_user.dart';
 import 'package:ballwizard/types.dart';
@@ -23,6 +24,7 @@ Widget Headings(String _text,
 
 Widget Content(BuildContext context, String creator, int views, String picture,
     String title, String content) {
+  // final Title = title.split(' ')[0].toUpperCase().toString();
   return GestureDetector(
     onTap: () {
       Navigator.push(
@@ -34,6 +36,8 @@ Widget Content(BuildContext context, String creator, int views, String picture,
                     nextLecture: Start(),
                     prevLecture: Start(),
                     image: picture,
+                    isUserLection: true,
+                    mockIsCreator: false,
                   )));
     },
     child: Padding(
@@ -41,16 +45,15 @@ Widget Content(BuildContext context, String creator, int views, String picture,
       child: Row(children: [
         Container(
             decoration: BoxDecoration(
-              color: ColorPalette.dark,
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              image: picture != null
-                  ? DecorationImage(
-                      image: NetworkImage(
-                          picture), // Or AssetImage if it's an asset
-                      fit: BoxFit.cover,
-                    )
-                  : null,
-            ),
+                color: ColorPalette.dark,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                image: picture != '' //Don't use null
+                    ? DecorationImage(
+                        image: NetworkImage(picture),
+                        fit: BoxFit.cover,
+                      )
+                    : null //see if we are going to add some dumb image,
+                ),
             height: 225,
             width: 300,
             child: Align(

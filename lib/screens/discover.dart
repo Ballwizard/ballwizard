@@ -1,7 +1,7 @@
 import 'package:ballwizard/blog_states.dart';
 import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/screens/create_blog.dart';
+import 'package:ballwizard/screens/create_user_lection.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +71,7 @@ class _DiscoverState extends State<Discover> {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                                children: dataIntermidiate.map((dataDoc) {
+                                children: dataBegginer.map((dataDoc) {
                               return Content(
                                   context,
                                   dataDoc['whoDid'],
@@ -85,7 +85,7 @@ class _DiscoverState extends State<Discover> {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
-                                children: dataBegginer.map((dataDoc) {
+                                children: dataIntermidiate.map((dataDoc) {
                               return Content(
                                   context,
                                   dataDoc['whoDid'],

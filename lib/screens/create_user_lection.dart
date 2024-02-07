@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ballwizard/appbar.dart';
 import 'package:ballwizard/blog_states.dart';
+import 'package:ballwizard/screens/home.dart';
 import 'package:ballwizard/screens/lecture.dart';
 import 'package:ballwizard/firebase.dart';
 import 'package:ballwizard/globals.dart';
@@ -53,6 +54,13 @@ class _CreateBlogState extends State<CreateBlog> {
   String titleVal = '';
   String contentVal = '';
   bool allowPost = false;
+  bool isImageLoaded = true;
+  void dispose() {
+    downloadURLFinal = '';
+    print(downloadURLFinal);
+    super.dispose(); //Clean image when this leaves the page
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,10 +145,11 @@ class _CreateBlogState extends State<CreateBlog> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 36, vertical: 20),
                 child: GestureDetector(
-                  onTap: () {
-                    print('Hello world');
+                  onTap: () async {
                     //Only var need but I have no Idea why flutter doesn't allow me
-                    choosePic();
+                    isImageLoaded = false;
+                    await choosePic();
+                    isImageLoaded = true;
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -182,25 +191,39 @@ class _CreateBlogState extends State<CreateBlog> {
                       if (allowPost) {
                         print(titleVal);
                         print(contentVal);
-
-                        // Navigator.push(
+                        print(downloadURLFinal);
+                        if (isImageLoaded) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Lecture(
+                                        title: titleVal,
+                                        body: contentVal,
+                                        nextLecture: Start(),
+                                        prevLecture: Start(),
+                                        // image: downloadURLFinal,
+                                        isUserLection: false,
+                                        mockIsCreator: true,
+                                      )));
+                          // Navigator.push(
+                        } else {
+                          print(
+                              'Waitting for image to be loaded'); //If we can make tast messages
+                        }
                         //     context,
                         //     MaterialPageRoute(
-                        //         builder: (context) => ContentPage(
-                        //               titleVal: titleVal,
-                        //               contentVal: contentVal,
-                        //               creatorView: true,
+                        //         builder: (context) => Lecture(
+                        //               title: titleVal,
+                        //               body: contentVal,
+                        //               nextLecture: Start(),
+                        //               prevLecture: Start(),
+                        //               image: downloadURLFinal,
+                        //               isUserLection: true,
                         //             )));
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Lecture(
-                                      title: titleVal,
-                                      body: contentVal,
-                                      nextLecture: Start(),
-                                      prevLecture: Start(),
-                                      image: downloadURLFinal,
-                                    )));
+
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) => Home()));
+                        // downloadURLFinal = '';
                       } else {
                         print(false);
                       }

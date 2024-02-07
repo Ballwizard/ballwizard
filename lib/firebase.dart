@@ -19,7 +19,7 @@ String displayUsername = user.displayName ?? '';
 
 ///
 
-Future<void> addUserWithDoc(
+Future<void> addLectureWithDoc(
   String whoDid,
   String title,
   String text,
@@ -28,8 +28,8 @@ Future<void> addUserWithDoc(
   try {
     await db.collection('blog_posts').add({
       'name': user?.displayName,
-      'title': title,
-      'content': text,
+      'title': title.split('')[0].toUpperCase() + title.substring(1),
+      'content': text.split('')[0].toUpperCase() + text.substring(1),
       'isLikedByOthers': false,
       'isLikedByUser': false,
       'tag': tag,
