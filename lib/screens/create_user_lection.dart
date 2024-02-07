@@ -55,6 +55,21 @@ class _CreateBlogState extends State<CreateBlog> {
   String contentVal = '';
   bool allowPost = false;
   bool isImageLoaded = true;
+
+  String chipVal = '';
+  void allowUserToSubmitLecture() {
+    if (titleVal.length > 2 &&
+        titleVal.length < 21 &&
+        contentVal.split(' ').length / 2 > 19 &&
+        contentVal.split(' ').length / 2 < 280 &&
+        chipVal != '') {
+      //Chnage params however you like
+      allowPost = true;
+    } else {
+      allowPost = false;
+    }
+  }
+
   void dispose() {
     downloadURLFinal = '';
     print(downloadURLFinal);
@@ -71,7 +86,9 @@ class _CreateBlogState extends State<CreateBlog> {
         height: double.infinity,
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(
+              top: 15,
+            ),
             child: Text(
               'Create lecture',
               style: Fonts.heading,
@@ -95,6 +112,7 @@ class _CreateBlogState extends State<CreateBlog> {
               onChange: (txt) {
                 setState(() {
                   titleVal = txt;
+                  allowUserToSubmitLecture();
                 });
               },
               // label: 'Title:',
@@ -119,22 +137,18 @@ class _CreateBlogState extends State<CreateBlog> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                 child: TextFormField(
+                    // If you can please make this shadow you understand better than me
                     onChanged: (txt) {
                       setState(() {
                         contentVal = txt;
-
-                        if (titleVal.length > 3 && contentVal.length > 10) {
-                          allowPost = true;
-                        } else {
-                          allowPost = false;
-                        }
+                        allowUserToSubmitLecture();
                       });
                     },
                     style: Fonts.sm.copyWith(color: ColorPalette.dark),
                     minLines:
                         8, // any number you need (It works as the rows for the textarea)
                     keyboardType: TextInputType.multiline,
-                    maxLines: null,
+                    maxLines: 8,
                     decoration: InputDecoration(
                       hintText: 'Enter your content of the page:',
                       hintStyle: Fonts.sm.copyWith(color: ColorPalette.dark),
@@ -143,7 +157,8 @@ class _CreateBlogState extends State<CreateBlog> {
                     )),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 36, vertical: 20),
+                padding:
+                    EdgeInsets.only(left: 36, right: 36, top: 14, bottom: 10),
                 child: GestureDetector(
                   onTap: () async {
                     //Only var need but I have no Idea why flutter doesn't allow me
@@ -151,28 +166,116 @@ class _CreateBlogState extends State<CreateBlog> {
                     await choosePic();
                     isImageLoaded = true;
                   },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Choose an image (optional)',
-                        style: Fonts.sm.copyWith(shadows: [
-                          Shadow(
-                              color: ColorPicker.colorOpacity(
-                                  ColorPicker.dark, 0.25),
-                              offset: Offset(0, 2),
-                              blurRadius: 4)
-                        ]),
+                  child: Column(children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Choose image (optional)',
+                          style: Fonts.medium.copyWith(shadows: [
+                            Shadow(
+                                color: ColorPicker.colorOpacity(
+                                    ColorPicker.dark, 0.25),
+                                offset: Offset(0, 2),
+                                blurRadius: 4)
+                          ]),
+                        ),
+                        const Icon(
+                          Icons.image,
+                          size: 35,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Divider(
+                        color: ColorPalette.dark,
+                        thickness: 1,
                       ),
-                      const Icon(
-                        Icons.image,
-                        size: 35,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ]),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Choose diffculty:',
+                      style: Fonts.medium.copyWith(shadows: [
+                        Shadow(
+                            color: ColorPicker.colorOpacity(
+                                ColorPicker.dark, 0.25),
+                            offset: Offset(0, 2),
+                            blurRadius: 4)
+                      ]),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          RawChip(
+                            label: const Text('Begginer',
+                                style: TextStyle(color: ColorPalette.light)),
+                            backgroundColor: chipVal == 'begginer'
+                                ? ColorPalette.success
+                                : ColorPalette.muted,
+                            onSelected: (bool isSelected) {
+                              isSelected
+                                  ? setState(() {
+                                      chipVal = 'begginer';
+                                      allowUserToSubmitLecture();
+                                    })
+                                  : null;
+                              print(chipVal);
+                            },
+                          ),
+                          RawChip(
+                            label: const Text('Intermidiate',
+                                style: TextStyle(color: ColorPalette.light)),
+                            backgroundColor: chipVal == 'intermidiate'
+                                ? ColorPalette.success
+                                : ColorPalette.muted,
+                            onSelected: (bool isSelected) {
+                              isSelected
+                                  ? setState(() {
+                                      chipVal = 'intermidiate';
+                                      allowUserToSubmitLecture();
+                                    })
+                                  : null;
+                              print(chipVal);
+                            },
+                          ),
+                          RawChip(
+                            label: const Text('Advanced',
+                                style: TextStyle(color: ColorPalette.light)),
+                            backgroundColor: chipVal == 'advanced'
+                                ? ColorPalette.success
+                                : ColorPalette.muted,
+                            onSelected: (bool isSelected) {
+                              isSelected
+                                  ? setState(() {
+                                      chipVal = 'advanced';
+                                      allowUserToSubmitLecture();
+                                    })
+                                  : null;
+
+                              print(chipVal);
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
               // globalImage != null
               //     ? Image.file(globalImage)
               //     : Text('Enter image')
@@ -201,14 +304,14 @@ class _CreateBlogState extends State<CreateBlog> {
                                         body: contentVal,
                                         nextLecture: Start(),
                                         prevLecture: Start(),
-                                        // image: downloadURLFinal,
+                                        difficultyTag: chipVal,
                                         isUserLection: false,
                                         mockIsCreator: true,
                                       )));
                           // Navigator.push(
                         } else {
                           print(
-                              'Waitting for image to be loaded'); //If we can make tast messages
+                              'Waitting for image to be loaded'); //If we can make tast messages or stmh like that
                         }
                         //     context,
                         //     MaterialPageRoute(

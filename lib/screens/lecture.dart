@@ -15,6 +15,7 @@ class Lecture extends StatelessWidget {
   final String? image;
   final bool isUserLection;
   final bool mockIsCreator;
+  final String? difficultyTag;
   Lecture({
     Key? key,
     required this.title,
@@ -22,11 +23,9 @@ class Lecture extends StatelessWidget {
     required this.nextLecture,
     required this.prevLecture,
     required this.isUserLection,
-    this.image,
-
-    ///
-
     required this.mockIsCreator,
+    this.difficultyTag,
+    this.image,
   }) : super(key: key);
 
   @override
@@ -38,6 +37,7 @@ class Lecture extends StatelessWidget {
         image: image,
         isUserLection: isUserLection,
         mockIsCreator: mockIsCreator,
+        difficultyTag: difficultyTag,
       );
 }
 
@@ -48,7 +48,7 @@ class _Lecture extends StatefulWidget {
   final StatelessWidget prevLecture;
   final String? image;
   final bool isUserLection;
-
+  final String? difficultyTag;
   final bool mockIsCreator;
   const _Lecture({
     Key? key,
@@ -57,11 +57,9 @@ class _Lecture extends StatefulWidget {
     required this.nextLecture,
     required this.prevLecture,
     required this.isUserLection,
-    this.image,
-
-    ///
-
     required this.mockIsCreator,
+    this.difficultyTag,
+    this.image,
   }) : super(key: key);
 
   @override
@@ -141,17 +139,19 @@ class LectureState extends State<_Lecture> {
       floatingActionButton: widget.mockIsCreator || widget.isUserLection
           ? FloatingActionButton(
               onPressed: widget.mockIsCreator
-                  ? () {
-                      addLectureWithDoc(
+                  ? () async {
+                      await addLectureWithDoc(
                         user.displayName!,
                         widget.title,
                         widget.body,
-                        'intermidiate', //add tags
+                        widget.difficultyTag!, //add tags
                       );
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const Home()));
+
+                      downloadURLFinal = '';
                       // Make toast message that says that this is created succesful also push this on firebase
                     }
                   : () {
