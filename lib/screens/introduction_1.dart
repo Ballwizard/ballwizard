@@ -3,7 +3,7 @@ import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart' as Globals;
 import 'package:ballwizard/screens/introduction_2.dart';
 import 'package:ballwizard/types.dart'
-    show AppBarVariant, ColorPalette, FundamentalVariant, Variant;
+    show ColorPalette, FundamentalVariant, Variant;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../input.dart';
 
 class Introduction extends StatelessWidget {
-  const Introduction({Key? key}) : super(key: key);
+  const Introduction({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class Introduction extends StatelessWidget {
 }
 
 class IntroductionPage extends StatefulWidget {
-  const IntroductionPage({Key? key}) : super(key: key);
+  const IntroductionPage({super.key});
 
   @override
   State<IntroductionPage> createState() => IntroductionPageState();
@@ -52,12 +52,12 @@ class IntroductionPageState extends State<IntroductionPage> {
       body: Globals.GradientBackground(
         variant: FundamentalVariant.light,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 64),
+              const SizedBox(height: 64),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -66,7 +66,8 @@ class IntroductionPageState extends State<IntroductionPage> {
                       padding: const EdgeInsets.only(bottom: 64),
                       child: Text("Tell us more about yourself",
                           style: Globals.Fonts.addShadow(Globals.Fonts.heading
-                              .merge(TextStyle(color: ColorPalette.light)))),
+                              .merge(
+                                  const TextStyle(color: ColorPalette.light)))),
                     ),
                     Input(
                       placeholder: "Enter your name",
@@ -75,16 +76,16 @@ class IntroductionPageState extends State<IntroductionPage> {
                         setState(() {
                           name = val;
                           if (val != "") {
-                            bool _pass = true;
+                            bool pass_ = true;
                             for (bool element in canPass) {
                               if (!element) {
-                                _pass = false;
+                                pass_ = false;
                                 break;
                               }
                             }
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               setState(() {
-                                pass = _pass;
+                                pass = pass_;
                                 canPass[0] = true;
                               });
                             });
@@ -109,37 +110,29 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     if (test < 1 || test > 31) return false;
                                     if (month != "" && year != "") {
                                       try {
-                                        DateTime? date =
-                                            DateFormat("dd.MM.yyyy")
-                                                .parseStrict(val
-                                                        .toString()
-                                                        .padLeft(2, "0") +
-                                                    "." +
-                                                    month
-                                                        .toString()
-                                                        .padLeft(2, "0") +
-                                                    "." +
-                                                    year.toString());
-                                        if (date == null) return false;
-                                        if (DateTime.now().isBefore(date))
+                                        DateTime? date = DateFormat(
+                                                "dd.MM.yyyy")
+                                            .parseStrict(
+                                                "${val.toString().padLeft(2, "0")}.${month.toString().padLeft(2, "0")}.$year");
+                                        if (DateTime.now().isBefore(date)) {
                                           return false;
+                                        }
                                       } catch (err) {
-                                        print(err);
                                         return false;
                                       }
                                     }
                                     canPass[1] = true;
-                                    bool _pass = true;
+                                    bool pass = true;
                                     for (bool element in canPass) {
                                       if (!element) {
-                                        _pass = false;
+                                        pass = false;
                                         break;
                                       }
                                     }
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
                                       setState(() {
-                                        pass = _pass;
+                                        pass = pass;
                                         canPass[1] = true;
                                       });
                                     });
@@ -165,37 +158,29 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     if (test > 12 || test < 1) return false;
                                     if (day != "" && year != "") {
                                       try {
-                                        DateTime? date =
-                                            DateFormat("dd.MM.yyyy")
-                                                .parseStrict(day
-                                                        .toString()
-                                                        .padLeft(2, "0") +
-                                                    "." +
-                                                    val
-                                                        .toString()
-                                                        .padLeft(2, "0") +
-                                                    "." +
-                                                    year.toString());
-                                        if (date == null) return false;
-                                        if (DateTime.now().isBefore(date))
+                                        DateTime? date = DateFormat(
+                                                "dd.MM.yyyy")
+                                            .parseStrict(
+                                                "${day.toString().padLeft(2, "0")}.${val.toString().padLeft(2, "0")}.$year");
+                                        if (DateTime.now().isBefore(date)) {
                                           return false;
+                                        }
                                       } catch (err) {
-                                        print(err);
                                         return false;
                                       }
                                     }
                                     canPass[2] = true;
-                                    bool _pass = true;
+                                    bool pass = true;
                                     for (bool element in canPass) {
                                       if (!element) {
-                                        _pass = false;
+                                        pass = false;
                                         break;
                                       }
                                     }
                                     WidgetsBinding.instance
                                         .addPostFrameCallback((_) {
                                       setState(() {
-                                        pass = _pass;
+                                        pass = pass;
                                         canPass[2] = true;
                                       });
                                     });
@@ -205,7 +190,6 @@ class IntroductionPageState extends State<IntroductionPage> {
                                     setState(() {
                                       month = val;
                                       canPass[2] = false;
-                                      print("we done kicked them out");
                                     });
                                   }),
                             )
@@ -224,32 +208,27 @@ class IntroductionPageState extends State<IntroductionPage> {
                                 if (day != "" && month != "") {
                                   try {
                                     DateTime? date = DateFormat("dd.MM.yyyy")
-                                        .parseStrict(day
-                                                .toString()
-                                                .padLeft(2, "0") +
-                                            "." +
-                                            month.toString().padLeft(2, "0") +
-                                            "." +
-                                            val.toString());
-                                    if (date == null) return false;
-                                    if (DateTime.now().isBefore(date))
+                                        .parseStrict(
+                                            "${day.toString().padLeft(2, "0")}.${month.toString().padLeft(2, "0")}.$val");
+                                    if (DateTime.now().isBefore(date)) {
                                       return false;
+                                    }
                                   } catch (err) {
                                     return false;
                                   }
                                 }
                                 canPass[3] = true;
-                                bool _pass = true;
+                                bool pass = true;
                                 for (bool element in canPass) {
                                   if (!element) {
-                                    _pass = false;
+                                    pass = false;
                                     break;
                                   }
                                 }
                                 WidgetsBinding.instance
                                     .addPostFrameCallback((_) {
                                   setState(() {
-                                    pass = _pass;
+                                    pass = pass;
                                     canPass[3] = true;
                                   });
                                 });

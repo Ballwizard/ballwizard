@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,16 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCT79Q-cVa3QzvUh7jSPVOdxdhhUDhb2sw',
-    appId: '1:471266321533:web:51aa457d3cebe4b87a7d14',
-    messagingSenderId: '471266321533',
-    projectId: 'ballwizard-app',
-    authDomain: 'ballwizard-app.firebaseapp.com',
-    storageBucket: 'ballwizard-app.appspot.com',
-    measurementId: 'G-HWQ17LPQ3Y',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCuN2mfLXDsl_ehHGnxk7cfTb_EnzxRsUg',
     appId: '1:471266321533:android:1fcf5220ff9bc6727a7d14',
@@ -70,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '471266321533',
     projectId: 'ballwizard-app',
     storageBucket: 'ballwizard-app.appspot.com',
+    androidClientId: '471266321533-c0555virrrnl00pdj9bs8ucfd9t54s3g.apps.googleusercontent.com',
+    iosClientId: '471266321533-cpc33fl987fg1o42v2tuk9939mb0r5o2.apps.googleusercontent.com',
     iosBundleId: 'com.example.ballwizard',
   );
 }

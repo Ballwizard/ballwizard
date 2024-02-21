@@ -1,6 +1,8 @@
-import 'package:ballwizard/types.dart'
-    show BasicVariant, FundamentalVariant, ColorPalette, AppBarVariant;
+import 'package:ballwizard/types.dart' show FundamentalVariant, AppBarVariant;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'input.dart';
 
 PreferredSizeWidget AppBarCustom(
     {FundamentalVariant variant = FundamentalVariant.light,
@@ -8,6 +10,9 @@ PreferredSizeWidget AppBarCustom(
     String title = "",
     bool isTransparent = false,
     AppBarVariant type = AppBarVariant.arrow,
+    String placeholder = "",
+    onInputChange,
+    onEnter,
     required GlobalKey<ScaffoldState> key,
     required BuildContext context}) {
   switch (type) {
@@ -24,11 +29,13 @@ PreferredSizeWidget AppBarCustom(
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         elevation: 0,
         foregroundColor: titleVariant.color(),
+        scrolledUnderElevation: 0,
       );
     case AppBarVariant.logoPicture:
       return AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Image.asset(
@@ -36,7 +43,21 @@ PreferredSizeWidget AppBarCustom(
             fit: BoxFit.contain,
             height: 48,
           ),
-          AccountButton(variant, key),
+          GestureDetector(
+            onTap: () {
+              key.currentState?.openEndDrawer();
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: FirebaseAuth.instance.currentUser?.photoURL != null
+                  ? Image.network(
+                      FirebaseAuth.instance.currentUser!.photoURL!,
+                      width: 34,
+                      height: 34,
+                    )
+                  : const Icon(Icons.account_circle, size: 34),
+            ),
+          ),
         ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
@@ -45,6 +66,7 @@ PreferredSizeWidget AppBarCustom(
       return AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,6 +88,7 @@ PreferredSizeWidget AppBarCustom(
       return AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,6 +100,29 @@ PreferredSizeWidget AppBarCustom(
                 height: 48,
               ),
               AccountButton(variant, key)
+            ]),
+        backgroundColor: isTransparent ? Colors.transparent : variant.color(),
+        foregroundColor: titleVariant.color(),
+      );
+    case AppBarVariant.search:
+      return AppBar(
+        automaticallyImplyLeading: false,
+        scrolledUnderElevation: 0,
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                  child: SizedBox(
+                      height: 75,
+                      child: FractionallySizedBox(
+                        widthFactor: 1.03,
+                        child: Input(
+                          onChange: onInputChange ?? (String val) {},
+                          onEnter: onEnter ?? (String val) {},
+                          placeholder: placeholder,
+                        ),
+                      ))),
             ]),
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         foregroundColor: titleVariant.color(),
@@ -97,36 +143,8 @@ Widget BackButton(FundamentalVariant variant, BuildContext context) {
 Widget AccountButton(FundamentalVariant variant, GlobalKey<ScaffoldState> key) {
   return IconButton(
       onPressed: () {
-        print(variant);
-        print(key);
-        print(key.currentState);
-        print(key.currentState?.isEndDrawerOpen);
         key.currentState?.openEndDrawer();
-        print(key.currentState?.isEndDrawerOpen);
       },
       icon:
           Icon(Icons.account_circle, size: 34, color: variant.inverseColor()));
 }
-
-/*
-return AppBar(
-      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Image.asset(
-          'assets/logo.png',
-          fit: BoxFit.contain,
-          width: 285,
-        ),
-        const SizedBox(
-          height: 64,
-          width: 64,
-          child: ColoredBox(color: ColorPalette.dark),
-        )
-      ]),
-      backgroundColor:
-          widget.isTransparent ? Colors.transparent : widget.variant.color(),
-      foregroundColor: widget.titleVariant.color(),
-      elevation: 0,
-    );
- */
-
-// arrow, logoPicture, arrowLogo, arrowLogoPicture, search

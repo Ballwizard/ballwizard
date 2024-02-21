@@ -1,6 +1,6 @@
 import 'package:ballwizard/globals.dart' as Globals;
 import 'package:ballwizard/types.dart'
-    show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
+    show FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,20 +11,23 @@ class Input extends StatefulWidget {
   final String label;
   final int limit;
   final TextInputType type;
+  final bool isPassword;
   late final dynamic onChange;
   late final dynamic validator;
+  late final dynamic onEnter;
 
-  Input({
-    super.key,
-    this.variant = FundamentalVariant.light,
-    this.labelVariant = FundamentalVariant.light,
-    this.placeholder = "",
-    this.label = "",
-    this.limit = 128,
-    this.type = TextInputType.text,
-    this.onChange,
-    this.validator,
-  });
+  Input(
+      {super.key,
+      this.variant = FundamentalVariant.light,
+      this.labelVariant = FundamentalVariant.light,
+      this.placeholder = "",
+      this.label = "",
+      this.limit = 128,
+      this.type = TextInputType.text,
+      this.isPassword = false,
+      this.onChange,
+      this.validator,
+      this.onEnter});
 
   @override
   State<Input> createState() => InputState();
@@ -59,15 +62,20 @@ class InputState extends State<Input> {
             widthFactor: 1.04,
             child: Globals.ShadowElement(
               blurRadius: 4,
+              borderRadius: 12,
               child: SizedBox(
                 height: 45,
                 child: TextField(
-                  keyboardType: widget.type != null ? widget.type : null,
+                  obscureText: widget.isPassword,
+                  enableSuggestions: !widget.isPassword,
+                  autocorrect: false,
+                  keyboardType: widget.type,
                   controller: controller,
                   onChanged: onChange,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(widget.limit + 1)
                   ],
+                  onSubmitted: widget.onEnter,
                   style: TextStyle(
                           color: useLightFont
                               ? ColorPalette.light
@@ -87,7 +95,7 @@ class InputState extends State<Input> {
                           BorderSide(color: ColorPalette.dark, width: 0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(
                           color: useLightFont
                               ? ColorPalette.light
@@ -113,8 +121,8 @@ class InputState extends State<Input> {
                             !widget.validator(controller.text)
                         ? ""
                         : null,
-                    errorStyle:
-                        TextStyle(fontSize: 0, fontStyle: null, height: 0),
+                    errorStyle: const TextStyle(
+                        fontSize: 0, fontStyle: null, height: 0),
                   ),
                 ),
               ),
@@ -125,7 +133,7 @@ class InputState extends State<Input> {
           top: 0,
           left: 0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -138,7 +146,7 @@ class InputState extends State<Input> {
                           Shadow(
                               color: ColorPicker.colorOpacity(
                                   ColorPicker.dark, 0.25),
-                              offset: Offset(0, 2),
+                              offset: const Offset(0, 2),
                               blurRadius: 4)
                         ]).merge(Globals.Fonts.small)),
               ],

@@ -1,19 +1,19 @@
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/types.dart'
-    show BasicVariant, Variant, ColorPalette, ColorPicker;
+import 'package:ballwizard/types.dart' show Variant, ColorPalette;
 import 'package:flutter/material.dart';
 
 class Button extends StatefulWidget {
   final Variant variant;
   final String title;
   final VoidCallback onClick;
+  final double? height;
 
-  const Button({
-    super.key,
-    this.variant = Variant.light,
-    this.title = "",
-    required this.onClick,
-  });
+  const Button(
+      {super.key,
+      this.variant = Variant.light,
+      this.title = "",
+      required this.onClick,
+      this.height});
 
   @override
   State<Button> createState() => ButtonState();
@@ -27,10 +27,12 @@ class ButtonState extends State<Button> {
         widget.variant == Variant.primary ||
         widget.variant == Variant.secondary ||
         widget.variant == Variant.primaryMuted ||
-        widget.variant == Variant.secondaryMuted;
+        widget.variant == Variant.secondaryMuted ||
+        widget.variant == Variant.danger ||
+        widget.variant == Variant.dangerMuted;
 
     return SizedBox(
-        height: 44,
+        height: widget.height ?? 44,
         child: FractionallySizedBox(
           widthFactor: 1,
           heightFactor: 1,
