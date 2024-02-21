@@ -1,33 +1,28 @@
 import 'dart:convert';
 
 import 'package:ballwizard/appbar.dart' show AppBarCustom;
+import 'package:ballwizard/chip.dart';
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/types.dart'
-    show
-        AppBarVariant,
-        ColorPalette,
-        FundamentalVariant,
-        Toast,
-        ToastVariant,
-        Variant;
+    show AppBarVariant, ColorPalette, Variant;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../card.dart';
+import '../globals.dart';
 
 class ManageActivity extends StatelessWidget {
-  ManageActivity({super.key});
+  const ManageActivity({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ManageActivityPage();
+    return const ManageActivityPage();
   }
 }
 
 class ManageActivityPage extends StatefulWidget {
-  ManageActivityPage({super.key});
+  const ManageActivityPage({super.key});
 
   @override
   State<ManageActivityPage> createState() => ManageActivityPageState();
@@ -37,6 +32,20 @@ class ManageActivityPageState extends State<ManageActivityPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool hasAssigned = false;
   List lectures = [];
+  List liked = [];
+  bool likedSwitch = false;
+
+  @override
+  void initState() {
+    queryLectures().then((value) => {
+          setState(() {
+            lectures = value[0];
+            liked = value[1];
+          })
+        });
+
+    super.initState();
+  }
 
   Future<dynamic> fetchHistory() async {
     final CollectionReference ref =
@@ -45,28 +54,44 @@ class ManageActivityPageState extends State<ManageActivityPage> {
     DocumentSnapshot<Object?> history =
         await ref.doc(FirebaseAuth.instance.currentUser!.uid).get();
 
-    return history.data() ?? [];
+    return history.data() ?? {"history": [], "liked": [], "deleted": []};
   }
 
-  Future<List<Map<dynamic, dynamic>>> queryLectures() async {
+  Future<List<List<Map<dynamic, dynamic>>>> queryLectures() async {
     var lectures = await fetchHistory();
+    lectures = lectures;
     Map<String, dynamic> str =
-        jsonDecode(await rootBundle.loadString("assets/damn.json"))
-            as Map<String, dynamic>;
-    List<Map<dynamic, dynamic>> list = [];
+        jsonDecode(await getJsonFile()) as Map<String, dynamic>;
+    List<Map<dynamic, dynamic>> history = [];
+    List<Map<dynamic, dynamic>> liked = [];
+
     for (var i in lectures["history"]) {
       for (var lecture in str["lectures"]) {
         if (i == lecture["lecture_id"]) {
-          list.add(lecture);
+          history.add(lecture);
         }
       }
     }
-    return list;
+    try {
+      for (var i in lectures["liked"]) {
+        for (var lecture in str["lectures"]) {
+          if (i == lecture["lecture_id"]) {
+            liked.add(lecture);
+          }
+        }
+      }
+    } catch (e) {}
+    return [history, liked];
   }
 
   Future<void> deleteHistory(String lectureId) async {
     var history = await fetchHistory();
-    (history["history"] as List<dynamic>).remove(lectureId);
+    history["history"].remove(lectureId);
+    if (history.containsKey("deleted")) {
+      history["deleted"].add(lectureId);
+    } else {
+      history["deleted"] = [lectureId];
+    }
 
     final CollectionReference ref =
         FirebaseFirestore.instance.collection("history");
@@ -77,94 +102,138 @@ class ManageActivityPageState extends State<ManageActivityPage> {
   @override
   Widget build(BuildContext context) {
     //if (FirebaseAuth.instance.currentUser == null) Navigator.pop(context);
-    return FutureBuilder(
-        future: queryLectures(),
-        builder: (context, snapshot) {
-          if (!hasAssigned && snapshot.data! != lectures) {
-            Future.delayed(Duration.zero, () {
-              setState(() {
-                lectures =
-                    (snapshot.data != null) ? snapshot.data! as List : [];
-                hasAssigned = true;
-              });
-            });
-          }
-
-          return Scaffold(
-              extendBodyBehindAppBar: true,
-              key: _key,
-              appBar: AppBarCustom(
-                  type: AppBarVariant.arrow,
-                  key: _key,
-                  context: context,
-                  isTransparent: true),
-              endDrawer: DrawerCustom(context: context),
-              body: Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top + 64),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("History"),
-                      Flexible(
-                        child: ListView(
-                            children: lectures
-                                .asMap()
-                                .entries
-                                .map<Widget>((_lecture) {
-                          var lecture = _lecture.value;
-
-                          return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 16),
-                              child: Stack(
-                                children: [
-                                  CardElement(
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        key: _key,
+        appBar: AppBarCustom(
+            type: AppBarVariant.arrow, key: _key, context: context),
+        endDrawer: DrawerCustom(context: context),
+        body: Padding(
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).padding.top + 64),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                likedSwitch ? "Liked lectures" : "History",
+                style: Fonts.medium,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        likedSwitch = false;
+                      });
+                    },
+                    child: ChipElement(
+                        text: "History",
+                        variant: likedSwitch ? Variant.muted : Variant.primary,
+                        width: MediaQuery.of(context).size.width / 3 + 16),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        likedSwitch = true;
+                      });
+                    },
+                    child: ChipElement(
+                        text: "Liked lectures",
+                        variant: likedSwitch ? Variant.primary : Variant.muted,
+                        width: MediaQuery.of(context).size.width / 3 + 16),
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              child: lectures.isEmpty && !likedSwitch ||
+                      liked.isEmpty && likedSwitch
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        likedSwitch
+                            ? "You haven't liked any lectures."
+                            : "You haven't read any lectures.",
+                        style: Fonts.smLight,
+                      ),
+                    )
+                  : ListView(
+                      padding: EdgeInsets.zero,
+                      children: (likedSwitch ? liked : lectures)
+                          .asMap()
+                          .entries
+                          .map<Widget>((lecture_) {
+                        var lecture = lecture_.value;
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: ColorPalette.muted,
+                                          spreadRadius: 0,
+                                          blurRadius: 4,
+                                        )
+                                      ]),
+                                  child: CardElement(
                                     markdown: lecture["content"],
                                     title: lecture["title"],
-                                    views: 5,
-                                    dateOfCreation: DateTime.now(),
+                                    dateOfCreation: DateTime.parse(
+                                        lecture["date_of_creation"]),
                                     thumbnail: lecture["thumbnail"],
                                     id: lecture["lecture_id"],
+                                    isLiked: null,
+                                    author: lecture["author"],
                                   ),
-                                  Align(
-                                    alignment: Alignment.topRight,
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await deleteHistory(
-                                            lecture["lecture_id"]);
-                                        setState(() {
-                                          lectures.removeAt(_lecture.key);
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 4, top: 4),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          child: SizedBox(
-                                            height: 42,
-                                            width: 42,
-                                            child: ColoredBox(
-                                              color: ColorPalette.light
-                                                  .withOpacity(0.75),
-                                              child: Icon(
-                                                Icons.close,
-                                                size: 26,
+                                ),
+                                likedSwitch
+                                    ? Container()
+                                    : Align(
+                                        alignment: Alignment.topRight,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            await deleteHistory(
+                                                lecture["lecture_id"]);
+                                            setState(() {
+                                              lectures.removeAt(lecture.key);
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 4, top: 4),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              child: SizedBox(
+                                                height: 42,
+                                                width: 42,
+                                                child: ColoredBox(
+                                                  color: ColorPalette.light
+                                                      .withOpacity(0.75),
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    size: 26,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ));
-                        }).toList()),
-                      ),
-                    ]),
-              ));
-        });
+                                      )
+                              ],
+                            ));
+                      }).toList()),
+            ),
+          ]),
+        ));
   }
 }

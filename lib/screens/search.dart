@@ -1,12 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 
 import 'package:ballwizard/appbar.dart';
-import 'package:ballwizard/types.dart'
-    show FundamentalVariant, ColorPalette, AppBarVariant;
+import 'package:ballwizard/types.dart' show ColorPalette, AppBarVariant;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import '../card.dart';
+import '../globals.dart';
 
 class Search extends StatefulWidget {
   const Search({
@@ -24,7 +25,7 @@ class SearchState extends State<Search> {
   List<Map<String, dynamic>> items = [];
 
   search(String searchStr) async {
-    String str = await rootBundle.loadString("assets/damn.json");
+    String str = await getJsonFile();
     setState(() {
       json = jsonDecode(str) as Map<String, dynamic>;
     });
@@ -54,35 +55,39 @@ class SearchState extends State<Search> {
             await search(inputVal.toLowerCase());
           },
           placeholder: "Search"),
-      body: Column(
-        children: [
-          Flexible(
-              child: ListView(
-                  children: items
-                      .map<Widget>((lecture) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: ColorPalette.dark,
-                                      spreadRadius: 0,
-                                      blurRadius: 5,
-                                    )
-                                  ]),
-                              child: CardElement(
-                                  markdown: lecture["content"],
-                                  thumbnail: lecture["thumbnail"],
-                                  title: lecture["title"],
-                                  id: lecture["lecture_id"],
-                                  views: 5,
-                                  dateOfCreation: DateTime.now()),
-                            ),
-                          ))
-                      .toList())),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Column(
+          children: [
+            Flexible(
+                child: ListView(
+                    children: items
+                        .map<Widget>((lecture) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: ColorPalette.muted,
+                                        spreadRadius: -1,
+                                        blurRadius: 5,
+                                      )
+                                    ]),
+                                child: CardElement(
+                                    markdown: lecture["content"],
+                                    thumbnail: lecture["thumbnail"],
+                                    title: lecture["title"],
+                                    id: lecture["lecture_id"],
+                                    author: lecture["author"],
+                                    dateOfCreation: DateTime.parse(
+                                        lecture["date_of_creation"])),
+                              ),
+                            ))
+                        .toList())),
+          ],
+        ),
       ),
     );
   }

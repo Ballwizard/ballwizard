@@ -1,5 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:ballwizard/globals.dart';
-import 'package:ballwizard/types.dart' show ColorPalette, Toast, ToastVariant;
+import 'package:ballwizard/types.dart' show ColorPalette, Toast;
 import 'package:flutter/material.dart';
 
 class ToastComponent extends StatefulWidget {
@@ -33,6 +35,7 @@ class ToastState extends State<ToastComponent> {
                         FractionallySizedBox(
                           heightFactor: 1,
                           child: SizedBox(
+                            width: 48,
                             child: ColoredBox(
                               color: color,
                               child: Icon(
@@ -41,18 +44,17 @@ class ToastState extends State<ToastComponent> {
                                 size: 32,
                               ),
                             ),
-                            width: 48,
                           ),
                         ),
                         Expanded(
                           child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
                             child: Text(
                               widget.toast.value,
                               style: Fonts.small,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 12),
                           ),
                         )
                       ],

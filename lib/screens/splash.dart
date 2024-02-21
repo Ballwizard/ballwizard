@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,15 +7,29 @@ import 'package:flutter/material.dart';
 
 import '../globals.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  SplashScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => SplashScreenState();
+}
+
+class SplashScreenState extends State<SplashScreen> {
+  Timer? timer;
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 2), () {
-      print(FirebaseAuth.instance.currentUser);
+    timer = Timer(Duration(milliseconds: 1600), () {
       if (FirebaseAuth.instance.currentUser != null) {
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.pushNamedAndRemoveUntil(context, "/home", (r) => false);
       } else {
-        Navigator.of(context).pushReplacementNamed('/intro');
+        Navigator.pushNamedAndRemoveUntil(context, "/intro", (r) => false);
       }
     });
 
@@ -28,7 +44,7 @@ class SplashScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/logo.png',
+                "assets/logo.png",
                 fit: BoxFit.contain,
                 width: 285,
               ),

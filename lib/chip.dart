@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'globals.dart';
 
 Widget ChipElement(
-    {required String text, required Variant variant, bool isSelected = false}) {
+    {required String text,
+    required Variant variant,
+    bool isSelected = false,
+    double? width,
+    double? height}) {
   Color textColor = [
     Variant.light,
     Variant.lightMuted,
@@ -17,11 +21,13 @@ Widget ChipElement(
       : ColorPalette.light;
 
   return Container(
+    width: width,
+    height: height,
     decoration: isSelected
         ? BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(width: 2, color: ColorPalette.light),
-            boxShadow: [
+            boxShadow: const [
                 BoxShadow(
                   color: ColorPalette.light,
                   spreadRadius: 0,
@@ -30,7 +36,7 @@ Widget ChipElement(
               ])
         : BoxDecoration(borderRadius: BorderRadius.circular(16), boxShadow: [
             BoxShadow(
-              color: ColorPalette.dark,
+              color: variant.color(),
               spreadRadius: 0,
               blurRadius: 2,
             )
@@ -41,8 +47,9 @@ Widget ChipElement(
       child: ColoredBox(
           color: variant.color(),
           child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               child: Text(text,
+                  textAlign: TextAlign.center,
                   style: isSelected
                       ? Fonts.small.merge(TextStyle(
                           color: (variant != Variant.light &&

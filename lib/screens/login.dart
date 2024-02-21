@@ -20,9 +20,9 @@ import '../state/toast.dart';
 import '../toast.dart';
 
 class Login extends StatelessWidget {
-  bool renderNavbar;
+  final bool renderNavbar;
 
-  Login({Key? key, this.renderNavbar = true}) : super(key: key);
+  const Login({super.key, this.renderNavbar = true});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,9 @@ class Login extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  bool renderNavbar;
+  final bool renderNavbar;
 
-  LoginPage({Key? key, this.renderNavbar = true}) : super(key: key);
+  const LoginPage({super.key, this.renderNavbar = true});
 
   @override
   State<LoginPage> createState() => LoginPageState();
@@ -69,7 +69,7 @@ class LoginPageState extends State<LoginPage> {
           if (queue.current != null) {
             return ToastComponent(toast: queue.current!);
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
       endDrawer: DrawerCustom(context: context),
@@ -89,7 +89,7 @@ class LoginPageState extends State<LoginPage> {
                   child: Text(
                     "Login",
                     style: Fonts.addShadow(Fonts.heading
-                        .merge(TextStyle(color: ColorPalette.light))),
+                        .merge(const TextStyle(color: ColorPalette.light))),
                   ),
                 ),
               ),
@@ -145,7 +145,6 @@ class LoginPageState extends State<LoginPage> {
                                     ),
                                   );
                                 } on FirebaseAuthException catch (e) {
-                                  print(e.code);
                                   if (e.code == "invalid-credential") {
                                     queue.add(Toast(
                                         variant: ToastVariant.error,
@@ -170,26 +169,26 @@ class LoginPageState extends State<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Flexible(
+                        const Flexible(
                           child: FractionallySizedBox(
+                            widthFactor: 1,
                             child: SizedBox(
                                 height: 2,
                                 child: ColoredBox(color: ColorPalette.light)),
-                            widthFactor: 1,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text("Or continue with",
-                              style: Fonts.sm
-                                  .merge(TextStyle(color: ColorPalette.light))),
+                              style: Fonts.sm.merge(
+                                  const TextStyle(color: ColorPalette.light))),
                         ),
-                        Flexible(
+                        const Flexible(
                           child: FractionallySizedBox(
+                            widthFactor: 1,
                             child: SizedBox(
                                 height: 2,
                                 child: ColoredBox(color: ColorPalette.light)),
-                            widthFactor: 1,
                           ),
                         ),
                       ],
@@ -198,28 +197,70 @@ class LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      for (var i in [
-                        'assets/google.png',
-                        'assets/apple.png',
-                        'assets/facebook.png'
-                      ])
-                        ClipRRect(
+                      GestureDetector(
+                        onTap: () async {
+                          await googleLogin();
+
+                          await checkIfFullyRegisteredAlready(context);
+                        },
+                        child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: ColoredBox(
                             color: ColorPalette.light,
                             child: Padding(
-                              padding: i == 'assets/google.png'
-                                  ? EdgeInsets.fromLTRB(16, 12, 16, 4)
-                                  : EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 0),
+                              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                               child: Image.asset(
-                                i,
+                                'assets/google.png',
                                 fit: BoxFit.contain,
                                 height: 48,
                               ),
                             ),
                           ),
                         ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          await twitterLogin();
+
+                          await checkIfFullyRegisteredAlready(context);
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: ColoredBox(
+                            color: ColorPalette.light,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 0),
+                              child: Image.asset(
+                                'assets/apple.png',
+                                fit: BoxFit.contain,
+                                height: 48,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          await facebookLogin(queue);
+                          await checkIfFullyRegisteredAlready(context);
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: ColoredBox(
+                            color: ColorPalette.light,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 0),
+                              child: Image.asset(
+                                'assets/facebook.png',
+                                fit: BoxFit.contain,
+                                height: 48,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

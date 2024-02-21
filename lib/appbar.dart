@@ -1,5 +1,4 @@
-import 'package:ballwizard/types.dart'
-    show BasicVariant, FundamentalVariant, ColorPalette, AppBarVariant;
+import 'package:ballwizard/types.dart' show FundamentalVariant, AppBarVariant;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -30,11 +29,13 @@ PreferredSizeWidget AppBarCustom(
         backgroundColor: isTransparent ? Colors.transparent : variant.color(),
         elevation: 0,
         foregroundColor: titleVariant.color(),
+        scrolledUnderElevation: 0,
       );
     case AppBarVariant.logoPicture:
       return AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Image.asset(
@@ -54,7 +55,7 @@ PreferredSizeWidget AppBarCustom(
                       width: 34,
                       height: 34,
                     )
-                  : Icon(Icons.account_circle, size: 34),
+                  : const Icon(Icons.account_circle, size: 34),
             ),
           ),
         ]),
@@ -65,6 +66,7 @@ PreferredSizeWidget AppBarCustom(
       return AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,6 +88,7 @@ PreferredSizeWidget AppBarCustom(
       return AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +107,7 @@ PreferredSizeWidget AppBarCustom(
     case AppBarVariant.search:
       return AppBar(
         automaticallyImplyLeading: false,
-        actions: <Widget>[Container()],
+        scrolledUnderElevation: 0,
         title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -145,26 +148,3 @@ Widget AccountButton(FundamentalVariant variant, GlobalKey<ScaffoldState> key) {
       icon:
           Icon(Icons.account_circle, size: 34, color: variant.inverseColor()));
 }
-
-/*
-return AppBar(
-      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Image.asset(
-          'assets/logo.png',
-          fit: BoxFit.contain,
-          width: 285,
-        ),
-        const SizedBox(
-          height: 64,
-          width: 64,
-          child: ColoredBox(color: ColorPalette.dark),
-        )
-      ]),
-      backgroundColor:
-          widget.isTransparent ? Colors.transparent : widget.variant.color(),
-      foregroundColor: widget.titleVariant.color(),
-      elevation: 0,
-    );
- */
-
-// arrow, logoPicture, arrowLogo, arrowLogoPicture, search

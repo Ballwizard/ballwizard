@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:ballwizard/button.dart' show Button;
 import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/login.dart';
 import 'package:ballwizard/screens/register.dart';
 import 'package:ballwizard/types.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../state/toast.dart';
@@ -12,7 +15,7 @@ import '../toast.dart';
 class Start extends StatelessWidget {
   bool renderNavbar;
 
-  Start({Key? key, this.renderNavbar = true}) : super(key: key);
+  Start({super.key, this.renderNavbar = true});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class Start extends StatelessWidget {
 class StartPage extends StatefulWidget {
   bool renderNavbar;
 
-  StartPage({Key? key, this.renderNavbar = true}) : super(key: key);
+  StartPage({super.key, this.renderNavbar = true});
 
   @override
   State<StartPage> createState() => _MyHomePageState();
@@ -34,6 +37,14 @@ class StartPage extends StatefulWidget {
 class _MyHomePageState extends State<StartPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ToastQueue queue = ToastQueue();
+
+  @override
+  void initState() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      FirebaseAuth.instance.signOut();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +62,7 @@ class _MyHomePageState extends State<StartPage> {
                 duration: const Duration(milliseconds: 200),
                 child: ToastComponent(toast: queue.current!));
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
       body: GradientBackground(
@@ -72,7 +83,8 @@ class _MyHomePageState extends State<StartPage> {
                     onClick: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => Register()),
+                            builder: (BuildContext context) =>
+                                const Register()),
                       );
                     },
                     title: "Register"),
@@ -81,7 +93,7 @@ class _MyHomePageState extends State<StartPage> {
                   onClick: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (BuildContext context) => Login()),
+                          builder: (BuildContext context) => const Login()),
                     );
                   },
                   title: "Login"),

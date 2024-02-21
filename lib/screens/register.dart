@@ -17,19 +17,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:twitter_login/entity/auth_result.dart';
-import 'package:twitter_login/twitter_login.dart';
 
 import '../state/toast.dart';
 import '../toast.dart';
-import 'home.dart';
 
 class Register extends StatelessWidget {
-  bool renderNavbar;
+  final bool renderNavbar;
 
-  Register({Key? key, this.renderNavbar = true}) : super(key: key);
+  const Register({super.key, this.renderNavbar = true});
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +33,9 @@ class Register extends StatelessWidget {
 }
 
 class RegisterPage extends StatefulWidget {
-  bool renderNavbar;
+  final bool renderNavbar;
 
-  RegisterPage({Key? key, this.renderNavbar = true}) : super(key: key);
+  const RegisterPage({super.key, this.renderNavbar = true});
 
   @override
   State<RegisterPage> createState() => RegisterPageState();
@@ -80,7 +75,7 @@ class RegisterPageState extends State<RegisterPage> {
           if (queue.current != null) {
             return ToastComponent(toast: queue.current!);
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
       endDrawer: DrawerCustom(context: context),
@@ -100,7 +95,7 @@ class RegisterPageState extends State<RegisterPage> {
                   child: Text(
                     "Register",
                     style: Fonts.addShadow(Fonts.heading
-                        .merge(TextStyle(color: ColorPalette.light))),
+                        .merge(const TextStyle(color: ColorPalette.light))),
                   ),
                 ),
               ),
@@ -177,7 +172,8 @@ class RegisterPageState extends State<RegisterPage> {
                                         .collection("user_info");
 
                                 await ref.doc(cred.user?.uid).set({
-                                  "registration_state": RegistrationState.incomplete.code()
+                                  "registration_state":
+                                      RegistrationState.incomplete.code()
                                 });
 
                                 await cred.user?.updateDisplayName(username);
@@ -203,26 +199,26 @@ class RegisterPageState extends State<RegisterPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Flexible(
+                        const Flexible(
                           child: FractionallySizedBox(
+                            widthFactor: 1,
                             child: SizedBox(
                                 height: 2,
                                 child: ColoredBox(color: ColorPalette.light)),
-                            widthFactor: 1,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text("Or continue with",
-                              style: Fonts.sm
-                                  .merge(TextStyle(color: ColorPalette.light))),
+                              style: Fonts.sm.merge(
+                                  const TextStyle(color: ColorPalette.light))),
                         ),
-                        Flexible(
+                        const Flexible(
                           child: FractionallySizedBox(
+                            widthFactor: 1,
                             child: SizedBox(
                                 height: 2,
                                 child: ColoredBox(color: ColorPalette.light)),
-                            widthFactor: 1,
                           ),
                         ),
                       ],
@@ -233,26 +229,16 @@ class RegisterPageState extends State<RegisterPage> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          GoogleSignInAccount? user =
-                              await GoogleSignIn().signIn();
-                          GoogleSignInAuthentication? auth =
-                              await user?.authentication;
-                          AuthCredential creds = GoogleAuthProvider.credential(
-                            //accessToken: auth?.accessToken,
-                            idToken: auth?.idToken,
-                            accessToken: auth?.accessToken,
-                          );
-                          UserCredential user_instance = await FirebaseAuth
-                              .instance
-                              .signInWithCredential(creds);
-                          print(user_instance.user?.displayName!);
+                          await googleLogin();
+
+                          await checkIfFullyRegisteredAlready(context);
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: ColoredBox(
                             color: ColorPalette.light,
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(16, 12, 16, 4),
+                              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                               child: Image.asset(
                                 'assets/google.png',
                                 fit: BoxFit.contain,
@@ -264,35 +250,16 @@ class RegisterPageState extends State<RegisterPage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          TwitterLogin login = new TwitterLogin(
-                              apiKey: "mTUoE4QkhBqOnsEZ1G2f0w6ua",
-                              apiSecretKey:
-                                  "hpFkRcfe7aqD86utxOBn7zYAl1TPhQknevrygnnHNhWTH0R2z3",
-                              redirectURI:
-                                  "https://ballwizard-app.firebaseapp.com/__/auth/handler");
-                          AuthResult auth = await login.login();
+                          await twitterLogin();
 
-                          OAuthCredential creds =
-                              TwitterAuthProvider.credential(
-                                  accessToken: auth.authToken!,
-                                  secret: auth.authTokenSecret!);
-
-                          UserCredential user = await FirebaseAuth.instance
-                              .signInWithCredential(creds);
-
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => Home()),
-                            );
-                          }
+                          await checkIfFullyRegisteredAlready(context);
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: ColoredBox(
                             color: ColorPalette.light,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 0),
                               child: Image.asset(
                                 'assets/apple.png',
@@ -305,36 +272,15 @@ class RegisterPageState extends State<RegisterPage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          try {
-                            final LoginResult loginResult =
-                                await FacebookAuth.instance.login();
-
-                            final OAuthCredential facebookAuthCredential =
-                                FacebookAuthProvider.credential(
-                                    loginResult.accessToken!.token!);
-
-                            await FirebaseAuth.instance
-                                .signInWithCredential(facebookAuthCredential);
-                          } catch (e) {
-                            queue.add(Toast(
-                                variant: ToastVariant.error,
-                                value:
-                                    "An error occurred! Please try again in a few minutes."));
-                          }
-
-                          if (FirebaseAuth.instance.currentUser != null) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => Home()),
-                            );
-                          }
+                          await facebookLogin(queue);
+                          await checkIfFullyRegisteredAlready(context);
                         },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: ColoredBox(
                             color: ColorPalette.light,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 0),
                               child: Image.asset(
                                 'assets/facebook.png',

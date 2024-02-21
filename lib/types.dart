@@ -1,4 +1,11 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings, curly_braces_in_flow_control_structures
+
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import 'globals.dart';
 
 /// Defines the most rudimentary UI component color variants. The bare minimum of
 /// customization that a certain UI component the offer is contained in this enum.
@@ -352,5 +359,59 @@ enum RegistrationState {
       case RegistrationState.incomplete:
         return "incomplete";
     }
+  }
+}
+
+class LectureObject {
+  final String? title;
+  final String? content;
+  final String id;
+  final String? thumbnail;
+  final File? thumbnailFile;
+  final int? difficulty;
+  final DateTime? dateOfCreation;
+  final int? views;
+  final String? author;
+
+  LectureObject(
+      {this.title,
+      this.content,
+      required this.id,
+      this.thumbnail,
+      this.thumbnailFile,
+      this.difficulty,
+      this.dateOfCreation,
+      this.views,
+      this.author});
+
+  static fromJson(Map<String, dynamic> json) async {
+    //final views = await getLectureViews(json["lecture_id"]);
+
+    return LectureObject(
+        id: json["lecture_id"],
+        title: json["title"],
+        thumbnail: json["thumbnail"],
+        dateOfCreation: DateTime.parse(json["date_of_creation"]),
+        difficulty: json["difficulty"],
+        content: json["content"],
+        //views: views,
+        author: json["author"]);
+  }
+
+  static fromId(String id) async {
+    Map<String, dynamic> json =
+        jsonDecode(await getJsonFile()) as Map<String, dynamic>;
+    final item = json["id"][id];
+    final views = await getLectureViews(id);
+
+    return LectureObject(
+        id: id,
+        title: item["title"],
+        content: item["content"],
+        thumbnail: item["thumbnail"],
+        dateOfCreation: DateTime.parse(item["date_of_creation"]),
+        difficulty: item["difficulty"],
+        views: views,
+        author: item["author"]);
   }
 }

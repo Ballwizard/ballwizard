@@ -3,9 +3,10 @@ import 'package:ballwizard/drawer.dart';
 import 'package:ballwizard/globals.dart';
 import 'package:ballwizard/screens/main_list.dart';
 import 'package:ballwizard/screens/search.dart';
-import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/types.dart';
 import 'package:flutter/material.dart';
+
+import 'discover.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -25,20 +26,25 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final pages = [Start(renderNavbar: false), Search(), const MainList()];
+  final pages = [const MainList(), const Search(), const Discover()];
 
   int index = 0;
 
-  void changeIndex(int _index) {
+  void changeIndex(int index_) {
     setState(() {
-      index = _index;
+      index = index_;
     });
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       key: _key,
       appBar: index == 1

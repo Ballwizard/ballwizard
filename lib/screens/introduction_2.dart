@@ -22,7 +22,7 @@ import '../state/toast.dart';
 import '../toast.dart';
 
 class Introduction2 extends StatelessWidget {
-  const Introduction2({Key? key}) : super(key: key);
+  const Introduction2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class Introduction2 extends StatelessWidget {
 }
 
 class Introduction2Page extends StatefulWidget {
-  const Introduction2Page({Key? key}) : super(key: key);
+  const Introduction2Page({super.key});
 
   @override
   State<Introduction2Page> createState() => Introduction2PageState();
@@ -59,20 +59,20 @@ class Introduction2PageState extends State<Introduction2Page> {
 
   Future<Map<String, dynamic>?> getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? skill_level = prefs.getString("skill_level");
-    List<String>? skills_to_improve = prefs.getStringList("skills_to_improve");
-    String? display_name = prefs.getString("display_name");
-    List<String>? date_of_birth = prefs.getStringList("date_of_birth");
-    if (skill_level == null ||
-        skills_to_improve == null ||
-        display_name == null ||
-        date_of_birth == null) return null;
+    String? skillLevel = prefs.getString("skill_level");
+    List<String>? skillsToImprove = prefs.getStringList("skills_to_improve");
+    String? displayName = prefs.getString("display_name");
+    List<String>? dateOfBirth = prefs.getStringList("date_of_birth");
+    if (skillLevel == null ||
+        skillsToImprove == null ||
+        displayName == null ||
+        dateOfBirth == null) return null;
 
     final Map<String, dynamic> map = {
-      "skill_level": skill_level,
-      "skills_to_improve": skills_to_improve,
-      "display_name": display_name,
-      "date_of_birth": date_of_birth
+      "skill_level": skillLevel,
+      "skills_to_improve": skillsToImprove,
+      "display_name": displayName,
+      "date_of_birth": dateOfBirth
     };
 
     return map;
@@ -97,19 +97,19 @@ class Introduction2PageState extends State<Introduction2Page> {
           if (queue.current != null) {
             return ToastComponent(toast: queue.current!);
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
       endDrawer: DrawerCustom(context: context),
       body: Globals.GradientBackground(
         variant: FundamentalVariant.light,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 64),
+              const SizedBox(height: 64),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -120,14 +120,14 @@ class Introduction2PageState extends State<Introduction2Page> {
                       child: Text(
                         "Tell us more about yourself",
                         style: Globals.Fonts.addShadow(Globals.Fonts.heading
-                            .merge(TextStyle(color: ColorPalette.light))),
+                            .merge(const TextStyle(color: ColorPalette.light))),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Text("Skill level",
-                          style: Globals.Fonts.addShadow(Globals.Fonts.sm
-                              .merge(TextStyle(color: ColorPalette.light)))),
+                          style: Globals.Fonts.addShadow(Globals.Fonts.sm.merge(
+                              const TextStyle(color: ColorPalette.light)))),
                     ),
                     Wrap(
                       alignment: WrapAlignment.start,
@@ -138,10 +138,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (currIndex == 0)
+                                if (currIndex == 0) {
                                   currIndex = -1;
-                                else
+                                } else {
                                   currIndex = 0;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -155,10 +156,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (currIndex == 1)
+                                if (currIndex == 1) {
                                   currIndex = -1;
-                                else
+                                } else {
                                   currIndex = 1;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -172,10 +174,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (currIndex == 2)
+                                if (currIndex == 2) {
                                   currIndex = -1;
-                                else
+                                } else {
                                   currIndex = 2;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -189,8 +192,8 @@ class Introduction2PageState extends State<Introduction2Page> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4),
                       child: Text("What do you want to improve?",
-                          style: Globals.Fonts.addShadow(Globals.Fonts.sm
-                              .merge(TextStyle(color: ColorPalette.light)))),
+                          style: Globals.Fonts.addShadow(Globals.Fonts.sm.merge(
+                              const TextStyle(color: ColorPalette.light)))),
                     ),
                     Wrap(
                       alignment: WrapAlignment.start,
@@ -201,10 +204,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (selected[0] == true)
+                                if (selected[0] == true) {
                                   selected[0] = false;
-                                else
+                                } else {
                                   selected[0] = true;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -218,10 +222,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (selected[1] == true)
+                                if (selected[1] == true) {
                                   selected[1] = false;
-                                else
+                                } else {
                                   selected[1] = true;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -235,10 +240,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (selected[2] == true)
+                                if (selected[2] == true) {
                                   selected[2] = false;
-                                else
+                                } else {
                                   selected[2] = true;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -252,10 +258,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (selected[3] == true)
+                                if (selected[3] == true) {
                                   selected[3] = false;
-                                else
+                                } else {
                                   selected[3] = true;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -269,10 +276,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (selected[4] == true)
+                                if (selected[4] == true) {
                                   selected[4] = false;
-                                else
+                                } else {
                                   selected[4] = true;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -286,10 +294,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (selected[5] == true)
+                                if (selected[5] == true) {
                                   selected[5] = false;
-                                else
+                                } else {
                                   selected[5] = true;
+                                }
                               });
                             },
                             child: ChipElement(
@@ -323,11 +332,11 @@ class Introduction2PageState extends State<Introduction2Page> {
                                 .collection("user_info");
 
                             await ref
-                                .doc(FirebaseAuth.instance.currentUser!.uid!)
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
                                 .set(<String, dynamic>{
                               "registration_state":
                                   RegistrationState.complete.code(),
-                              ...data!
+                              ...data
                             });
                           } catch (e) {
                             queue.add(Toast(

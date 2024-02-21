@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -22,7 +24,7 @@ class ToastQueue extends ChangeNotifier {
       return;
     }
 
-    timer = Timer.periodic(Duration(seconds: 5), (_timer) {
+    timer = Timer.periodic(const Duration(seconds: 5), (_timer) {
       if (_toasts.isEmpty) {
         _timer.cancel();
         timer = null;

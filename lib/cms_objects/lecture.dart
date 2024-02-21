@@ -6,9 +6,9 @@ part 'lecture.g.dart';
 @JsonSerializable()
 class LectureContent extends Entry<Lecture> {
   LectureContent({
-    required SystemFields sys,
-    required Lecture fields,
-  }) : super(sys: sys, fields: fields);
+    required super.sys,
+    required Lecture super.fields,
+  });
 
   static LectureContent fromJson(Map<String, dynamic> json) {
     return _$LectureContentFromJson(json);
