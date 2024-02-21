@@ -191,7 +191,7 @@ class ManageActivityPageState extends State<ManageActivityPage> {
                                         lecture["date_of_creation"]),
                                     thumbnail: lecture["thumbnail"],
                                     id: lecture["lecture_id"],
-                                    isLiked: null,
+                                    isLiked: likedSwitch ? true : null,
                                     author: lecture["author"],
                                   ),
                                 ),
@@ -204,7 +204,7 @@ class ManageActivityPageState extends State<ManageActivityPage> {
                                             await deleteHistory(
                                                 lecture["lecture_id"]);
                                             setState(() {
-                                              lectures.removeAt(lecture.key);
+                                              lectures.removeAt(lecture_.key);
                                             });
                                           },
                                           child: Padding(

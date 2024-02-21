@@ -124,7 +124,7 @@ class DownloadedState extends State<Downloaded> {
                                       child: GestureDetector(
                                         onTap: () async {
                                           setState(() {
-                                            lectures.removeAt(lecture.key);
+                                            lectures.removeAt(lecture_.key);
                                           });
                                         },
                                         child: Padding(

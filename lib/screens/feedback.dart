@@ -20,7 +20,6 @@ class FeedbackScreen extends StatelessWidget {
 class Feedback extends StatefulWidget {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final ToastQueue queue = ToastQueue();
-  String content = "";
 
   Feedback({super.key});
 
@@ -29,6 +28,8 @@ class Feedback extends StatefulWidget {
 }
 
 class FeedbackScreenState extends State<Feedback> {
+  String content = "";
+
   @override
   Widget build(BuildContext context) {
     if (FirebaseAuth.instance.currentUser == null) {
@@ -74,7 +75,9 @@ class FeedbackScreenState extends State<Feedback> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: TextField(
                       onChanged: (val) {
-                        widget.content = val;
+                        setState(() {
+                          content = val;
+                        });
                       },
                       minLines: 5,
                       maxLines: 10,
@@ -94,7 +97,7 @@ class FeedbackScreenState extends State<Feedback> {
                     ),
                   ),
                   Button(
-                    onClick: widget.content == ""
+                    onClick: content == ""
                         ? () {}
                         : () async {
                             try {
@@ -103,7 +106,7 @@ class FeedbackScreenState extends State<Feedback> {
                                   .doc(FirebaseAuth.instance.currentUser!.uid);
 
                               await doc.set({
-                                "content": widget.content,
+                                "content": content,
                                 "time_of_sending": DateTime.now(),
                                 "uuid": FirebaseAuth.instance.currentUser!.uid
                               });
@@ -115,8 +118,7 @@ class FeedbackScreenState extends State<Feedback> {
                             }
                           },
                     title: "Send feedback",
-                    variant:
-                        widget.content == "" ? Variant.muted : Variant.dark,
+                    variant: content == "" ? Variant.muted : Variant.primary,
                   ),
                 ],
               )),
