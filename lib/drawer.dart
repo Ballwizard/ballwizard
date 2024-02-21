@@ -2,7 +2,6 @@ import 'package:ballwizard/drawer_element.dart';
 import 'package:ballwizard/screens/downloaded.dart';
 import 'package:ballwizard/screens/feedback.dart';
 import 'package:ballwizard/screens/manage_activity.dart';
-import 'package:ballwizard/screens/manage_user.dart';
 import 'package:ballwizard/screens/start.dart';
 import 'package:ballwizard/screens/user_info.dart';
 import 'package:ballwizard/types.dart' show ColorPalette, FundamentalVariant;
@@ -49,7 +48,7 @@ Widget DrawerCustom(
             size: 34,
             color: ColorPalette.dark,
           ),
-          component: ManageUser(),
+          component: const UserInformation(),
           context: context),
       DrawerElement(
           title: "Log out",
