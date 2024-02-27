@@ -1,18 +1,19 @@
-import 'package:ballwizard/types.dart'
-    show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
+import 'package:ballwizard/globals.dart';
+import 'package:ballwizard/types.dart' show Variant, ColorPalette;
 import 'package:flutter/material.dart';
 
 class Button extends StatefulWidget {
-  final FundamentalVariant variant;
+  final Variant variant;
   final String title;
   final VoidCallback onClick;
+  final double? height;
 
-  const Button({
-    super.key,
-    this.variant = FundamentalVariant.light,
-    this.title = "",
-    required this.onClick,
-  });
+  const Button(
+      {super.key,
+      this.variant = Variant.light,
+      this.title = "",
+      required this.onClick,
+      this.height});
 
   @override
   State<Button> createState() => ButtonState();
@@ -21,10 +22,17 @@ class Button extends StatefulWidget {
 class ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
-    final bool useLightFont = widget.variant == FundamentalVariant.dark;
+    final bool useLightFont = widget.variant == Variant.dark ||
+        widget.variant == Variant.muted ||
+        widget.variant == Variant.primary ||
+        widget.variant == Variant.secondary ||
+        widget.variant == Variant.primaryMuted ||
+        widget.variant == Variant.secondaryMuted ||
+        widget.variant == Variant.danger ||
+        widget.variant == Variant.dangerMuted;
 
     return SizedBox(
-        height: 44,
+        height: widget.height ?? 44,
         child: FractionallySizedBox(
           widthFactor: 1,
           heightFactor: 1,
@@ -37,10 +45,10 @@ class ButtonState extends State<Button> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(widget.title,
-                          style: TextStyle(
+                          style: Fonts.small.merge(TextStyle(
                               color: useLightFont
                                   ? ColorPalette.light
-                                  : ColorPalette.dark)),
+                                  : ColorPalette.dark))),
                     ))),
           ),
         ));

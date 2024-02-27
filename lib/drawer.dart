@@ -1,26 +1,46 @@
 import 'package:ballwizard/drawer_element.dart';
-import 'package:ballwizard/screens/home.dart';
-import 'package:ballwizard/screens/lecture.dart';
-import 'package:ballwizard/screens/login.dart';
-import 'package:ballwizard/screens/register.dart';
+import 'package:ballwizard/screens/downloaded.dart';
+import 'package:ballwizard/screens/feedback.dart';
+import 'package:ballwizard/screens/manage_activity.dart';
 import 'package:ballwizard/screens/start.dart';
-import 'package:ballwizard/types.dart'
-    show ColorPalette, DrawerElement, FundamentalVariant;
+import 'package:ballwizard/screens/user_info.dart';
+import 'package:ballwizard/types.dart' show ColorPalette, FundamentalVariant;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Widget DrawerCustom(
     {required BuildContext context,
     FundamentalVariant variant = FundamentalVariant.light}) {
   return Drawer(
+    backgroundColor: ColorPalette.light,
     child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-      SizedBox(height: MediaQuery.of(context).padding.top),
       SizedBox(
-          height: 56,
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
-              child: Container(
-                  child: Icon(Icons.account_circle, size: 34),
-                  alignment: Alignment.centerRight))),
+        height: MediaQuery.of(context).padding.top,
+        child: const ColoredBox(
+          color: ColorPalette.primary,
+        ),
+      ),
+      DrawerElement(
+        title: FirebaseAuth.instance.currentUser?.displayName != null
+            ? FirebaseAuth.instance.currentUser!.displayName!
+            : "",
+        picture: FirebaseAuth.instance.currentUser?.photoURL != null
+            ? Image.network(
+                FirebaseAuth.instance.currentUser!.photoURL!,
+                width: 34,
+                height: 34,
+              )
+            : null,
+        icon: const Icon(
+          Icons.account_circle,
+          size: 34,
+          color: ColorPalette.light,
+        ),
+        component: const UserInformation(),
+        context: context,
+        color: ColorPalette.primary,
+        textColor: ColorPalette.light,
+      ),
       DrawerElement(
           title: "Manage user information",
           icon: const Icon(
@@ -28,33 +48,36 @@ Widget DrawerCustom(
             size: 34,
             color: ColorPalette.dark,
           ),
-          component: Start(),
+          component: const UserInformation(),
           context: context),
       DrawerElement(
           title: "Log out",
-          icon: const Icon(Icons.logout),
-          component: Lecturee(
-              title: "man",
-              body: """"# obamna 
-              ### big
-              - omaga""",
-              nextLecture: Start(),
-              prevLecture: Start()),
+          icon: const Icon(Icons.logout, size: 30, color: ColorPalette.dark),
+          component: Start(),
+          context: context,
+          clearHistory: true),
+      DrawerElement(
+          title: "Send feedback",
+          icon: const Icon(Icons.info, size: 32, color: ColorPalette.dark),
+          component: const FeedbackScreen(),
           context: context),
       DrawerElement(
-          title: "Login",
-          icon: const Icon(Icons.logout),
-          component: Login(),
+          title: "Manage activity",
+          icon: const Icon(
+            Icons.manage_history,
+            size: 32,
+            color: ColorPalette.dark,
+          ),
+          component: const ManageActivity(),
           context: context),
       DrawerElement(
-          title: "Register",
-          icon: const Icon(Icons.people_alt),
-          component: const Register(),
-          context: context),
-      DrawerElement(
-          title: "Home",
-          icon: const Icon(Icons.house),
-          component: const Home(),
+          title: "Downloaded lectures",
+          icon: const Icon(
+            Icons.download,
+            size: 32,
+            color: ColorPalette.dark,
+          ),
+          component: const DownloadedLectures(),
           context: context),
     ]),
   );

@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "471266321533",
+    "project_id": "ballwizard-app",
+    "storage_bucket": "ballwizard-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471266321533:android:1fcf5220ff9bc6727a7d14",
+        "android_client_info": {
+          "package_name": "com.example.ballwizard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471266321533-663jst43mpgpteksbrrg9fnjrl965005.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ballwizard",
+            "certificate_hash": "1b95f12060ad61c953dde7adc0ede747a94ea333"
+          }
+        },
+        {
+          "client_id": "471266321533-c0555virrrnl00pdj9bs8ucfd9t54s3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ballwizard",
+            "certificate_hash": "8055635e3313469ff6f179c77f21fa47e3ef4766"
+          }
+        },
+        {
+          "client_id": "471266321533-kmvr7bo57ts2hi6rnt40qmcb9rh2ricc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuN2mfLXDsl_ehHGnxk7cfTb_EnzxRsUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471266321533-kmvr7bo57ts2hi6rnt40qmcb9rh2ricc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "471266321533-cpc33fl987fg1o42v2tuk9939mb0r5o2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ballwizard"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

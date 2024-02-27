@@ -1,4 +1,11 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: prefer_interpolation_to_compose_strings, curly_braces_in_flow_control_structures
+
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+
+import 'globals.dart';
 
 /// Defines the most rudimentary UI component color variants. The bare minimum of
 /// customization that a certain UI component the offer is contained in this enum.
@@ -238,6 +245,11 @@ abstract class ColorPicker {
 
     return int.parse("0x" + opacityHex + colorHex);
   }
+
+  /// Creates a `Color` class with opacity using a int in the hex form and a provided opacity.
+  static Color colorOpacity(final int color, final double opacity) {
+    return Color(addOpacity(color, opacity));
+  }
 }
 
 /// Abstract class that adds onto the `ColorPicker` class by enabling
@@ -270,10 +282,50 @@ abstract class ColorPalette {
 //}
 
 /// Defines the toast variants that can be used with the `Toast` UI component.
-enum ToastVariant { success, error, warning, info }
+enum ToastVariant {
+  success,
+  error,
+  warning,
+  info;
 
-/// Defines the structure of the toast that the `Toast` UI component can use.
-enum Toast { type, value }
+  /// Method that gets the color by the variant.
+  Color color() {
+    switch (this) {
+      case ToastVariant.success:
+        return ColorPalette.success;
+      case ToastVariant.error:
+        return ColorPalette.danger;
+      case ToastVariant.warning:
+        return ColorPalette.warning;
+      case ToastVariant.info:
+        return ColorPalette.info;
+      default:
+        return ColorPalette.light;
+    }
+  }
+
+  IconData icon() {
+    switch (this) {
+      case ToastVariant.success:
+        return Icons.check_rounded;
+      case ToastVariant.error:
+        return Icons.close_rounded;
+      case ToastVariant.warning:
+        return Icons.warning_amber_rounded;
+      case ToastVariant.info:
+        return Icons.info_outline_rounded;
+      default:
+        return Icons.question_mark;
+    }
+  }
+}
+
+class Toast {
+  ToastVariant variant;
+  String value;
+
+  Toast({required this.variant, required this.value});
+}
 
 /// Defines the states that the `CustomAppBar` component can be in.
 /// * [arrow] is used when only the arrow should be visible in the app bar.
@@ -282,3 +334,84 @@ enum Toast { type, value }
 /// * [arrowLogoPicture] is used when the arrow, logo and profile picture should all be visible in the app bar.
 /// * [search] displays an app bar with a search bar and the user's profile picture.
 enum AppBarVariant { arrow, logoPicture, arrowLogo, arrowLogoPicture, search }
+
+/// Defines the possible registration states of the user.
+/// Every single user in the Cloud Firestore database will have one of these registration states.
+/// They are sent out as soon as the user registers their account.
+/// * [complete] means that the user has done every step of the registration, including the actual registration,
+/// the user info part (date of registration, name), and the display name has been added as well as their actual name.
+/// * [completeWithoutIntroduction] means that the user has registered the account, but has not done the user info part
+/// nor, however their display name has been updated.
+/// * [incomplete] means that that the user has just registered the account and has not done any further step of
+/// the registration process.
+enum RegistrationState {
+  complete,
+  completeWithoutIntroduction,
+  incomplete;
+
+  /// Method that returns the code of the registration state in a `String`.
+  String code() {
+    switch (this) {
+      case RegistrationState.complete:
+        return "complete";
+      case RegistrationState.completeWithoutIntroduction:
+        return "completeWithoutIntroduction";
+      case RegistrationState.incomplete:
+        return "incomplete";
+    }
+  }
+}
+
+class LectureObject {
+  final String? title;
+  final String? content;
+  final String id;
+  final String? thumbnail;
+  final File? thumbnailFile;
+  final int? difficulty;
+  final DateTime? dateOfCreation;
+  final int? views;
+  final String? author;
+
+  LectureObject(
+      {this.title,
+      this.content,
+      required this.id,
+      this.thumbnail,
+      this.thumbnailFile,
+      this.difficulty,
+      this.dateOfCreation,
+      this.views,
+      this.author});
+
+  static fromJson(Map<String, dynamic> json) async {
+    //final views = await getLectureViews(json["lecture_id"]);
+
+    return LectureObject(
+        id: json["lecture_id"],
+        title: json["title"],
+        thumbnail: json["thumbnail"],
+        dateOfCreation: DateTime.parse(json["date_of_creation"]),
+        difficulty: json["difficulty"],
+        content: json["content"],
+        //views: views,
+        author: json["author"]);
+  }
+
+  static fromId(String id) async {
+    Map<String, dynamic> json =
+        jsonDecode(await getJsonFile()) as Map<String, dynamic>;
+    final item = json["id"][id];
+    final views = await getLectureViews(id);
+
+    return LectureObject(
+        id: id,
+        title: item["title"],
+        content: item["content"],
+        thumbnail: item["thumbnail"],
+        dateOfCreation: DateTime.parse(item["date_of_creation"]),
+        difficulty: item["difficulty"],
+        views: views,
+        author: item["author"]);
+  }
+}

@@ -1,34 +1,47 @@
 import 'package:ballwizard/globals.dart' as Globals;
 import 'package:ballwizard/types.dart'
-    show BasicVariant, FundamentalVariant, ColorPalette, ColorPicker;
+    show FundamentalVariant, ColorPalette, ColorPicker;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class Form extends StatefulWidget {
+class Input extends StatefulWidget {
   final FundamentalVariant variant;
   final FundamentalVariant labelVariant;
   final String placeholder;
   final String label;
+  final int limit;
+  final TextInputType type;
+  final bool isPassword;
   late final dynamic onChange;
+  late final dynamic validator;
+  late final dynamic onEnter;
 
-  Form({
-    super.key,
-    this.variant = FundamentalVariant.light,
-    this.labelVariant = FundamentalVariant.light,
-    this.placeholder = "",
-    this.label = "",
-    this.onChange,
-  });
+  Input(
+      {super.key,
+      this.variant = FundamentalVariant.light,
+      this.labelVariant = FundamentalVariant.light,
+      this.placeholder = "",
+      this.label = "",
+      this.limit = 128,
+      this.type = TextInputType.text,
+      this.isPassword = false,
+      this.onChange,
+      this.validator,
+      this.onEnter});
 
   @override
-  State<Form> createState() => FormState();
+  State<Input> createState() => InputState();
 }
 
-class FormState extends State<Form> {
+class InputState extends State<Input> {
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final bool useLightFont = widget.variant == FundamentalVariant.dark;
     final bool useLightLabelFont =
         widget.labelVariant == FundamentalVariant.dark;
+
     /*
     dynamic onChange;
     if (widget.onChange) {
@@ -37,6 +50,7 @@ class FormState extends State<Form> {
       onChange = (dynamic text) {};
     }
     */
+
     dynamic onChange = widget.onChange ?? (dynamic text) {};
 
     return Stack(
@@ -46,12 +60,22 @@ class FormState extends State<Form> {
           padding: const EdgeInsets.only(top: 8),
           child: FractionallySizedBox(
             widthFactor: 1.04,
-            child: Globals.Shadow(
+            child: Globals.ShadowElement(
               blurRadius: 4,
+              borderRadius: 12,
               child: SizedBox(
                 height: 45,
                 child: TextField(
+                  obscureText: widget.isPassword,
+                  enableSuggestions: !widget.isPassword,
+                  autocorrect: false,
+                  keyboardType: widget.type,
+                  controller: controller,
                   onChanged: onChange,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(widget.limit + 1)
+                  ],
+                  onSubmitted: widget.onEnter,
                   style: TextStyle(
                           color: useLightFont
                               ? ColorPalette.light
@@ -71,7 +95,7 @@ class FormState extends State<Form> {
                           BorderSide(color: ColorPalette.dark, width: 0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(
                           color: useLightFont
                               ? ColorPalette.light
@@ -85,6 +109,20 @@ class FormState extends State<Form> {
                             : ColorPalette.dark),
                     contentPadding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    errorBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(width: 2, color: ColorPalette.danger)),
+                    focusedErrorBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide:
+                            BorderSide(width: 3, color: ColorPalette.danger)),
+                    errorText: widget.validator != null &&
+                            !widget.validator(controller.text)
+                        ? ""
+                        : null,
+                    errorStyle: const TextStyle(
+                        fontSize: 0, fontStyle: null, height: 0),
                   ),
                 ),
               ),
@@ -95,7 +133,7 @@ class FormState extends State<Form> {
           top: 0,
           left: 0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -106,9 +144,9 @@ class FormState extends State<Form> {
                             : ColorPalette.light,
                         shadows: [
                           Shadow(
-                              color: Color(ColorPicker.addOpacity(
-                                  ColorPicker.dark, 0.25)),
-                              offset: Offset(0, 2),
+                              color: ColorPicker.colorOpacity(
+                                  ColorPicker.dark, 0.25),
+                              offset: const Offset(0, 2),
                               blurRadius: 4)
                         ]).merge(Globals.Fonts.small)),
               ],
